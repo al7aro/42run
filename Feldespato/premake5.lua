@@ -1,9 +1,9 @@
-project "EngineName"
+project "Feldespato"
     kind "StaticLib"
     language "C++"
 
-    targetdir "%{wks.location}/build/bin/%{cfg.buildcfg}/EngineName"
-    objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/EngineName"
+    targetdir "%{wks.location}/build/bin/%{cfg.buildcfg}/Feldespato"
+    objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/Feldespato"
 
     files {
         "src/**.hpp",
