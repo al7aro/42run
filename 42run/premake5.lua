@@ -4,15 +4,30 @@ project "42run"
     cppdialect "C++23"
 
     targetdir "%{wks.location}/build/bin/%{cfg.buildcfg}/42run"
-    objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/42run"
+    objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/42run/obj"
 
     files {
         "src/**.hpp",
         "src/**.cpp"
     }
 
+    filter "system:windows"
+        links { "OpenGL" }
+    filter "system:linux"
+        links { "GL" }
+    filter "system:macosx"
+        links { "-framework OpenGL" }
+    filter {}
+
     links {
+        "GL",
         "Feldespato",
+        "imgui",
+        "glfw",
+        "X11",
+        "glad",
+        "assimp",
+        "stb",
     }
 
     includedirs {

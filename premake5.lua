@@ -11,9 +11,12 @@ workspace "WorkspaceName"
     }
 
     filter "system:windows"
-        defines {
-            "PLATFORM_WINDOWS"
-        }
+        defines { "PLATFORM_WINDOWS" }
+    filter "system:linux"
+        defines { "PLATFORM_LINUX" }
+    filter "system:macosx"
+        defines { "PLATFORM_MACOS" }
+    filter {}
 
     include "Feldespato/premake5.lua"
     include "42run/premake5.lua"

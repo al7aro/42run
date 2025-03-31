@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 3.4...3.28 FATAL_ERROR)
+
+project(${APP_NAME}
+    LANGUAGES CXX
+)
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../ PROPERTY VS_STARTUP_PROJECT ${APP_NAME})
+
+set(APP_OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/${CMAKE_GENERATOR_PLATFORM}/${APP_NAME})
+
+file(GLOB_RECURSE ALL_SOURCES
+    "./src/*.cpp"
+    "./src/*.hpp"
+    "./src/*.h"
+)
+
+foreach (src ${ALL_SOURCES})
+    get_filename_component(dir ${src} DIRECTORY)
+	string(REPLACE "${PROJECT_SOURCE_DIR}/./" "" desired_portion ${dir})
+    source_group(${desired_portion} FILES ${src})
+endforeach()
+
+add_executable(${APP_NAME}
+    ${ALL_SOURCES}
+)
+
+set_target_properties(${APP_NAME} PROPERTIES
+    CXX_STANDARD 11
+    CXX_EXTENSIONS off
+
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${APP_OUTPUT_DIRECTORY_DEBUG}
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${APP_OUTPUT_DIRECTORY_DEBUG}
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${APP_OUTPUT_DIRECTORY_DEBUG}
+
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${APP_OUTPUT_DIRECTORY_RELEASE}
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE ${APP_OUTPUT_DIRECTORY_RELEASE}
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${APP_OUTPUT_DIRECTORY_RELEASE}
+	
+	FOLDER ${WORKSPACE_NAME}/
+)
+
+target_link_libraries(${APP_NAME} ${ENGINE_NAME})
+target_include_directories(${APP_NAME} PRIVATE "./src")
+target_include_directories(${APP_NAME} PRIVATE "../${ENGINE_NAME}/include")

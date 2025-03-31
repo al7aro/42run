@@ -37,12 +37,14 @@ project 'assimp'
     cppdialect "C++17"
 
     targetdir "%{wks.location}/build/bin/%{cfg.buildcfg}/vendor/assimp"
-    objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/vendor/assimp"
+    objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/vendor/assimp/obj"
 
 	includedirs {
 		'_config_headers/',
 		'_config_headers/assimp/',
 		'assimp/',
+		'assimp/code',
+		'assimp/include',
 		'assimp/contrib/',
 		'assimp/contrib/irrXML/',
 		'assimp/contrib/unzip/',
@@ -50,8 +52,6 @@ project 'assimp'
 		'assimp/contrib/pugixml/src/',
 		'assimp/contrib/zlib/',
 		'assimp/contrib/utf8cpp/source',
-		'assimp/code',
-		'assimp/include',
 	}
 	files {
 		-- Dependencies

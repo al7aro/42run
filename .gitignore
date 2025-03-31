@@ -9,6 +9,7 @@ build/
 *.sln
 .proj/
 *vcxproj*
+Makefile
 
 # User-specific files
 *.rsuser

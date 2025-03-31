@@ -4,21 +4,12 @@ project "Feldespato"
     cppdialect "C++23"
 
     targetdir "%{wks.location}/build/bin/%{cfg.buildcfg}/Feldespato"
-    objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/Feldespato"
+    objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/Feldespato/obj"
 
     files {
         "include/*.hpp",
         "src/**.hpp",
         "src/**.cpp"
-    }
-
-    links {
-        "OpenGL32",
-        "glad",
-        "glfw",
-        "imgui",
-        "stb",
-        "assimp",
     }
 
     includedirs {
