@@ -11,20 +11,16 @@ project "42run"
         "src/**.cpp"
     }
 
-    filter "system:windows"
-        links { "OpenGL" }
     filter "system:linux"
-        links { "GL" }
+        links { "GL", "X11" }
     filter "system:macosx"
         links { "-framework OpenGL" }
     filter {}
 
     links {
-        "GL",
         "Feldespato",
         "imgui",
         "glfw",
-        "X11",
         "glad",
         "assimp",
         "stb",
