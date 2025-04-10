@@ -181,6 +181,11 @@ namespace FT {
         glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, glm::vec3(0.0, 0.0, 1.0));
         m_data.tr.top() *= rt;
     }
+    void Feldespato::Rotate(float a, glm::vec3 axis)
+    {
+        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, axis);
+        m_data.tr.top() *= rt;
+    }
     glm::mat4 Feldespato::GetTransform() const
     {
         return (m_data.tr.top());

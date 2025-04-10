@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 4.3.2 commit date:2024-12-16, commit time:21:10, hash:32f5fdce0a0a</authoring_tool>
+    </contributor>
+    <created>2025-04-07T21:47:54</created>
+    <modified>2025-04-07T21:47:54</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="FrontDown-effect">
+      <profile_COMMON>
+        <newparam sid="frontdown_png_001-surface">
+          <surface type="2D">
+            <init_from>frontdown_png_001</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="frontdown_png_001-sampler">
+          <sampler2D>
+            <source>frontdown_png_001-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="frontdown_png_001-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.5</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="frontdown_png_001" name="frontdown_png_001">
+      <init_from>frontdown.png.001.png</init_from>
+    </image>
+  </library_images>
+  <library_materials>
+    <material id="FrontDown-material" name="FrontDown">
+      <instance_effect url="#FrontDown-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Cube_008-mesh" name="Cube.008">
+      <mesh>
+        <source id="Cube_008-mesh-positions">
+          <float_array id="Cube_008-mesh-positions-array" count="48">1.999999 2.000001 -1 1.999999 2.000001 0.25 2.000001 -1.999999 -2.25 2.000001 -1.999999 -1 -2.000001 1.999999 -1 -2.000001 1.999999 0.25 -1.999999 -2.000001 -2.25 -1.999999 -2.000001 -1 1.500001 -2 -1.25 1.500001 -2 -1 -1.499999 -2 -1 -1.499999 -2 -1.25 1.499999 2 0.25 1.499999 2 0 -1.500001 2 0 -1.500001 2 0.25</float_array>
+          <technique_common>
+            <accessor source="#Cube_008-mesh-positions-array" count="16" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Cube_008-mesh-normals">
+          <float_array id="Cube_008-mesh-normals-array" count="48">0.5949582 0.6475641 -0.4761152 0.5949693 -0.647567 0.4760971 0.5630646 -0.4895088 -0.6658374 -0.5630573 -0.489478 -0.6658663 0.2288401 -0.9350934 0.2706155 -0.5949677 -0.6475671 0.4760991 -0.5949657 0.6475726 -0.4760942 -0.3843247 0.8704679 0.3075389 0.5630668 0.4894967 0.6658445 -0.5949707 -0.6475707 0.4760904 0.5630607 0.4895133 0.6658374 0.5949723 -0.6475708 0.4760883 -0.5630624 0.4895153 0.6658346 0.3843181 0.8704754 0.3075262 -0.2288369 -0.9350971 0.2706055 -0.5630683 0.4894987 0.6658417</float_array>
+          <technique_common>
+            <accessor source="#Cube_008-mesh-normals-array" count="16" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Cube_008-mesh-map-0">
+          <float_array id="Cube_008-mesh-map-0-array" count="168">1 0.5000002 0.5000001 0.6562503 0.5000001 0.5000002 0 0.5 0.5000002 0.5 0.06249994 0.625 0.5000001 0.6562503 1 0.5000002 0.5000001 0.5000002 0.5000002 0.5000001 0 0.5000001 0.4375002 0.6250002 1 0 0.5 0.5 0.5 0 0 0 0.06249994 0.5 0 0.5 0.4375 0 0.5 0.5 0.4375 0.5 1 0.6250002 0.5000001 0.6562503 1 0.6562503 0.5000001 0.6562503 1 0.6250002 1 0.6562503 0.4375 0.5 0.06249994 0 0.4375 0 1 0.5000002 1 0.6562503 0.5000001 0.6562503 0.06249994 0.6562501 0 0.6562501 0.06249994 0.625 0 0.6562501 0 0.5 0.06249994 0.625 0.5000002 0.5 0.5000002 0.6562501 0.4375002 0.625 0.5000002 0.6562501 0.4375002 0.6562501 0.4375002 0.625 0.5000002 0.5 0.4375002 0.625 0.06249994 0.625 0.5000001 0.6562503 1 0.6562503 1 0.5000002 0.4375002 0.6562502 0.5000002 0.6562502 0.4375002 0.6250002 0.5000002 0.6562502 0.5000002 0.5000001 0.4375002 0.6250002 0 0.5000001 0 0.6562502 0.06249994 0.6250002 0 0.6562502 0.06249994 0.6562502 0.06249994 0.6250002 0 0.5000001 0.06249994 0.6250002 0.4375002 0.6250002 1 0 1 0.5 0.5 0.5 0 0 0.06249994 0 0.06249994 0.5 0.4375 0 0.5 0 0.5 0.5 1 0.6250002 0.5000001 0.6250002 0.5000001 0.6562503 0.5000001 0.6562503 0.5000001 0.6250002 1 0.6250002 0.4375 0.5 0.06249994 0.5 0.06249994 0</float_array>
+          <technique_common>
+            <accessor source="#Cube_008-mesh-map-0-array" count="84" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Cube_008-mesh-vertices">
+          <input semantic="POSITION" source="#Cube_008-mesh-positions"/>
+        </vertices>
+        <triangles material="FrontDown-material" count="28">
+          <input semantic="VERTEX" source="#Cube_008-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Cube_008-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Cube_008-mesh-map-0" offset="2" set="0"/>
+          <p>0 0 0 3 1 1 2 2 2 6 3 3 2 2 4 11 4 5 7 5 6 4 6 7 6 3 8 0 0 9 4 6 10 13 7 11 6 3 12 0 0 13 2 2 14 1 8 15 9 9 16 3 1 17 15 10 18 7 5 19 10 11 20 13 7 21 9 9 22 12 12 23 10 11 24 14 13 25 15 10 26 11 4 27 13 7 28 14 13 29 0 0 30 1 8 31 3 1 32 10 11 33 7 5 34 11 4 35 7 5 36 6 3 37 11 4 38 2 2 39 3 1 40 8 14 41 3 1 42 9 9 43 8 14 44 2 2 45 8 14 46 11 4 47 7 5 48 5 15 49 4 6 50 12 12 51 1 8 52 13 7 53 1 8 54 0 0 55 13 7 56 4 6 57 5 15 58 14 13 59 5 15 60 15 10 61 14 13 62 4 6 63 14 13 64 13 7 65 6 3 66 4 6 67 0 0 68 1 8 69 12 12 70 9 9 71 15 10 72 5 15 73 7 5 74 13 7 75 8 14 76 9 9 77 10 11 78 11 4 79 14 13 80 11 4 81 8 14 82 13 7 83</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="FrontDown" name="FrontDown" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#Cube_008-mesh" name="FrontDown">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="FrontDown-material" target="#FrontDown-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
