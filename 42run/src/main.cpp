@@ -6,15 +6,20 @@ using namespace FT;
 
 int main(void)
 {
+	/* ENGINE */
 	Feldespato fdp;
+
+	/* TIMER */
 	Timer delta_timer;
 	float last_frame_time = 0.0;
-	PlayerPosition p = MIDDLE;
 
+	/* CAMERA */
 	Camera cam(Camera::PERSPECTIVE);
 	cam.tr.pos = glm::vec3(0.0, 5.0, -5);
 	cam.tr.Yaw(glm::pi<float>());
 	cam.tr.Pitch(-glm::half_pi<float>() / 3.0);
+	
+	/* SHADERS */
 	std::shared_ptr<Shader> sh_col = fdp.LoadShader(SANDBOX_ASSETS_DIRECTORY"/shaders/basic_col.glsl");
 	std::shared_ptr<Shader> sh_tex = fdp.LoadShader(SANDBOX_ASSETS_DIRECTORY"/shaders/basic_tex.glsl");
 
@@ -27,6 +32,9 @@ int main(void)
 	/* FLOOR TRAIL */
 	Trail trail(fdp);
 	trail.Init();
+
+	/* Player */
+	Player player(fdp);
 
 	float y = 0.0;
 	bool pause = true;
@@ -44,42 +52,18 @@ int main(void)
 			pause = !pause;
 			flag = !flag;
 		}
-		if (fdp.GetKey(GLFW_KEY_SPACE) == GLFW_RELEASE && !flag)
-			flag = !flag;
-		if (fdp.GetKey(GLFW_KEY_SPACE) == GLFW_PRESS && jump_finished)
-			jump_finished = false;
-		if (fdp.GetKey(GLFW_KEY_LEFT) == GLFW_PRESS && jump_finished)
-			p = PlayerPosition::LEFT;
-		else if (fdp.GetKey(GLFW_KEY_RIGHT) == GLFW_PRESS && jump_finished)
-			p = PlayerPosition::RIGHT;
-		else if (jump_finished)
-			p = PlayerPosition::MIDDLE;
+		player.Update(fdp);
+		trail.Update(fdp, player);
 
-		//JUMP
-		if (!jump_finished)
-		{
-			jump_offset = glm::clamp(jump_offset + 0.05f, 0.0f, glm::pi<float>());
-			pos.y = glm::sin(jump_offset);
-			if (jump_offset >= glm::pi<float>())
-			{
-				jump_offset = 0.0;
-				jump_finished = true;
-			}
-		}
 		/* -------------------------------*/
 		/* ----------- RENDER ------------*/
 		fdp.BeginRenderPass();
 			fdp.ClearBuffer(255.0f/255.0f, 23.0f/255.0f, 62.0f/255.0f, 1.0f);
 			fdp.BeginLayer(cam, sh_col, false);
-				fdp.PushMatrix();
-				pos.x += 0.15 * glm::clamp((p - pos.x), -FLOOR_WIDTH/2.0f, FLOOR_WIDTH/2.0f);
-				fdp.Translate(glm::vec3(pos.x, pos.y, 0.0));
-				marvin_tr.pos = glm::vec3(0.0, 0.0, 0.0);
-				fdp.Draw(marvin, marvin_tr);
-				fdp.PopMatrix();
+				player.Draw(fdp);
 			fdp.EndLayer();
 			fdp.BeginLayer(cam, sh_tex, false);
-				trail.Draw(fdp, p);
+				trail.Draw(fdp);
 			fdp.EndLayer();
 		fdp.EndRenderPass();
 		/* -------------------------------*/

@@ -8,8 +8,17 @@ constexpr float FLOOR_HEIGHT = 2.5f;
 struct Floor
 {
 public:
+    enum Direction
+    {
+        NORTH = 0,
+        EAST = 1,
+        SOUTH = 2,
+        WEST = 3,
+        NONE
+    };
     enum Type
     {
+        EMPTY = 0,
         FORWARD = 1,
         RIGHT = 2,
         LEFT = 4,
@@ -18,19 +27,20 @@ public:
         RIGHT_FORWARD = 1 | 2,
         LEFT_FORWARD = 1 | 4,
         RIGHT_LEFT = 2 | 4,
-        RIGHT_LEFT_FORWARD = 1 | 2 | 4,
-        MAX_FLOOR_ID = 9
+        RIGHT_LEFT_FORWARD = 1 | 2 | 4
     };
-    FT::Model model;
-    Type type;
+
 public:
-    Floor() {}
+    Type type;
+    Direction dir;
+public:
+    Floor() :type(EMPTY), dir(NONE) {}
     Floor(const Floor& o)
-        : model(o.model), type(o.type)
+        : type(o.type), dir(o.dir)
     {
     }
-    Floor(FT::Model p_model, Type p_type)
-        : model(p_model), type(p_type)
+    Floor(Type p_type, Direction p_dir)
+        : type(p_type), dir(p_dir)
     {
     }
 };
