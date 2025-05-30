@@ -7,6 +7,7 @@ project "Feldespato"
     objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/Feldespato/obj"
 
     files {
+        "default_assets/**", -- NOT SOURCES
         "include/*.hpp",
         "src/**.hpp",
         "src/**.cpp"

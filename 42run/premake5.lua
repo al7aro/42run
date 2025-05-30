@@ -7,8 +7,8 @@ project "42run"
     objdir "%{wks.location}/build/bin/%{cfg.buildcfg}/42run/obj"
 
     files {
-        "src/**.hpp",
-        "src/**.cpp"
+        "assets/**", -- NOT SOURCES
+        "src/**",
     }
 
     filter "system:linux"
