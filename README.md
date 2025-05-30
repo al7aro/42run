@@ -1,52 +1,69 @@
-<img src="https://www.wolframcloud.com/obj/resourcesystem/images/f2d/f2dcb501-fd59-4986-b598-2f30ac56d0ac/6009562e6fbfd7a5.png" align="right" width=150 style="margin:20px"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/768px-42_Logo.svg.png" align="right" width=150 style="margin:20px"/>
 
-# <a href="https://www.opengl.org"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Opengl-logo.svg" align="center" width=150 style="margin:0px"/></a> Template
+# <a href="https://play.google.com/store/apps/details?id=com.imangi.templerun&hl=en&pli=1"><img src="https://upload.wikimedia.org/wikipedia/it/9/9d/Temple_run_app.png" align="center" width=130 style="margin:0px"/></a> 42run <!-- omit from toc -->
 
 
-<em>Simple <a href="https://www.opengl.org"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Opengl-logo.svg" align="center" width=50/></h1></a> template using <a href=""><img src="https://premake.github.io/img/premake-logo.png" align="center" width=25/> **premake5**</a>.</em>
-
----
-
-# Dependencies 📦
-
-- <a href="https://github.com/assimp/assimp"><img src="https://camo.githubusercontent.com/42e0ad409257f3532d48a9ba1c251fe486854891850f8d5b6b82e3cbf16c1336/687474703a2f2f692e696d6775722e636f6d2f757765686f64722e706e67" align="center" width=25/> **ASSIMP**</a>
-- <a href="https://www.glfw.org/"><img src="https://www.glfw.org/img/favicon/favicon-196x196.png" width=30 align="center"/> **GLFW**</a>
-- <a href="https://github.com/g-truc/glm"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/GLM_logo.png" align="center" width=50/> **GLM**</a>
-- <a href="https://github.com/ocornut/imgui"><img src="https://png.pngtree.com/png-vector/20220917/ourmid/pngtree-word-dear-vector-decorative-zentangle-object-vector-illustration-hand-vector-png-image_39275940.png" align="center" width=50/> **ImGui**</a>
-- <a href="https://github.com/nothings/stb">**STB**</a>
-- <a href="https://glad.dav1d.de/"> **GLAD**</a>
-
-# How To Use 🧠
-
-- Create a repo from this template 🪧
-- Clone the repo on your machine 🖨️
-```sh
-git clone [repo-url]
-```
-- Init the submodules 🎬
-```sh
-git submodule init
-git submodule update
-```
-- Build the project using <a href=""><img src="https://premake.github.io/img/premake-logo.png" align="center" width=25/> **premake5**</a>
-   - Windows 🪟
-```sh
-.\scripts\premake5.exe vs2022
-```
-
-- <a href=""><img src="https://cdn-icons-png.flaticon.com/256/8819/8819105.png" align="center" width=200/></a>
-
-# QILTBA (Questions I'd like to be asked) 🤙😞
-
-- Why `premake5`?
-  - Simple: `CMake` is ugly 🤮
-- Why `in-source` build?
-  - I don't really thing this is `in-source` building 🤬
+<em>(Basic) Temple run <a href="https://play.google.com/store/apps/details?id=com.imangi.templerun&hl=en&pli=1"><img src="https://upload.wikimedia.org/wikipedia/it/9/9d/Temple_run_app.png" align="center" width=30/></h1></a> clone made from scratch using <a href="https://www.opengl.org"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Opengl-logo.svg" align="center" width=50/></h1></a>.</em>
 
 ---
 
-# TODO 🤯
-- [ ] In general, work on the `premake5` script to make it **better**
-- [ ] Create `premake5` configurations
-- [ ] Assimp config depends on the system (maybe)
-- [ ] Glad version should change depending on the system
+## Table of Contents <!-- omit from toc -->
+- [Why ❓](#why-)
+- [How was it made 🧠](#how-was-it-made-)
+- [The ENGINE ](#the-engine-)
+  - [External Libraries](#external-libraries)
+- [The GAME](#the-game)
+- [TODO 🤯](#todo-)
+- [Screenshot](#screenshot)
+
+
+## Why ❓
+
+42run is a project from <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/768px-42_Logo.svg.png" width=30/> <em>Outter Core</em> curriculm, one of the basis of the **Computer Graphics** <img src="https://www.wolframcloud.com/obj/resourcesystem/images/f2d/f2dcb501-fd59-4986-b598-2f30ac56d0ac/6009562e6fbfd7a5.png" width=30/> branch. The project introduces students to real-time rendering and game development fundamentals using GPU-based techniques.
+
+## How was it made 🧠
+
+It was built from scratch with <a href="https://www.opengl.org"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Opengl-logo.svg" align="center" width=50/></h1></a> on <a href="https://en.wikipedia.org/wiki/C%2B%2B"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/ISO_C%2B%2B_Logo.svg/1200px-ISO_C%2B%2B_Logo.svg.png" align="center" width=25/></a>
+The project consist of two parts:
+- A lightweight game engine I called **Feldespato** <img src="https://png.pngtree.com/png-vector/20220603/ourmid/pngtree-one-grey-rock-chemical-illustration-feldspar-vector-png-image_36952800.png" width=30>
+- A demo game built on top of **Feldespato** <img src="https://png.pngtree.com/png-vector/20220603/ourmid/pngtree-one-grey-rock-chemical-illustration-feldspar-vector-png-image_36952800.png" width=30> engine
+
+## The ENGINE <img src="https://png.pngtree.com/png-vector/20220603/ourmid/pngtree-one-grey-rock-chemical-illustration-feldspar-vector-png-image_36952800.png" width=40>
+
+**Feldespato** <img src="https://png.pngtree.com/png-vector/20220603/ourmid/pngtree-one-grey-rock-chemical-illustration-feldspar-vector-png-image_36952800.png" width=30> provides a clean abstraction over <a href="https://www.opengl.org"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Opengl-logo.svg" align="center" width=50/></h1></a>, focusing on simplicity and usability. It is designed around the principle of **One DrawCall per Object**, making it easy to manage rendering pipelines.
+Example of use:
+```c++
+Feldespato fdp;
+
+fdp.BeginRenderPass(camera, shader, render_to_texture);
+  fdp.Draw(EpicModel, Transofmr()); // Model loading with ANIMATION support
+  fdp.Rect(Transform(0.0, 0.0, 0.0));
+  fdp.Cube();
+texture = fdp.EndRenderPass();
+```
+
+### External Libraries
+
+- <a href="https://github.com/assimp/assimp"><img src="https://camo.githubusercontent.com/42e0ad409257f3532d48a9ba1c251fe486854891850f8d5b6b82e3cbf16c1336/687474703a2f2f692e696d6775722e636f6d2f757765686f64722e706e67" align="center" width=25/> **ASSIMP**</a> (model loading)
+- <a href="https://www.glfw.org/"><img src="https://www.glfw.org/img/favicon/favicon-196x196.png" width=30 align="center"/> **GLFW**</a> (windows and inputs)
+- <a href="https://github.com/g-truc/glm"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/GLM_logo.png" align="center" width=50/> **GLM**</a> (maths)
+- <a href="https://github.com/nothings/stb">**STB**</a> (image loading)
+- <a href="https://glad.dav1d.de/"> **GLAD**</a> (manage <a href="https://www.opengl.org"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Opengl-logo.svg" align="center" width=50/></h1></a> extensions)
+
+## The GAME
+
+**42run** <a href="https://play.google.com/store/apps/details?id=com.imangi.templerun&hl=en&pli=1"><img src="https://upload.wikimedia.org/wikipedia/it/9/9d/Temple_run_app.png" align="center" width=25/></a> uses **Feldespato** <img src="https://png.pngtree.com/png-vector/20220603/ourmid/pngtree-one-grey-rock-chemical-illustration-feldspar-vector-png-image_36952800.png" width=30> to work.
+The game is a VERY SIMPLE clone of epic **Temple Run** <a href="https://play.google.com/store/apps/details?id=com.imangi.templerun&hl=en&pli=1"><img src="https://upload.wikimedia.org/wikipedia/it/9/9d/Temple_run_app.png" align="center" width=25/></a> where:
+- Auto-forward movement
+- Player can jump and turn at intersections
+- The map is pregenerated and obstacles are placed randomly.
+
+## TODO 🤯
+- [ ] Make it look better 🦢
+- [ ] Implement a map generation algorithm 🧮
+
+---
+
+## Screenshot
+I'll post some images when it's finished, but for now, here are my dog (FILLO 🐕) and cat (GATO 🐈) chilling after a hard day of work.
+<img src="https://i.imgur.com/3N4LOi5.png">
