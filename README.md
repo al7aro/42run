@@ -66,4 +66,4 @@ The game is a VERY SIMPLE clone of epic **Temple Run** <a href="https://play.goo
 
 ## Screenshot
 I'll post some images when it's finished, but for now, here are my dog (FILLO 🐕) and cat (GATO 🐈) chilling after a hard day of work.
-<img src="https://i.imgur.com/3N4LOi5.png">
+<img src="https://i.imgur.com/3N4LOi5.png" width=400>
