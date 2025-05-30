@@ -29,6 +29,8 @@ private:
 	bool m_jumping;
 	float m_jump_speed;
 	float m_jump_offset;
+
+	// TODO: ADD CROUCHING ANIMATION
 public:
 	Player(FT::Feldespato & fdp, const std::string & model_path = SANDBOX_ASSETS_DIRECTORY"/marvin/Marvin.dae")
 		: m_pos(0.0), m_side(MIDDLE), m_jumping(false), m_jump_speed(0.05), m_jump_offset(0.0)
@@ -52,7 +54,7 @@ public:
 		if (m_jumping)
 		{
 			m_jump_offset = glm::clamp(m_jump_offset + m_jump_speed, 0.0f, glm::pi<float>());
-			m_pos.y = glm::sin(m_jump_offset);
+			m_pos.y = 1.35 * glm::sin(m_jump_offset);
 			if (m_jump_offset >= glm::pi<float>())
 			{
 				m_jump_offset = 0.0;
@@ -92,5 +94,19 @@ public:
 	PlayerPosition GetSide() const
 	{
 		return (m_side);
+	}
+
+	bool IsJumping() const
+	{
+		return (m_jumping);
+	}
+
+	void Reset()
+	{
+		m_pos = glm::vec3(0.0);
+		m_side = MIDDLE;
+		m_jumping = false;
+		m_jump_speed = 0.05;
+		m_jump_offset = 0.0;
 	}
 };

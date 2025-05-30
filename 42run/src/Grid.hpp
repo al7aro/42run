@@ -40,13 +40,17 @@ public:
     }
     bool Exists(int x, int y, int z = 0)
     {
-        if (x < 0 || x > m_x_size)
+        if (x < 0 || x >= m_x_size)
             return (false);
-        if (y < 0 || y > m_y_size)
+        if (y < 0 || y >= m_y_size)
             return (false);
-        if (z < 0 || z > m_z_size)
+        if (z < 0 || z >= m_z_size)
             return (false);
         return (true);
+    }
+    bool Exists(glm::ivec3 v)
+    {
+        return (Exists(v.x, v.y, v.z));
     }
     T& At(int x, int y, int z)
     {
@@ -105,6 +109,14 @@ public:
     const T& At(int x, int y) const
     {
         return (At(x, y, 0));
+    }
+    T& At(glm::ivec3 v)
+    {
+        return (At(v.x, v.y, v.z));
+    }
+    const T& At(glm::ivec3 v) const
+    {
+        return (At(v.x, v.y, v.z));
     }
     int GetXSize() const { return (m_x_size); }
     int GetYSize() const { return (m_y_size); }
