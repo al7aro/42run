@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+#include <sstream>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/rotate_vector.hpp>
 
@@ -17,7 +18,7 @@ class MapRunner
 {
 public:
     std::map<Floor::Type, FT::Model> m_floor_types;
-    Grid<Floor> m_map;
+    std::shared_ptr<Grid> m_current_map;
 
     /* Player Score */
     unsigned int m_score;
@@ -44,8 +45,7 @@ public:
 
 public:
     MapRunner(FT::Feldespato & fdp)
-        : m_map(11, 11, 3, false, false, false),
-        m_pos(0.0), m_current_tile(0), m_tile_perc(0.5), m_mov_speed(0.01), m_dir(Floor::NONE),
+        : m_pos(0.0), m_current_tile(0), m_tile_perc(0.5), m_mov_speed(0.01), m_dir(Floor::NONE),
         m_rotating(0), m_rotated_tile(false), m_rot_speed(0.2), m_rot_offset(0.0), m_total_rotation(0.0),
         m_climbing(0),
         m_score(0), m_collision(false), m_col_passed(false)
@@ -61,59 +61,17 @@ public:
         m_floor_types[Floor::DOWN] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_down.dae");
     }
 
-    void Init()
+    void Init(std::shared_ptr<Grid> map)
     {
-        for (int y = m_map.GetYSize() / 2 + 2; y < m_map.GetYSize() - 1; y++)
-        {
-            m_map.At(0, y) = Floor(Floor::FORWARD, Floor::NORTH);
-            m_map.At(m_map.GetXSize() - 1, y) = Floor(Floor::FORWARD, Floor::SOUTH);
-        }
-        for (int y = 0; y < m_map.GetYSize() / 2; y++)
-        {
-            m_map.At(0, y, 2) = Floor(Floor::FORWARD, Floor::NORTH);
-            m_map.At(m_map.GetXSize() - 1, y, 2) = Floor(Floor::FORWARD, Floor::SOUTH);
-        }
-        for (int x = 0; x < m_map.GetXSize() - 1; x++)
-        {
-            m_map.At(x, m_map.GetYSize() - 1) = Floor(Floor::FORWARD, Floor::EAST);
-            m_map.At(x, 0, 2) = Floor(Floor::FORWARD, Floor::WEST);
-        }
-
-        // NOTE: UP/DOWN floors need an invisible UP/DOWN floor ABOVE/BELOW
-        
-        m_map.At(m_map.GetXSize() / 2, m_map.GetYSize() - 1, 0) = Floor(Floor::RIGHT_FORWARD, Floor::EAST);
-        for (int y = m_map.GetYSize() - 2; y >= 2; y--)
-            m_map.At(m_map.GetXSize() / 2, y) = Floor(Floor::FORWARD, Floor::SOUTH);
-        m_map.At(m_map.GetXSize() / 2, 2, 0) = Floor(Floor::UP, Floor::SOUTH);
-        m_map.At(m_map.GetXSize() / 2, 2, 1) = Floor(Floor::UP, Floor::SOUTH, false);
-        m_map.At(m_map.GetXSize() / 2, 1, 1) = Floor(Floor::UP, Floor::SOUTH);
-        m_map.At(m_map.GetXSize() / 2, 1, 2) = Floor(Floor::UP, Floor::SOUTH, false);
-        m_map.At(m_map.GetXSize() / 2, 0, 2) = Floor(Floor::RIGHT_FORWARD, Floor::WEST);
-
-        m_map.At(0, m_map.GetYSize() / 2, 2) = Floor(Floor::DOWN, Floor::NORTH);
-        m_map.At(0, m_map.GetYSize() / 2, 1) = Floor(Floor::DOWN, Floor::NORTH, false);
-        m_map.At(0, m_map.GetYSize() / 2 + 1, 1) = Floor(Floor::DOWN, Floor::NORTH);
-        m_map.At(0, m_map.GetYSize() / 2 + 1, 0) = Floor(Floor::DOWN, Floor::NORTH, false);
-
-        m_map.At(m_map.GetXSize() - 1, m_map.GetYSize() / 2 + 1, 0) = Floor(Floor::UP, Floor::SOUTH);
-        m_map.At(m_map.GetXSize() - 1, m_map.GetYSize() / 2 + 1, 1) = Floor(Floor::UP, Floor::SOUTH, false);
-        m_map.At(m_map.GetXSize() - 1, m_map.GetYSize() / 2, 1) = Floor(Floor::UP, Floor::SOUTH);
-        m_map.At(m_map.GetXSize() - 1, m_map.GetYSize() / 2, 2) = Floor(Floor::UP, Floor::SOUTH, false);
-
-        m_map.At(0, m_map.GetYSize() - 1) = Floor(Floor::RIGHT, Floor::NORTH);
-        m_map.At(m_map.GetXSize() - 1, m_map.GetYSize() - 1) = Floor(Floor::RIGHT, Floor::EAST);
-        m_map.At(m_map.GetXSize() - 1, 0, 2) = Floor(Floor::RIGHT, Floor::SOUTH);
-        m_map.At(0, 0, 2) = Floor(Floor::RIGHT, Floor::WEST);
-
+        this->m_current_map = map;
         Reset();
-        //std::cout << m_map;
     }
 
     void Reset()
     {
-        m_pos = glm::ivec3(0, 1, 2);
+        m_pos = m_current_map->GetInitPos();
+        m_dir = Floor::Direction(m_current_map->GetInitDir());
         m_current_tile = m_pos;
-        m_dir = Floor::NORTH;
         m_collision = false;
         m_score = 0;
         m_climbing = false;
@@ -127,8 +85,9 @@ public:
 
     void Update(FT::Feldespato & fdp, Player & player)
     {
-        if (fdp.GetKey(GLFW_KEY_V) == GLFW_PRESS)
-            m_climbing = 1;
+        if (!m_current_map) return;
+        //if (fdp.GetKey(GLFW_KEY_V) == GLFW_PRESS)
+        //    m_climbing = 1;
 
         /* Moves the map constantly */
         if (!m_rotating)
@@ -150,17 +109,17 @@ public:
         /* Checks if the map needs to be climbed */
         if (!m_climbing)
         {
-            if ((m_map.At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type & Floor::Type::UP))
+            if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type & Floor::Type::UP))
                 m_climbing = 1;
-            else if ((m_map.At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type & Floor::Type::DOWN))
+            else if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type & Floor::Type::DOWN))
                 m_climbing = -1;
-            if (m_map.At(m_current_tile.x, m_current_tile.y, m_current_tile.z).dir != m_dir)
+            if (m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).dir != m_dir)
                 m_climbing *= -1;
         }
         
         /* Checks if the map needs to be rotated */
-        if ((m_map.At(m_current_tile).type & Floor::Type::RIGHT ||
-            m_map.At(m_current_tile).type & Floor::Type::LEFT) && m_tile_perc >= 0.5)
+        if ((m_current_map->At(m_current_tile).type & Floor::Type::RIGHT ||
+            m_current_map->At(m_current_tile).type & Floor::Type::LEFT) && m_tile_perc >= 0.5)
         {
             switch (player.GetSide())
             {
@@ -211,7 +170,7 @@ public:
         /* Updates Player Score */
         if (m_tile_perc == 0.0)
         {
-            if (!m_map.Exists(m_current_tile) || m_map.At(m_current_tile).type == Floor::Type::EMPTY)
+            if (!m_current_map->Exists(m_current_tile) || m_current_map->At(m_current_tile).type == Floor::Type::EMPTY)
                 m_collision = true;
             else if (!m_collision)
                 m_score++;
@@ -219,7 +178,7 @@ public:
 
         // TODO: ADD HIGH OBSTACLES AND THE PLAYER CAN CROUCH
         /* Checks player collision */
-        Floor floor = m_map.At(m_current_tile);
+        Floor floor = m_current_map->At(m_current_tile);
         int left_obstacle = 0;
         int right_obstacle = 2;
         int middle_obstacle = 1;
@@ -258,11 +217,6 @@ public:
         //    Reset();
     }
 
-    void Draw(FT::Feldespato & fdp)
-    {
-        DrawMapPortion(fdp, 2);
-    }
-
     unsigned int GetScore() const
     {
         return (m_score);
@@ -273,29 +227,35 @@ public:
         return (m_collision);
     }
 
-private:
-    /* Draws a portion of map with size=DEPTH using draw_pos as center point */
-    void DrawMapPortion(FT::Feldespato& fdp, int depth = 2)
+    void Draw(FT::Feldespato& fdp)
     {
-        glm::ivec3 draw_pos = m_current_tile;
+        if (!m_current_map) return;
         fdp.PushMatrix();
         fdp.Rotate(m_total_rotation + m_rot_offset, glm::vec3(0.0, 1.0, 0.0));
         fdp.Translate(-FLOOR_WIDTH * glm::vec3(-m_pos.x, 0.0, m_pos.y)); // TODO: CHECK WHY X-AXIS IS INVERTED
         fdp.Translate(-FLOOR_HEIGHT * glm::vec3(0.0, m_pos.z, 0.0)); // TODO: CHECK WHY X-AXIS IS INVERTED
+        DrawMapPortion(m_current_map, fdp, m_current_tile, 2);
+        fdp.PopMatrix();
+    }
+
+    /* Draws a portion of map with size=DEPTH using draw_pos as center point */
+    void DrawMapPortion(std::shared_ptr<Grid> map, FT::Feldespato& fdp, glm::ivec3 draw_pos, int depth = 0)
+    {
+        if (depth == 0) depth = map->GetXSize();
         for (int z_it = draw_pos.z - depth; z_it <= draw_pos.z + depth; z_it++)
         {
             for (int y_it = draw_pos.y - depth; y_it <= draw_pos.y + depth; y_it++)
             {
                 for (int x_it = draw_pos.x - depth; x_it <= draw_pos.x + depth; x_it++)
                 {
-                    if (!m_map.Exists(x_it, y_it, z_it)) continue;
-                    Floor floor = m_map.At(x_it, y_it, z_it);
+                    if (!map->Exists(x_it, y_it, z_it)) continue;
+                    Floor floor = map->At(x_it, y_it, z_it);
                     if (floor.type == Floor::EMPTY) continue;
                     if (!floor.visible) continue;
 
                     fdp.PushMatrix();
                     fdp.Translate(FLOOR_WIDTH * glm::vec3(-x_it, 0, y_it) + FLOOR_HEIGHT * glm::vec3(0, z_it, 0)); // TODO: CHECK WHY X-AXIS IS INVERTED
-                    fdp.Rotate(glm::half_pi<float>() * m_map.At(x_it, y_it, z_it).dir, -glm::vec3(0.0, 1.0, 0.0));
+                    fdp.Rotate(glm::half_pi<float>() * map->At(x_it, y_it, z_it).dir, -glm::vec3(0.0, 1.0, 0.0));
                     fdp.Draw(m_floor_types[floor.type]);
                     for (int slot = -1; slot <= 1; slot++)
                     {
@@ -311,6 +271,71 @@ private:
                 }
             }
         }
-        fdp.PopMatrix();
+    }
+
+    std::shared_ptr<Grid> ReadMap(const std::string& path)
+    {
+        std::fstream file(path);
+        std::istringstream ss;
+        std::string word;
+        std::string line;
+        std::map<char, Floor::Direction> aux_dirs;
+        aux_dirs['N'] = Floor::Direction::NORTH;
+        aux_dirs['E'] = Floor::Direction::EAST;
+        aux_dirs['S'] = Floor::Direction::SOUTH;
+        aux_dirs['W'] = Floor::Direction::WEST;
+
+        // THE FIRST LINE SPECIFY THE SIZE
+        bool visible = 1;
+        Floor::Direction dir = Floor::Direction::NORTH;
+        Floor::Type type = Floor::Type::FORWARD;
+        glm::ivec3 pos;
+        // READ MAP SIZE
+        int x_size, y_size, z_size;
+        std::getline(file, line);
+        ss = std::istringstream(line);
+        ss >> word; x_size = std::stoi(word);
+        ss >> word; y_size = std::stoi(word);
+        ss >> word; z_size = std::stoi(word);
+        std::shared_ptr<Grid> map = std::make_shared<Grid>(x_size, y_size, z_size);
+        // READ INIT POS AND DIR
+        std::getline(file, line);
+        ss = std::istringstream(line);
+        ss >> word;
+        dir = aux_dirs[word[0]];
+        ss >> word; pos.x = std::stoi(word);
+        ss >> word; pos.y = std::stoi(word);
+        ss >> word; pos.z = std::stoi(word);
+        map->SetInitDir(dir);
+        map->SetInitPos(pos);
+
+        int x_it = 0, y_it = 0, z_it = 0;
+        while (std::getline(file, line))
+        {
+            if (line.empty())
+            {
+                z_it++;
+                y_it = 0;
+            }
+            else
+            {
+                ss = std::istringstream(line);
+                while (ss >> word)
+                {
+                    if (word[0] != '0')
+                    {
+                        dir = aux_dirs[word[0]];
+                        visible = (word[1] == '1');
+                        type = Floor::Type(std::atoi(&word[2]));
+                        Floor floor(type, dir, visible);
+                        map->At(x_it, y_it, z_it) = floor;
+                    }
+                    x_it++;
+                }
+                y_it++;
+            }
+            x_it = 0;
+        }
+        return map;
     }
 };
