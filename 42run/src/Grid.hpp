@@ -6,7 +6,6 @@
 
 #include <glm/glm.hpp>
 
-template <typename T>
 class Grid
 {
 private:
@@ -18,21 +17,26 @@ private:
     int m_y_size;
     int m_z_size;
     int m_size;
-    T* m_grid;
+    Floor* m_grid;
+
+    glm::ivec3 m_init_pos;
+    int m_init_dir;
 public:
     Grid(const Grid& grid)
         : m_y_size(grid.m_y_size), m_x_size(grid.m_x_size), m_z_size(grid.m_z_size), m_size(grid.m_size),
-        m_x_loop(grid.m_x_loop), m_y_loop(grid.m_y_loop), m_z_loop(grid.m_z_loop)
+        m_x_loop(grid.m_x_loop), m_y_loop(grid.m_y_loop), m_z_loop(grid.m_z_loop),
+        m_init_pos(grid.m_init_pos), m_init_dir(grid.m_init_dir)
     {
-        m_grid = new T[m_size];
-        std::memcpy(m_grid, grid.m_grid, m_size * sizeof(T));
+        m_grid = new Floor[m_size];
+        std::memcpy(m_grid, grid.m_grid, m_size * sizeof(Floor));
     }
     Grid(int x_size, int y_size, int z_size = 1, bool x_loop = true, bool y_loop = true, bool z_loop = true)
         : m_y_size(y_size), m_x_size(x_size), m_z_size(z_size), m_size(x_size* y_size* z_size),
-        m_x_loop(x_loop), m_y_loop(y_loop), m_z_loop(z_loop)
+        m_x_loop(x_loop), m_y_loop(y_loop), m_z_loop(z_loop),
+        m_init_pos(0), m_init_dir(0)
     {
-        m_grid = new T[m_size];
-        std::memset(m_grid, 0, m_size * sizeof(T));
+        m_grid = new Floor[m_size];
+        std::memset(m_grid, 0, m_size * sizeof(Floor));
     }
     ~Grid()
     {
@@ -52,7 +56,7 @@ public:
     {
         return (Exists(v.x, v.y, v.z));
     }
-    T& At(int x, int y, int z)
+    Floor& At(int x, int y, int z)
     {
         if (!m_x_loop)
         {
@@ -77,7 +81,7 @@ public:
         z %= m_z_size;
         return (m_grid[z * (m_y_size * m_x_size) + y * m_x_size + x]);
     }
-    const T& At(int x, int y, int z) const
+    const Floor& At(int x, int y, int z) const
     {
         if (!m_x_loop)
         {
@@ -102,19 +106,19 @@ public:
         z %= m_z_size;
         return (m_grid[z * m_size + y * m_x_size + x]);
     }
-    T& At(int x, int y)
+    Floor& At(int x, int y)
     {
         return (At(x, y, 0));
     }
-    const T& At(int x, int y) const
+    const Floor& At(int x, int y) const
     {
         return (At(x, y, 0));
     }
-    T& At(glm::ivec3 v)
+    Floor& At(glm::ivec3 v)
     {
         return (At(v.x, v.y, v.z));
     }
-    const T& At(glm::ivec3 v) const
+    const Floor& At(glm::ivec3 v) const
     {
         return (At(v.x, v.y, v.z));
     }
@@ -122,27 +126,42 @@ public:
     int GetYSize() const { return (m_y_size); }
     int GetZSize() const { return (m_z_size); }
 
-    bool operator==(const Grid& o) const
+    void SetInitPos(glm::ivec3 pos)
     {
-        for (int z = 0; z < m_z_size; z++)
-            for (int y = 0; y < m_y_size; y++)
-                for (int x = 0; x < m_x_size; x++)
-                    if (o.At(x, y, z) != At(x, y, z))
-                        return (false);
-        return (true);
+        m_init_pos = pos;
     }
+
+    void SetInitDir(int dir)
+    {
+        m_init_dir = 0;
+    }
+
+    glm::ivec3 GetInitPos() const { return (m_init_pos); }
+    int GetInitDir() const { return (m_init_dir); }
 };
 
-std::ostream& operator<<(std::ostream& os, Grid<Floor>& grid)
+std::ostream& operator<<(std::ostream& os, Grid& grid)
 {
-    os << "#Frame " << grid.GetXSize() << " " << grid.GetYSize() << " " << grid.GetZSize() << std::endl;
+    std::string aux_dirs = "NESW";
+    os << grid.GetXSize() << " " << grid.GetYSize() << " " << grid.GetZSize() << std::endl;
+    os << aux_dirs[grid.GetInitDir()] << " " << grid.GetInitPos().x << " ";
+    os << grid.GetInitPos().y << " " << grid.GetInitPos().z << "\n";
     for (int z = 0; z < grid.GetZSize(); z++)
     {
         for (int y = 0; y < grid.GetYSize(); y++)
         {
             for (int x = 0; x < grid.GetXSize(); x++)
             {
-                os << (grid.At(x, y, z).type != Floor::EMPTY) << " ";
+                if (grid.At(x, y, z).type == Floor::EMPTY)
+                    os << "0";
+                else
+                {
+                    Floor::Direction dir = grid.At(x, y, z).dir;
+                    Floor::Type type = grid.At(x, y, z).type;
+                    bool visible = grid.At(x, y, z).visible;
+                    os << aux_dirs[dir] << visible << type;
+                }
+                os << "\t";
             }
             os << "\n";
         }
