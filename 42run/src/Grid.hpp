@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include <glm/glm.hpp>
 
@@ -19,13 +20,16 @@ private:
     int m_size;
     Floor* m_grid;
 
+    bool m_random;
+    std::vector<glm::ivec3> m_next_random_tiles;
     glm::ivec3 m_init_pos;
     int m_init_dir;
 public:
     Grid(const Grid& grid)
         : m_y_size(grid.m_y_size), m_x_size(grid.m_x_size), m_z_size(grid.m_z_size), m_size(grid.m_size),
         m_x_loop(grid.m_x_loop), m_y_loop(grid.m_y_loop), m_z_loop(grid.m_z_loop),
-        m_init_pos(grid.m_init_pos), m_init_dir(grid.m_init_dir)
+        m_init_pos(grid.m_init_pos), m_init_dir(grid.m_init_dir), m_random(grid.m_random),
+        m_next_random_tiles(grid.m_next_random_tiles)
     {
         m_grid = new Floor[m_size];
         std::memcpy(m_grid, grid.m_grid, m_size * sizeof(Floor));
@@ -33,7 +37,7 @@ public:
     Grid(int x_size, int y_size, int z_size = 1, bool x_loop = true, bool y_loop = true, bool z_loop = true)
         : m_y_size(y_size), m_x_size(x_size), m_z_size(z_size), m_size(x_size* y_size* z_size),
         m_x_loop(x_loop), m_y_loop(y_loop), m_z_loop(z_loop),
-        m_init_pos(0), m_init_dir(0)
+        m_init_pos(0), m_init_dir(0), m_next_random_tiles(0)
     {
         m_grid = new Floor[m_size];
         std::memset(m_grid, 0, m_size * sizeof(Floor));
@@ -44,11 +48,11 @@ public:
     }
     bool Exists(int x, int y, int z = 0)
     {
-        if (x < 0 || x >= m_x_size)
+        if ((x < 0 || x >= m_x_size) && !m_x_loop)
             return (false);
-        if (y < 0 || y >= m_y_size)
+        if ((y < 0 || y >= m_y_size) && !m_y_loop)
             return (false);
-        if (z < 0 || z >= m_z_size)
+        if ((z < 0 || z >= m_z_size) && !m_z_loop)
             return (false);
         return (true);
     }
@@ -134,6 +138,23 @@ public:
     void SetInitDir(int dir)
     {
         m_init_dir = 0;
+    }
+
+    void SetRandomMap(std::vector<glm::ivec3> next_random_tiles)
+    {
+        m_next_random_tiles = next_random_tiles;
+        m_random = true;
+    }
+
+    void RandomizeNextTiles()
+    {
+        if (!m_random) return;
+        //std::vector<glm::ivec3> new_tiles;
+        for (int i = 0; i < m_next_random_tiles.size(); i++)
+        {
+            m_next_random_tiles[i] += glm::vec3(0, 1, 0);
+            At(m_next_random_tiles[i]) = Floor(Floor::FORWARD, Floor::NORTH);
+        }
     }
 
     glm::ivec3 GetInitPos() const { return (m_init_pos); }
