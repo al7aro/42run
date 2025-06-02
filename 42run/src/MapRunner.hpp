@@ -29,6 +29,7 @@ public:
     glm::vec3 m_pos;
     glm::ivec3 m_current_tile;
     glm::ivec3 m_prev_tile;
+    glm::ivec3 m_prev2_tile;
     float m_tile_perc;
     float m_mov_speed;
     Floor::Direction m_dir;
@@ -46,7 +47,7 @@ public:
 
 public:
     MapRunner(FT::Feldespato & fdp)
-        : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_tile_perc(0.5), m_mov_speed(0.01), m_dir(Floor::NONE),
+        : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_mov_speed(0.01), m_dir(Floor::NONE),
         m_rotating(0), m_rotated_tile(false), m_rot_speed(0.2), m_rot_offset(0.0), m_total_rotation(0.0),
         m_climbing(0),
         m_score(0), m_collision(false), m_col_passed(false)
@@ -74,6 +75,7 @@ public:
         m_dir = Floor::Direction(m_current_map->GetInitDir());
         m_current_tile = m_pos;
         m_prev_tile = m_pos;
+        m_prev2_tile = m_prev_tile;
         m_collision = false;
         m_score = 0;
         m_climbing = false;
@@ -102,7 +104,9 @@ public:
                 m_tile_perc = 0.0;
                 m_rotated_tile = false;
                 m_col_passed = false;
-                m_current_map->RandomizeNextTiles();
+                m_prev2_tile = m_prev_tile;
+                m_prev_tile = m_current_tile;
+                m_current_map->RandomizeNextTiles(glm::ivec3(glm::round(m_pos.x), glm::round(m_pos.y), glm::round(m_pos.z)), m_prev2_tile);
             }
             m_current_tile.x = glm::round(m_pos.x);
             m_current_tile.y = glm::round(m_pos.y);
@@ -112,9 +116,9 @@ public:
         /* Checks if the map needs to be climbed */
         if (!m_climbing)
         {
-            if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type & Floor::Type::UP))
+            if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type == Floor::Type::UP))
                 m_climbing = 1;
-            else if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type & Floor::Type::DOWN))
+            else if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type == Floor::Type::DOWN))
                 m_climbing = -1;
             if (m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).dir != m_dir)
                 m_climbing *= -1;
@@ -237,7 +241,7 @@ public:
         fdp.Rotate(m_total_rotation + m_rot_offset, glm::vec3(0.0, 1.0, 0.0));
         fdp.Translate(-FLOOR_WIDTH * glm::vec3(-m_pos.x, 0.0, m_pos.y)); // TODO: CHECK WHY X-AXIS IS INVERTED
         fdp.Translate(-FLOOR_HEIGHT * glm::vec3(0.0, m_pos.z, 0.0)); // TODO: CHECK WHY X-AXIS IS INVERTED
-        DrawMapPortion(m_current_map, fdp, m_current_tile, glm::ivec3(2));
+        DrawMapPortion(m_current_map, fdp, m_current_tile, glm::ivec3(5));
         fdp.PopMatrix();
     }
 
@@ -308,33 +312,22 @@ public:
         ss >> word; y_loop = (word[0] == 'T'); y_size = std::stoi(&word[1]);
         ss >> word; z_loop = (word[0] == 'T'); z_size = std::stoi(&word[1]);
         std::shared_ptr<Grid> map = std::make_shared<Grid>(x_size, y_size, z_size, x_loop, y_loop, z_loop);
-        std::vector<glm::ivec3> random_pos;
+        // READ INIT POS AND DIR
         std::getline(file, line);
         ss = std::istringstream(line);
         ss >> word;
-        // EXTRACT RANDOM POINT
-        bool random = false;
-        while (word[0] == 'R')
-        {
-            random = true;
-            glm::ivec3 ran;
-            ss >> word; ran.x = std::stoi(&word[0]);
-            ss >> word; ran.y = std::stoi(&word[0]);
-            ss >> word; ran.z = std::stoi(&word[0]);
-            random_pos.push_back(ran);
-            std::getline(file, line);
-            ss = std::istringstream(line);
-            ss >> word;
-        }
-        if (random)
-            map->SetRandomMap({ glm::ivec3(2, 4, 2) });
-        // READ INIT POS AND DIR
         dir = aux_dirs[word[0]];
         ss >> word; pos.x = std::stoi(word);
         ss >> word; pos.y = std::stoi(word);
         ss >> word; pos.z = std::stoi(word);
         map->SetInitDir(dir);
         map->SetInitPos(pos);
+        // EXTRACT RANDOM POINT
+        std::getline(file, line);
+        ss = std::istringstream(line);
+        ss >> word;
+        if (word[0] == 'R')
+            map->SetRandomMap();
 
         int x_it = 0, y_it = 0, z_it = 0;
         while (std::getline(file, line))
@@ -357,6 +350,8 @@ public:
                         type = Floor::Type(std::atoi(&word[2]));
                         Floor floor(type, dir, visible);
                         map->At(x_it, y_it, z_it) = floor;
+                        if (map->IsRandom())
+                            map->PushToMainBranch(glm::ivec3(x_it, y_it, z_it));
                     }
                     x_it++;
                 }
