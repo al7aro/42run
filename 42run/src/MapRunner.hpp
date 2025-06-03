@@ -106,7 +106,8 @@ public:
                 m_col_passed = false;
                 m_prev2_tile = m_prev_tile;
                 m_prev_tile = m_current_tile;
-                m_current_map->RandomizeNextTiles(glm::ivec3(glm::round(m_pos.x), glm::round(m_pos.y), glm::round(m_pos.z)), m_prev2_tile);
+                m_current_map->At(m_prev2_tile) = Floor(Floor::EMPTY, Floor::NONE);
+                m_current_map->RandomizeNextTiles(glm::ivec3(glm::round(m_pos.x), glm::round(m_pos.y), glm::round(m_pos.z)));
             }
             m_current_tile.x = glm::round(m_pos.x);
             m_current_tile.y = glm::round(m_pos.y);
@@ -351,7 +352,7 @@ public:
                         Floor floor(type, dir, visible);
                         map->At(x_it, y_it, z_it) = floor;
                         if (map->IsRandom())
-                            map->PushToMainBranch(glm::ivec3(x_it, y_it, z_it));
+                            map->PushToBranch(glm::ivec3(x_it, y_it, z_it), MAIN_BRANCH);
                     }
                     x_it++;
                 }
