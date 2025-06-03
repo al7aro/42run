@@ -46,6 +46,7 @@ int main(void)
 	size_t selected_map_id = 0;
 	maps.push_back(runner.ReadMap(SANDBOX_ASSETS_DIRECTORY"/maps/basic.42run"));
 	maps.push_back(runner.ReadMap(SANDBOX_ASSETS_DIRECTORY"/maps/map1.42run"));
+	maps.push_back(runner.ReadMap(SANDBOX_ASSETS_DIRECTORY"/maps/random.42run"));
 
 /* ---------------------- MENU SCREEN ---------------------- */
 	Camera map_selector_cam(Camera::PERSPECTIVE);
@@ -120,6 +121,7 @@ int main(void)
 			/* -------------------------------*/
 			/* ----------- RENDER ------------*/
 			fdp.BeginRenderPass();
+				// TODO: DRAW QUESTION MAP FOR RANDOM MAP
 				// DRAW MAP CHOOSE WINDOW
 				fdp.PushMatrix();
 				fdp.BeginLayer(map_selector_cam, sh_tex, true);
@@ -131,7 +133,7 @@ int main(void)
 					fdp.Rotate(glm::pi<float>()/4.0, glm::vec3(1.0, 0.0, 0.0));
 					fdp.Rotate(program_time, glm::vec3(0.0, 1.0, 0.0));
 					fdp.Translate(glm::vec3(xsize, 0.0, -ysize));
-					runner.DrawMapPortion(maps[selected_map_id], fdp, glm::vec3(0.0), 0);
+					runner.DrawMapPortion(maps[selected_map_id], fdp, glm::ivec3(0));
 				map_selector_window = fdp.EndLayer();
 				fdp.PopMatrix();
 				// DRAW MENU

@@ -28,6 +28,8 @@ public:
     /* MAP MOVEMENT */
     glm::vec3 m_pos;
     glm::ivec3 m_current_tile;
+    glm::ivec3 m_prev_tile;
+    glm::ivec3 m_prev2_tile;
     float m_tile_perc;
     float m_mov_speed;
     Floor::Direction m_dir;
@@ -45,7 +47,7 @@ public:
 
 public:
     MapRunner(FT::Feldespato & fdp)
-        : m_pos(0.0), m_current_tile(0), m_tile_perc(0.5), m_mov_speed(0.01), m_dir(Floor::NONE),
+        : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_mov_speed(0.01), m_dir(Floor::NONE),
         m_rotating(0), m_rotated_tile(false), m_rot_speed(0.2), m_rot_offset(0.0), m_total_rotation(0.0),
         m_climbing(0),
         m_score(0), m_collision(false), m_col_passed(false)
@@ -72,6 +74,8 @@ public:
         m_pos = m_current_map->GetInitPos();
         m_dir = Floor::Direction(m_current_map->GetInitDir());
         m_current_tile = m_pos;
+        m_prev_tile = m_pos;
+        m_prev2_tile = m_prev_tile;
         m_collision = false;
         m_score = 0;
         m_climbing = false;
@@ -100,6 +104,10 @@ public:
                 m_tile_perc = 0.0;
                 m_rotated_tile = false;
                 m_col_passed = false;
+                m_prev2_tile = m_prev_tile;
+                m_prev_tile = m_current_tile;
+                m_current_map->At(m_prev2_tile) = Floor(Floor::EMPTY, Floor::NONE);
+                m_current_map->RandomizeNextTiles(glm::ivec3(glm::round(m_pos.x), glm::round(m_pos.y), glm::round(m_pos.z)));
             }
             m_current_tile.x = glm::round(m_pos.x);
             m_current_tile.y = glm::round(m_pos.y);
@@ -109,9 +117,9 @@ public:
         /* Checks if the map needs to be climbed */
         if (!m_climbing)
         {
-            if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type & Floor::Type::UP))
+            if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type == Floor::Type::UP))
                 m_climbing = 1;
-            else if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type & Floor::Type::DOWN))
+            else if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type == Floor::Type::DOWN))
                 m_climbing = -1;
             if (m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).dir != m_dir)
                 m_climbing *= -1;
@@ -234,19 +242,25 @@ public:
         fdp.Rotate(m_total_rotation + m_rot_offset, glm::vec3(0.0, 1.0, 0.0));
         fdp.Translate(-FLOOR_WIDTH * glm::vec3(-m_pos.x, 0.0, m_pos.y)); // TODO: CHECK WHY X-AXIS IS INVERTED
         fdp.Translate(-FLOOR_HEIGHT * glm::vec3(0.0, m_pos.z, 0.0)); // TODO: CHECK WHY X-AXIS IS INVERTED
-        DrawMapPortion(m_current_map, fdp, m_current_tile, 2);
+        DrawMapPortion(m_current_map, fdp, m_current_tile, glm::ivec3(5));
         fdp.PopMatrix();
     }
 
     /* Draws a portion of map with size=DEPTH using draw_pos as center point */
-    void DrawMapPortion(std::shared_ptr<Grid> map, FT::Feldespato& fdp, glm::ivec3 draw_pos, int depth = 0)
+    void DrawMapPortion(std::shared_ptr<Grid> map, FT::Feldespato& fdp, glm::ivec3 draw_pos, glm::ivec3 depth = glm::ivec3(0))
     {
-        if (depth == 0) depth = map->GetXSize();
-        for (int z_it = draw_pos.z - depth; z_it <= draw_pos.z + depth; z_it++)
+        glm::ivec3 depth_from(draw_pos - depth);
+        glm::ivec3 depth_to(draw_pos + depth);
+        if (depth == glm::ivec3(0))
         {
-            for (int y_it = draw_pos.y - depth; y_it <= draw_pos.y + depth; y_it++)
+            depth_from = glm::ivec3(0);
+            depth_to = glm::ivec3(map->GetXSize(), map->GetYSize(), map->GetZSize());
+        }
+        for (int z_it = depth_from[2]; z_it < depth_to[2]; z_it++)
+        {
+            for (int y_it = depth_from[1]; y_it < depth_to[1]; y_it++)
             {
-                for (int x_it = draw_pos.x - depth; x_it <= draw_pos.x + depth; x_it++)
+                for (int x_it = depth_from[0]; x_it < depth_to[0]; x_it++)
                 {
                     if (!map->Exists(x_it, y_it, z_it)) continue;
                     Floor floor = map->At(x_it, y_it, z_it);
@@ -292,12 +306,13 @@ public:
         glm::ivec3 pos;
         // READ MAP SIZE
         int x_size, y_size, z_size;
+        int x_loop, y_loop, z_loop;
         std::getline(file, line);
         ss = std::istringstream(line);
-        ss >> word; x_size = std::stoi(word);
-        ss >> word; y_size = std::stoi(word);
-        ss >> word; z_size = std::stoi(word);
-        std::shared_ptr<Grid> map = std::make_shared<Grid>(x_size, y_size, z_size);
+        ss >> word; x_loop = (word[0] == 'T'); x_size = std::stoi(&word[1]);
+        ss >> word; y_loop = (word[0] == 'T'); y_size = std::stoi(&word[1]);
+        ss >> word; z_loop = (word[0] == 'T'); z_size = std::stoi(&word[1]);
+        std::shared_ptr<Grid> map = std::make_shared<Grid>(x_size, y_size, z_size, x_loop, y_loop, z_loop);
         // READ INIT POS AND DIR
         std::getline(file, line);
         ss = std::istringstream(line);
@@ -308,6 +323,12 @@ public:
         ss >> word; pos.z = std::stoi(word);
         map->SetInitDir(dir);
         map->SetInitPos(pos);
+        // EXTRACT RANDOM POINT
+        std::getline(file, line);
+        ss = std::istringstream(line);
+        ss >> word;
+        if (word[0] == 'R')
+            map->SetRandomMap();
 
         int x_it = 0, y_it = 0, z_it = 0;
         while (std::getline(file, line))
@@ -322,13 +343,16 @@ public:
                 ss = std::istringstream(line);
                 while (ss >> word)
                 {
+                    map->At(x_it, y_it, z_it) = Floor(Floor::EMPTY, Floor::NONE);
                     if (word[0] != '0')
                     {
                         dir = aux_dirs[word[0]];
-                        visible = (word[1] == '1');
+                        visible = (word[1] == 'T');
                         type = Floor::Type(std::atoi(&word[2]));
                         Floor floor(type, dir, visible);
                         map->At(x_it, y_it, z_it) = floor;
+                        if (map->IsRandom())
+                            map->PushToBranch(glm::ivec3(x_it, y_it, z_it), MAIN_BRANCH);
                     }
                     x_it++;
                 }

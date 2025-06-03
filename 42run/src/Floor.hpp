@@ -24,8 +24,8 @@ public:
         FORWARD = 1,
         RIGHT = 2,
         LEFT = 4,
-        UP = 8,
-        DOWN = 16,
+        UP = 1 | 8, //9
+        DOWN = 1 | 16, //17
         RIGHT_FORWARD = 1 | 2,
         LEFT_FORWARD = 1 | 4,
         RIGHT_LEFT = 2 | 4,
@@ -51,7 +51,7 @@ public:
     {
         for (int i = 0; i < OBSTACLES_SLOTS; i++)
             obstacles[i] = 0;
-        if (type & RIGHT || type & LEFT || type & UP || type & DOWN)
+        if (type & RIGHT || type & LEFT || type == UP || type == DOWN)
             return;
         double r = double(std::rand()) / double(RAND_MAX);
         // Let's check if this floor will have obstacles with a [floor_obstacle_density] density
