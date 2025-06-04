@@ -42,14 +42,16 @@ public:
     float m_total_rotation;
 
     /* UP/DOWN ANIMATION */
+    int m_climbed_tile;
     int m_climbing;
+    float m_climb_perc;
     float m_climb_offset;
 
 public:
     MapRunner(FT::Feldespato & fdp)
         : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_mov_speed(0.01), m_dir(Floor::NONE),
         m_rotating(0), m_rotated_tile(false), m_rot_speed(0.2), m_rot_offset(0.0), m_total_rotation(0.0),
-        m_climbing(0),
+        m_climbing(0), m_climbed_tile(false), m_climb_perc(0.5),
         m_score(0), m_collision(false), m_col_passed(false)
     {
         m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.dae");
@@ -103,11 +105,11 @@ public:
             {
                 m_tile_perc = 0.0;
                 m_rotated_tile = false;
+                m_climbed_tile = false;
                 m_col_passed = false;
                 m_prev2_tile = m_prev_tile;
                 m_prev_tile = m_current_tile;
-                m_current_map->At(m_prev2_tile) = Floor(Floor::EMPTY, Floor::NONE);
-                m_current_map->RandomizeNextTiles(glm::ivec3(glm::round(m_pos.x), glm::round(m_pos.y), glm::round(m_pos.z)));
+                m_current_map->RandomizeNextTiles(glm::ivec3(glm::round(m_pos.x), glm::round(m_pos.y), glm::round(m_pos.z)), m_prev2_tile);
             }
             m_current_tile.x = glm::round(m_pos.x);
             m_current_tile.y = glm::round(m_pos.y);
@@ -115,7 +117,7 @@ public:
         }
 
         /* Checks if the map needs to be climbed */
-        if (!m_climbing)
+        if (!m_climbing && m_tile_perc >= (0.5 - m_climb_perc/2.0))
         {
             if ((m_current_map->At(m_current_tile.x, m_current_tile.y, m_current_tile.z).type == Floor::Type::UP))
                 m_climbing = 1;
@@ -162,16 +164,19 @@ public:
             }
         }
 
+        if (m_climbing && m_climbed_tile)
+            m_climbing = 0;
         /* Climbs de map */
         if (m_climbing)
         {
-            m_climb_offset += glm::sign(m_climbing) * m_mov_speed;
-            m_pos.z = m_pos.z + glm::sign(m_climbing) * m_mov_speed;
+            m_climb_offset += glm::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
+            m_pos.z = m_pos.z + glm::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
             if (glm::abs(m_climb_offset) >= 1.0)
             {
                 m_pos.z = glm::round(m_pos.z);
                 m_climb_offset = 0.0;
                 m_climbing = 0.0;
+                m_climbed_tile = true;
             }
         }
 
