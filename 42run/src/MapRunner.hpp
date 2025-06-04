@@ -106,7 +106,8 @@ public:
                 m_col_passed = false;
                 m_prev2_tile = m_prev_tile;
                 m_prev_tile = m_current_tile;
-                m_current_map->At(m_prev2_tile) = Floor(Floor::EMPTY, Floor::NONE);
+                if (m_current_map->IsRandom()) // THIS SHOULD BE DONE IN Grid CLASS
+                    m_current_map->At(m_prev2_tile) = Floor(Floor::EMPTY, Floor::NONE);
                 m_current_map->RandomizeNextTiles(glm::ivec3(glm::round(m_pos.x), glm::round(m_pos.y), glm::round(m_pos.z)));
             }
             m_current_tile.x = glm::round(m_pos.x);
