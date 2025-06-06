@@ -3,6 +3,10 @@
 namespace FT {
     
     Material::Material()
+        : m_col(0), m_diffuse(0), m_specular(0), m_ambient(0), m_emissive(0),
+        m_transparent(0), m_opacity(0), m_shininess(0),
+        m_shininess_strength(0), m_refracti(0),
+        m_tex_enabled(false), m_diff_enabled(false), m_spec_enabled(false), m_normal_enabled(false)
     {
     }
     Material::Material(const Material & o)
@@ -10,7 +14,9 @@ namespace FT {
             m_texture(o.m_texture), m_diff_map(o.m_diff_map), m_spec_map(o.m_spec_map), m_normal_map(o.m_normal_map),
             m_col(o.m_col), m_diffuse (o.m_diffuse), m_specular (o.m_specular), m_ambient (o.m_ambient), m_emissive (o.m_emissive),
             m_transparent (o.m_transparent), m_opacity (o.m_opacity), m_shininess (o.m_shininess),
-            m_shininess_strength (o.m_shininess_strength), m_refracti (o.m_refracti)
+            m_shininess_strength (o.m_shininess_strength), m_refracti (o.m_refracti),
+            m_tex_enabled(o.m_tex_enabled), m_diff_enabled(o.m_diff_enabled),
+            m_spec_enabled(o.m_spec_enabled), m_normal_enabled(o.m_normal_enabled)
     {
     }
     Material & Material::operator=(const Material & o)
@@ -30,20 +36,19 @@ namespace FT {
         m_shininess = o.m_shininess;
         m_shininess_strength = o.m_shininess_strength;
         m_refracti = o.m_refracti;
+        m_tex_enabled = o.m_tex_enabled;
+        m_diff_enabled = o.m_diff_enabled;
+        m_spec_enabled = o.m_spec_enabled;
+        m_normal_enabled = o.m_normal_enabled;
         return (*this);
     }
     Material::Material(glm::vec3 col)
         : m_col(col)
     {
     }
-    Material::Material(const glm::vec3 & col, const std::shared_ptr<Texture2D> & texture)
-        : m_col(col)
-    {
-        SetTexture(texture, MaterialProperty::ALL);
-    }
     Material::Material(const std::shared_ptr<Texture2D> & texture)
-        : Material()
     {
+        EnableTextures(MaterialProperty::ALL);
         SetTexture(texture, MaterialProperty::ALL);
     }
     Material::~Material() {}
@@ -152,23 +157,28 @@ namespace FT {
         }
     }
 
-    void Material::SetTexture(const std::shared_ptr<Texture2D> & texture, MaterialProperty type)
+    void Material::SetTexture(const std::shared_ptr<Texture2D> & texture, MaterialProperty type, bool enable)
     {
         switch (type)
         {
         case MaterialProperty::DIFFUSE_MAP:
+            EnableTextures(DIFFUSE_MAP, enable);
             m_diff_map = texture;
             break;
         case MaterialProperty::SPECULAR_MAP:
+            EnableTextures(SPECULAR_MAP, enable);
             m_spec_map = texture;
             break;
         case MaterialProperty::NORMAL_MAP:
+            EnableTextures(NORMAL_MAP, enable);
             m_normal_map = texture;
             break;
         case MaterialProperty::TEXTURE:
+            EnableTextures(TEXTURE, enable);
             m_texture = texture;
             break;
         default:
+            EnableTextures(ALL, enable);
             m_diff_map = texture;
             m_spec_map = texture;
             m_normal_map = texture;
@@ -194,5 +204,48 @@ namespace FT {
             break;
         }
         return (std::shared_ptr<Texture2D>());
+    }
+    bool Material::GetTextureEnabled(MaterialProperty type)
+    {
+        switch (type)
+        {
+        case MaterialProperty::TEXTURE:
+            return (m_tex_enabled);
+            break;
+        case MaterialProperty::DIFFUSE_MAP:
+            return (m_diff_enabled);
+            break;
+        case MaterialProperty::SPECULAR_MAP:
+            return (m_spec_enabled);
+            break;
+        case MaterialProperty::NORMAL_MAP:
+            return (m_normal_enabled);
+            break;
+        }
+        return false;
+    }
+    void Material::EnableTextures(MaterialProperty type, bool enable)
+    {
+        switch (type)
+        {
+        case MaterialProperty::TEXTURE:
+            m_tex_enabled = enable;
+            break;
+        case MaterialProperty::DIFFUSE_MAP:
+            m_diff_enabled = enable;
+            break;
+        case MaterialProperty::SPECULAR_MAP:
+            m_spec_enabled = enable;
+            break;
+        case MaterialProperty::NORMAL_MAP:
+            m_normal_enabled = enable;
+            break;
+        case MaterialProperty::ALL:
+            m_tex_enabled = enable;
+            m_diff_enabled = enable;
+            m_spec_enabled = enable;
+            m_normal_enabled = enable;
+            break;
+        }
     }
 }

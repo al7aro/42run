@@ -12,7 +12,7 @@ namespace FT {
     {
     public:
 		enum MaterialProperty
-		{
+		{ // TODO: THIS COULD BE BIT FLAGS
 			TEXTURE = 0,
 			DIFFUSE_MAP = 1,
 			SPECULAR_MAP = 2,
@@ -34,9 +34,13 @@ namespace FT {
     private:
         std::shared_ptr<Shader> m_shader;
         std::shared_ptr<Texture2D> m_texture;
+        bool m_tex_enabled;
         std::shared_ptr<Texture2D> m_diff_map;
+        bool m_diff_enabled;
         std::shared_ptr<Texture2D> m_spec_map;
+        bool m_spec_enabled;
         std::shared_ptr<Texture2D> m_normal_map;
+        bool m_normal_enabled;
         
         glm::vec3 m_col;
         glm::vec3 m_diffuse;
@@ -54,7 +58,6 @@ namespace FT {
         Material(const Material & o);
         Material & operator=(const Material & o);
         Material(glm::vec3 col);
-        Material(const glm::vec3 & col, const std::shared_ptr<Texture2D> & texture);
         Material(const std::shared_ptr<Texture2D> & texture);
         ~Material();
 
@@ -63,7 +66,10 @@ namespace FT {
         void                        SetValue(float value, MaterialProperty type);
         float                       GetValue(MaterialProperty type);
 
-        void                        SetTexture(const std::shared_ptr<Texture2D> & texture, MaterialProperty type = TEXTURE);
+        void                        SetTexture(const std::shared_ptr<Texture2D> & texture, MaterialProperty type = TEXTURE, bool enable = true);
         std::shared_ptr<Texture2D>  GetTexture(MaterialProperty type);
+        bool                        GetTextureEnabled(MaterialProperty type);
+
+        void EnableTextures(MaterialProperty type, bool enable = true);
     };
 }
