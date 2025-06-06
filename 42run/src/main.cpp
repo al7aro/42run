@@ -40,8 +40,7 @@ int main(void)
 	bool pause = false;
 	bool key_flag = true;
 	/* SHADERS */
-	std::shared_ptr<Shader> sh_col = fdp.LoadShader(SANDBOX_ASSETS_DIRECTORY"/shaders/basic_col.glsl");
-	std::shared_ptr<Shader> sh_tex = fdp.LoadShader(SANDBOX_ASSETS_DIRECTORY"/shaders/basic_tex.glsl");
+	std::shared_ptr<Shader> sh = fdp.LoadShader(SANDBOX_ASSETS_DIRECTORY"/shaders/basic.glsl");
 	std::vector<std::shared_ptr<Grid>> maps;
 	size_t selected_map_id = 0;
 	maps.push_back(runner.ReadMap(SANDBOX_ASSETS_DIRECTORY"/maps/basic.42run"));
@@ -89,7 +88,7 @@ int main(void)
 			/* ----------- RENDER ------------*/
 			fdp.BeginRenderPass();
 				fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
-				fdp.BeginLayer(sh_tex, false);
+				fdp.BeginLayer(sh, false);
 					fdp.Rect(Material(intro_tex));
 				fdp.EndLayer();
 			fdp.EndRenderPass();
@@ -124,7 +123,7 @@ int main(void)
 				// TODO: DRAW QUESTION MAP FOR RANDOM MAP
 				// DRAW MAP CHOOSE WINDOW
 				fdp.PushMatrix();
-				fdp.BeginLayer(map_selector_cam, sh_tex, true);
+				fdp.BeginLayer(map_selector_cam, sh, true);
 					fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
 					xsize = FLOOR_WIDTH * (maps[selected_map_id]->GetXSize() - 1.0) / 2.0;
 					ysize = FLOOR_WIDTH * (maps[selected_map_id]->GetYSize() - 1.0) / 2.0;
@@ -137,7 +136,7 @@ int main(void)
 				map_selector_window = fdp.EndLayer();
 				fdp.PopMatrix();
 				// DRAW MENU
-				fdp.BeginLayer(sh_tex, false);
+				fdp.BeginLayer(sh, false);
 					fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
 					fdp.Scale(glm::vec3(2.0));
 					fdp.Rect(Material(menu_tex));
@@ -176,13 +175,13 @@ int main(void)
 			/* ----------- RENDER ------------*/
 			fdp.BeginRenderPass();
 				fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
-				fdp.BeginLayer(cam, sh_col, false);
+				fdp.BeginLayer(cam, sh, false);
 					player.Draw(fdp);
 				fdp.EndLayer();
-				fdp.BeginLayer(cam, sh_tex, false);
+				fdp.BeginLayer(cam, sh, false);
 					runner.Draw(fdp);
 				fdp.EndLayer();
-				fdp.BeginLayer(sh_tex, false); // TEXT LAYER
+				fdp.BeginLayer(sh, false); // TEXT LAYER
 					fdp.PushMatrix();
 					fdp.Translate(glm::vec3(1.0, 0.75, 0.0));
 					txt.Draw(fdp, std::to_string(score), 0.5);
@@ -190,7 +189,7 @@ int main(void)
 				fdp.EndLayer();
 				if (pause)
 				{
-					fdp.BeginLayer(sh_tex, false);
+					fdp.BeginLayer(sh, false);
 						fdp.Rect(pause_tex);
 					fdp.EndLayer();
 				}

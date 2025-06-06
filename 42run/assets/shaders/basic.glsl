@@ -58,7 +58,15 @@ uniform sampler2D normal_map;
 uniform vec4 flat_color;
 uniform Material mat;
 
+uniform int texture_map_enabled;
+uniform int diffuse_map_enabled;
+uniform int specular_map_enabled;
+uniform int normal_map_enabled;
+
 void main()
 {
-	frag_color = texture(diffuse_map, fs_in.tex_coord);
+	if (diffuse_map_enabled == 1)
+		frag_color = texture(diffuse_map, fs_in.tex_coord);
+	else
+		frag_color = vec4(mat.diffuse, 1.0);
 }

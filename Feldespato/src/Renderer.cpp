@@ -44,9 +44,13 @@ namespace FT {
                     }
                 }
                 shader->SetInt("texture_map", 0);
+                shader->SetInt("texture_map_enabled", mat.GetTextureEnabled(Material::TEXTURE));
                 shader->SetInt("diffuse_map", 1);
+                shader->SetInt("diffuse_map_enabled", mat.GetTextureEnabled(Material::DIFFUSE_MAP));
                 shader->SetInt("specular_map", 2);
+                shader->SetInt("specular_map_enabled", mat.GetTextureEnabled(Material::SPECULAR_MAP));
                 shader->SetInt("normal_map", 3);
+                shader->SetInt("normal_map_enabled", mat.GetTextureEnabled(Material::NORMAL_MAP));
 
                 /* Material Properties */
                 shader->SetVec3("mat.col", mat.GetColor(Material::COLOR));

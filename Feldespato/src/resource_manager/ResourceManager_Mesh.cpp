@@ -38,7 +38,7 @@ namespace FT {
         std::vector<unsigned int> indices = {0, 1, 3, 1, 2, 3};
 		Geometry new_geo = Geometry(vertices, indices);
         // MATERIAL
-		Material new_mat = Material(glm::vec4(1.0), m_DEFAULT_TEXTURE);
+		Material new_mat = Material(m_DEFAULT_TEXTURE);
         // MESH
         Mesh new_mesh = Mesh(new_geo, new_mat);
         return (new_mesh);
@@ -132,7 +132,7 @@ namespace FT {
             20, 21, 23, 21, 22, 23
         };
         Geometry new_geo = Geometry(vertices, indices);
-        Material new_mat = Material(glm::vec4(1.0), m_DEFAULT_TEXTURE);
+        Material new_mat = Material(m_DEFAULT_TEXTURE);
 		Mesh new_mesh = Mesh(new_geo, new_mat);
         return (new_mesh);
     }
