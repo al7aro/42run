@@ -58,9 +58,9 @@ int main(void)
 /* ---------------------- GAME SCREEN ---------------------- */
 	/* CAMERA */
 	Camera cam(Camera::PERSPECTIVE);
-	cam.tr.pos = glm::vec3(0.0, 5.0, -5);
+	cam.tr.pos = glm::vec3(0.0, 5.0, -5.0);
 	cam.tr.Yaw(glm::pi<float>());
-	cam.tr.Pitch(-glm::half_pi<float>() / 3.0);
+	cam.tr.Pitch(glm::pi<float>() / 8.0);
 	/* MODELS */
 	Model marvin = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/Marvin.dae");
 	/* TRANSFORMS */
@@ -129,8 +129,8 @@ int main(void)
 					ysize = FLOOR_WIDTH * (maps[selected_map_id]->GetYSize() - 1.0) / 2.0;
 					scale_factor = target_size / xsize;
 					fdp.Scale(glm::vec3(scale_factor));
-					fdp.Rotate(glm::pi<float>()/4.0, glm::vec3(1.0, 0.0, 0.0));
-					fdp.Rotate(program_time, glm::vec3(0.0, 1.0, 0.0));
+					fdp.RotateX(glm::pi<float>()/4.0);
+					fdp.RotateY(program_time);
 					fdp.Translate(glm::vec3(xsize, 0.0, -ysize));
 					runner.DrawMapPortion(maps[selected_map_id], fdp, glm::ivec3(0));
 				map_selector_window = fdp.EndLayer();

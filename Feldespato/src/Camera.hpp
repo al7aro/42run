@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
 
 #include "Transform.hpp"
 
@@ -51,7 +50,10 @@ namespace FT {
         }
         glm::mat4 GetViewMatrix() const
         {
-            return (glm::inverse(glm::mat4_cast(tr.rot)) * glm::translate(glm::mat4(1.0), -tr.pos));
+            glm::mat4 translate = glm::translate(glm::mat4(1.0), -tr.pos);
+            glm::mat4 rotation = glm::inverse(tr.GetRotation());
+
+            return (rotation * translate);
         }
     };
 }

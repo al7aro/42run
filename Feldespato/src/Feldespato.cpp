@@ -176,14 +176,19 @@ namespace FT {
         glm::mat4 sc = glm::scale(glm::mat4(1.0), v);
         m_data.tr.top() *= sc;
     }
-    void Feldespato::Rotate(float a) // 2D Rotation
+    void Feldespato::RotateX(float a)
     {
-        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, glm::vec3(0.0, 0.0, 1.0));
+        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, glm::vec3(1.0, 0.0, 0.0));
         m_data.tr.top() *= rt;
     }
-    void Feldespato::Rotate(float a, glm::vec3 axis)
+    void Feldespato::RotateY(float a)
     {
-        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, axis);
+        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, glm::vec3(0.0, 1.0, 0.0));
+        m_data.tr.top() *= rt;
+    }
+    void Feldespato::RotateZ(float a)
+    {
+        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, glm::vec3(0.0, 0.0, 1.0));
         m_data.tr.top() *= rt;
     }
     glm::mat4 Feldespato::GetTransform() const
@@ -243,53 +248,5 @@ namespace FT {
     int Feldespato::GetMouseButton(int button)
     {
         return (m_window->GetMouseButton(button));
-    }
-
-    /* MISCELLANEOUS */
-    void Feldespato::DefaultCameraMovement(Camera & cam, float delta_time)
-    {
-        float rot_speed = 0.3f * delta_time;
-        float mov_speed = 5.0f * delta_time;
-        if (m_window->GetKey('S') || m_window->GetKey('S'))
-            cam.tr.MoveLocal(glm::vec3(0.0, 0.0, mov_speed));
-        if (m_window->GetKey('W') || m_window->GetKey('W'))
-            cam.tr.MoveLocal(glm::vec3(0.0, 0.0, -mov_speed));
-        if (m_window->GetKey('A') || m_window->GetKey('A'))
-            cam.tr.MoveLocal(glm::vec3(-mov_speed, 0.0, 0.0));
-        if (m_window->GetKey('D') || m_window->GetKey('D'))
-            cam.tr.MoveLocal(glm::vec3(mov_speed, 0.0, 0.0));
-        if (m_window->GetKey('Q') || m_window->GetKey('Q'))
-            cam.tr.MoveLocal(glm::vec3(0.0, mov_speed, 0.0));
-        if (m_window->GetKey('E') || m_window->GetKey('E'))
-            cam.tr.MoveLocal(glm::vec3(0.0, -mov_speed, 0.0));
-
-        glm::vec2 mouse_prev = m_window->GetMousePosPrev();
-        glm::vec2 mouse_dir = m_window->GetMousePos() - mouse_prev;
-
-        if (m_window->GetMouseButton(GLFW_MOUSE_BUTTON_1) != GLFW_RELEASE)
-        {
-            if (glm::length(mouse_dir) > 0)
-            {
-                cam.tr.Pitch(-rot_speed * mouse_dir.y);
-                cam.tr.RotateWorld(-rot_speed * mouse_dir.x, glm::vec3(0.0, 1.0, 0.0));
-            }
-            m_window->SetInputMode(GLFW_CURSOR_DISABLED);
-        }
-        else
-        {
-            m_window->SetInputMode(GLFW_CURSOR_NORMAL);
-        }
-
-        // CAMERA ZOOM
-        //if (m_window->GetKey(GLFW_KEY_UP) != GLFW_RELEASE)
-            //cam->zoom += 0.01;
-        //if (m_window->GetKey(GLFW_KEY_DOWN) != GLFW_RELEASE)
-            //cam->zoom -= 0.01;
-        //if (cam->zoom <= 0.01)
-            //cam->zoom = 0.1;
-        //if (cam->zoom > 2.5 / cam->fov)
-            //cam->zoom = 2.5 / cam->fov;
-        //if (m_window->GetKey(GLFW_KEY_R) != GLFW_RELEASE)
-        //	cam->zoom = 1.0;
     }
 }

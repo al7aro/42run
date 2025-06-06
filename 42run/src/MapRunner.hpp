@@ -244,7 +244,7 @@ public:
     {
         if (!m_current_map) return;
         fdp.PushMatrix();
-        fdp.Rotate(m_total_rotation + m_rot_offset, glm::vec3(0.0, 1.0, 0.0));
+        fdp.RotateY(m_total_rotation + m_rot_offset);
         fdp.Translate(-FLOOR_WIDTH * glm::vec3(-m_pos.x, 0.0, m_pos.y)); // TODO: CHECK WHY X-AXIS IS INVERTED
         fdp.Translate(-FLOOR_HEIGHT * glm::vec3(0.0, m_pos.z, 0.0)); // TODO: CHECK WHY X-AXIS IS INVERTED
         DrawMapPortion(m_current_map, fdp, m_current_tile, glm::ivec3(5));
@@ -274,7 +274,7 @@ public:
 
                     fdp.PushMatrix();
                     fdp.Translate(FLOOR_WIDTH * glm::vec3(-x_it, 0, y_it) + FLOOR_HEIGHT * glm::vec3(0, z_it, 0)); // TODO: CHECK WHY X-AXIS IS INVERTED
-                    fdp.Rotate(glm::half_pi<float>() * map->At(x_it, y_it, z_it).dir, -glm::vec3(0.0, 1.0, 0.0));
+                    fdp.RotateY(-glm::half_pi<float>() * map->At(x_it, y_it, z_it).dir);
                     fdp.Draw(m_floor_types[floor.type]);
                     for (int slot = -1; slot <= 1; slot++)
                     {

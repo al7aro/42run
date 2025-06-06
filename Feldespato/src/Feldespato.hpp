@@ -67,8 +67,9 @@ namespace FT {
         /* TRANSFORMATION STACK */
         void                        Translate(glm::vec3 v);
         void                        Scale(glm::vec3 v);
-        void                        Rotate(float a);
-        void                        Rotate(float a, glm::vec3 axis);
+        void                        RotateX(float a);
+        void                        RotateY(float a);
+        void                        RotateZ(float a);
         void                        PushMatrix();
         void                        PopMatrix();
         glm::mat4                   GetTransform() const;
