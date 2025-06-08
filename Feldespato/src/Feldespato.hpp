@@ -10,6 +10,7 @@
 #include "Layer.hpp"
 #include "Timer.hpp"
 #include "Transform.hpp"
+#include "math/Math.hpp"
 #include "resources/Texture2D.hpp"
 #include "Renderable.hpp"
 #include "resource_manager/ResourceManager.hpp"
