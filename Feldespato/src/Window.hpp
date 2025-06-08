@@ -5,8 +5,9 @@
 
 #define GLFW_INCLUDE_NONE
 #include <glad/glad.h>
-#include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
+
+#include "math/Math.hpp"
 
 namespace FT {
 	class Window
@@ -16,7 +17,7 @@ namespace FT {
 		std::string m_title;
 		unsigned int m_width;
 		unsigned int m_height;
-		glm::vec2 m_mouse_pos;
+		FT::vec2 m_mouse_pos;
 	public:
 		Window() = delete;
 		Window(const std::string & title, unsigned int width, unsigned int height);
@@ -31,8 +32,8 @@ namespace FT {
 		void SetWindowSuffix(const std::string & suffix);
 
 		int GetKey(int key);
-		glm::vec2 GetMousePosPrev();
-		glm::vec2 GetMousePos();
+		FT::vec2 GetMousePosPrev();
+		FT::vec2 GetMousePos();
 		int GetMouseButton(int button);
 
 		void SetInputMode(int mode);

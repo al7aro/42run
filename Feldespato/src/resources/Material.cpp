@@ -42,7 +42,7 @@ namespace FT {
         m_normal_enabled = o.m_normal_enabled;
         return (*this);
     }
-    Material::Material(glm::vec3 col)
+    Material::Material(FT::vec3 col)
         : m_col(col)
     {
     }
@@ -53,7 +53,7 @@ namespace FT {
     }
     Material::~Material() {}
 
-    void Material::SetColor(const glm::vec3 & col, MaterialProperty type)
+    void Material::SetColor(const FT::vec3 & col, MaterialProperty type)
     {
         switch (type)
         {
@@ -85,7 +85,7 @@ namespace FT {
         }
     }
 
-    glm::vec3 Material::GetColor(MaterialProperty type)
+    FT::vec3 Material::GetColor(MaterialProperty type)
     {
         switch (type)
         {

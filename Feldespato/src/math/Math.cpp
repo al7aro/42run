@@ -7,6 +7,7 @@
 /* ****************************** */
 
 namespace FT {
+
 /* ------------------- VEC2 ------------------- */
     vec2::vec2()
         : vec2(0)
@@ -29,6 +30,14 @@ namespace FT {
     {
         return data[index];
     }
+    bool vec2::operator!=(const vec2 & o)
+    {
+        return (x != o.x || y != o.y);
+    }
+    bool vec2::operator==(const vec2 & o)
+    {
+        return (x == o.x && y == o.y);
+    }
     vec2 vec2::operator+(const vec2& o) const
     {
         return (vec2{this->x + o.x, this->y + o.y});
@@ -38,10 +47,6 @@ namespace FT {
         this->x += o.x;
         this->y += o.y;
         return (*this);
-    }
-    vec2 vec2::operator-(const vec2& o) const
-    {
-        return (vec2{ this->x - o.x, this->y - o.y });
     }
     vec2& vec2::operator-=(const vec2& o)
     {
@@ -97,6 +102,10 @@ namespace FT {
     {
         return (vec2(v1.x - v2.x, v1.y - v2.y));
     }
+    vec2 operator-(const vec2& v)
+    {
+        return (vec2(-v.x, v.y));
+    }
     vec2 operator*(const float& scalar, const vec2& v) {
         return vec2(v.x * scalar, v.y * scalar);
     }
@@ -124,6 +133,12 @@ namespace FT {
         : vec3(0)
     {
     }
+    vec3::vec3(ivec3 v)
+    {
+        x = v.x;
+        y = v.y;
+        z = v.z;
+    }
     vec3::vec3(float p_x, float p_y, float p_z)
     {
         x = p_x;
@@ -142,6 +157,14 @@ namespace FT {
     {
         return data[index];
     }
+    bool vec3::operator!=(const vec3 & o)
+    {
+        return (x != o.x || y != o.y || z != o.z);
+    }
+    bool vec3::operator==(const vec3 & o)
+    {
+        return (x == o.x && y == o.y && z == o.z);
+    }
     vec3 vec3::operator+(const vec3& o) const
     {
         return (vec3{ this->x + o.x, this->y + o.y, this->z + o.z});
@@ -152,10 +175,6 @@ namespace FT {
         this->y += o.y;
         this->z += o.z;
         return (*this);
-    }
-    vec3 vec3::operator-(const vec3& o) const
-    {
-        return (vec3{ this->x - o.x, this->y - o.y, this->z - o.z });
     }
     vec3& vec3::operator-=(const vec3& o)
     {
@@ -216,6 +235,10 @@ namespace FT {
     {
         return (vec3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z));
     }
+    vec3 operator-(const vec3& v)
+    {
+        return (vec3(-v.x, -v.y, -v.z));
+    }
     vec3 operator*(const float& scalar, const vec3& v) {
         return vec3(v.x * scalar, v.y * scalar, v.z * scalar);
     }
@@ -270,6 +293,14 @@ namespace FT {
     const float& vec4::operator[](int index) const
     {
         return data[index];
+    }
+    bool vec4::operator!=(const vec4 & o)
+    {
+        return (x != o.x || y != o.y || z != o.z || w != o.w);
+    }
+    bool vec4::operator==(const vec4 & o)
+    {
+        return (x == o.x && y == o.y && z == o.z && w == o.w);
     }
     vec4 vec4::operator+(const vec4& o) const
     {
@@ -351,6 +382,10 @@ namespace FT {
     {
         return (vec4(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w));
     }
+    vec4 operator-(const vec4& v)
+    {
+        return (vec4(-v.x, -v.y, -v.z, -v.w));
+    }
     vec4 operator*(const float& scalar, const vec4& v) {
         return vec4(v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar);
     }
@@ -378,6 +413,12 @@ namespace FT {
         : ivec3(0)
     {
     }
+    ivec3::ivec3(const vec3 & v)
+    {
+        x = v.x;
+        y = v.y;
+        z = v.z;
+    }
     ivec3::ivec3(int p_x, int p_y, int p_z)
     {
         x = p_x;
@@ -396,6 +437,14 @@ namespace FT {
     {
         return data[index];
     }
+    bool ivec3::operator==(const ivec3 & o)
+    {
+        return (x == o.x && y == o.y && z == o.z);
+    }
+    bool ivec3::operator!=(const ivec3 & o)
+    {
+        return (x != o.x || y != o.y || z != o.z);
+    }
     ivec3 ivec3::operator+(const ivec3& o) const
     {
         return (ivec3{ this->x + o.x, this->y + o.y, this->z + o.z });
@@ -406,10 +455,6 @@ namespace FT {
         this->y += o.y;
         this->z += o.z;
         return (*this);
-    }
-    ivec3 ivec3::operator-(const ivec3& o) const
-    {
-        return (ivec3{ this->x - o.x, this->y - o.y, this->z - o.z });
     }
     ivec3& ivec3::operator-=(const ivec3& o)
     {
@@ -442,7 +487,7 @@ namespace FT {
     }
     ivec3 ivec3::operator*(const float& v) const
     {
-        return (ivec3{ this->x * v, this->y * v, this->z * v });
+        return (ivec3{ int(this->x * v), int(this->y * v), int(this->z * v) });
     }
     ivec3& ivec3::operator*=(const float& v)
     {
@@ -453,7 +498,7 @@ namespace FT {
     }
     ivec3 ivec3::operator/(const float& v) const
     {
-        return (ivec3{ this->x / v, this->y / v, this->z / v });
+        return (ivec3{ int(this->x / v), int(this->y / v), int(this->z / v) });
     }
     ivec3& ivec3::operator/=(const float& v)
     {
@@ -470,7 +515,11 @@ namespace FT {
     {
         return (ivec3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z));
     }
-    ivec3 operator*(const int& scalar, const ivec3& v) {
+    ivec3 operator-(const ivec3& v)
+    {
+        return (ivec3(-v.x, -v.y, -v.z));
+    }
+    ivec3 operator*(const float& scalar, const ivec3& v) {
         return ivec3(v.x * scalar, v.y * scalar, v.z * scalar);
     }
     float ivec3::len() const
@@ -493,6 +542,135 @@ namespace FT {
         ret[1] = -(v1[0] * v2[2]) - (v1[2] * v2[0]);
         ret[2] = (v1[0] * v2[1]) - (v1[1] * v2[0]);
         return (ret / ret.len());
+    }
+/* -------------------------------------------- */
+
+/* ------------------- iVEC4 ------------------- */
+    ivec4::ivec4()
+        : ivec4(0)
+    {
+    }
+    ivec4::ivec4(int p_x, int p_y, int p_z, int p_w)
+    {
+        x = p_x;
+        y = p_y;
+        z = p_z;
+        w = p_w;
+    }
+    ivec4::ivec4(int v)
+        : ivec4(v, v, v, v)
+    {
+    }
+    int& ivec4::operator[](int index)
+    {
+        return data[index];
+    }
+    const int& ivec4::operator[](int index) const
+    {
+        return data[index];
+    }
+    bool ivec4::operator==(const ivec4& o)
+    {
+        return (x == o.x && y == o.y && z == o.z && w == o.w);
+    }
+    bool ivec4::operator!=(const ivec4& o)
+    {
+        return (x != o.x || y != o.y || z != o.z || w != o.w);
+    }
+    ivec4 ivec4::operator+(const ivec4& o) const
+    {
+        return (ivec4{ this->x + o.x, this->y + o.y, this->z + o.z, this->w + o.w });
+    }
+    ivec4& ivec4::operator+=(const ivec4& o)
+    {
+        this->x += o.x;
+        this->y += o.y;
+        this->z += o.z;
+        this->w += o.w;
+        return (*this);
+    }
+    ivec4& ivec4::operator-=(const ivec4& o)
+    {
+        this->x -= o.x;
+        this->y -= o.y;
+        this->z -= o.z;
+        this->w -= o.w;
+        return (*this);
+    }
+    ivec4 ivec4::operator*(const ivec4& v) const
+    {
+        return (ivec4{ this->x * v.x, this->y * v.y, this->z * v.z, this->w * v.w});
+    }
+    ivec4& ivec4::operator*=(const ivec4& v)
+    {
+        this->x *= v.x;
+        this->y *= v.y;
+        this->z *= v.z;
+        this->w *= v.w;
+        return (*this);
+    }
+    ivec4 ivec4::operator/(const ivec4& v) const
+    {
+        return (ivec4{ this->x / v.x, this->y / v.y, this->z / v.z, this->w * v.w});
+    }
+    ivec4& ivec4::operator/=(const ivec4& v)
+    {
+        this->x /= v.x;
+        this->y /= v.y;
+        this->z /= v.z;
+        this->w /= v.w;
+        return (*this);
+    }
+    ivec4 ivec4::operator*(const float& v) const
+    {
+        return (ivec4{ int(this->x * v), int(this->y * v), int(this->z * v), int(this->w * v) });
+    }
+    ivec4& ivec4::operator*=(const float& v)
+    {
+        this->x *= x;
+        this->y *= y;
+        this->z *= z;
+        this->w *= w;
+        return (*this);
+    }
+    ivec4 ivec4::operator/(const float& v) const
+    {
+        return (ivec4{ int(this->x / v), int(this->y / v), int(this->z / v), int(this->w / v) });
+    }
+    ivec4& ivec4::operator/=(const float& v)
+    {
+        this->x /= x;
+        this->y /= y;
+        this->z /= z;
+        this->w /= w;
+        return (*this);
+    }
+    ivec4 operator+(const ivec4& v1, const ivec4& v2)
+    {
+        return (ivec4(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w));
+    }
+    ivec4 operator-(const ivec4& v1, const ivec4& v2)
+    {
+        return (ivec4(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w));
+    }
+    ivec4 operator-(const ivec4& v)
+    {
+        return (ivec4(-v.x, -v.y, -v.z, -v.w));
+    }
+    ivec4 operator*(const float& scalar, const ivec4& v) {
+        return ivec4(v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar);
+    }
+    float ivec4::len() const
+    {
+        return (std::sqrt(this->x * this->x + this->y * this->y + this->z * this->z + this->w * this->w));
+    }
+    float ivec4::len2() const
+    {
+        return (this->x * this->x + this->y * this->y + this->z * this->z + this->w * this->w);
+    }
+    ivec4 dot(const ivec4& v1, const ivec4& v2)
+    {
+        return (ivec4{ v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w});
     }
 /* -------------------------------------------- */
 
@@ -876,13 +1054,16 @@ namespace FT {
 /* -------------------------------------------- */
 
 /* ------------- USEFUL MATRICES -------------- */
-    mat4 ortho(float left, float right, float bottom, float top, float near, float far)
+    mat4 ortho(float left, float right, float bottom, float top)
     {
         mat4 ret;
+        float near = -1.0;
+        float far = 1.0;
         ret[0] = 2.0f / (right - left);   ret[4] = 0;                     ret[8] = 0;                     ret[12] = -(right + left) / ((right - left));
         ret[1] = 0;                     ret[5] = 2.0f / (top - bottom);   ret[9] = 0;                     ret[13] = -(top + bottom) / ((top - bottom));
-        ret[2] = 0;                     ret[6] = 0;                     ret[10] = 2.0f / (far - near);    ret[14] = -(far + near) / ((far - near));
-        ret[3] = 0;                     ret[7] = 0;                     ret[11] = 0;                    ret[15] = 1.0f;
+        ret[2] = 0;                     ret[6] = 0;                       ret[10] = -2.0f / (far - near); ret[14] = -(far + near) / ((far - near));
+        ret[3] = 0;                     ret[7] = 0;                       ret[11] = 0;                    ret[15] = 1.0f;
+        
         return (ret);
     }
 
@@ -893,6 +1074,7 @@ namespace FT {
         ret[1] = 0;                                 ret[5] = 1.0f / ((float)tan(fov / 2));  ret[9] = 0;                             ret[13] = 0;
         ret[2] = 0;                                 ret[6] = 0;                         ret[10] = -(far + near) / (far - near);   ret[14] = -(2.0f * far * near) / (far - near);
         ret[3] = 0;                                 ret[7] = 0;                         ret[11] = -1.0f;                        ret[15] = 0;
+        
         return (ret);
     }
 
@@ -972,4 +1154,62 @@ namespace FT {
         return (ret);
     }
 /* -------------------------------------------- */
+
+/* ------------------- UTILS ------------------ */
+    float clamp(float value, float min, float max)
+    {
+        if (value < min)
+            return (min);
+        if (value > max)
+            return (max);
+        return (value);
+    }
+    float abs(float value)
+    {
+        return (std::abs(value));
+    }
+    int abs(int value)
+    {
+        return (std::abs(value));
+    }
+    float round(float value)
+    {
+        return (std::round(value));
+    }
+    vec3 round(const vec3 & v)
+    {
+        return (vec3(std::round(v.x), std::round(v.y), std::round(v.z)));
+    }
+    int sign(float v)
+    {
+        if (v < 0)
+            return (-1);
+        return (1);
+    }
+    int mod(int value, int base)
+    {
+        if (value < 0)
+            value = base - (FT::abs(value) % base);
+        return (value % base);
+    }
+    float mod(float value, float base)
+    {
+        while (value >= base)
+            value -= base;
+        while (value < 0)
+            value += base;
+        return (value);
+    }
+    float radians(float deg)
+    {
+        return (deg * PI / 180.0);
+    }
+    float sin(float rad)
+    {
+        return (std::sin(rad));
+    }
+    float cos(float rad)
+    {
+        return (std::cos(rad));
+    }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include "math/Math.hpp"
+
 #include <glad/glad.h>
 
 constexpr int MAX_BONE_INFLUENCE = 4;
@@ -9,12 +10,12 @@ constexpr int MAX_BONES = 100;
 namespace FT {
     struct Vertex
     {
-        glm::vec3 pos = glm::vec3(0.0);
-        glm::vec3 tex_coords = glm::vec3(1.0);
-        glm::vec3 normal = glm::vec3(1.0);
-        glm::vec4 color = glm::vec4(1.0);
-        glm::ivec4 bone_id = glm::ivec4(-1);
-        glm::vec4 bone_weight = glm::vec4(0.0);
+        FT::vec3 pos = FT::vec3(0.0);
+        FT::vec3 tex_coords = FT::vec3(1.0);
+        FT::vec3 normal = FT::vec3(1.0);
+        FT::vec4 color = FT::vec4(1.0);
+        FT::ivec4 bone_id = FT::ivec4(-1);
+        FT::vec4 bone_weight = FT::vec4(0.0);
     };
 
     struct VertexFormat
@@ -47,10 +48,10 @@ namespace FT {
         static unsigned int GetVertexStride()
         {
             unsigned int stride = 0;
-            stride += sizeof(glm::vec3);
-            stride += sizeof(glm::vec3);
-            stride += sizeof(glm::vec3);
-            stride += sizeof(glm::vec4);
+            stride += sizeof(FT::vec3);
+            stride += sizeof(FT::vec3);
+            stride += sizeof(FT::vec3);
+            stride += sizeof(FT::vec4);
             stride += sizeof(int) * MAX_BONE_INFLUENCE;
             stride += sizeof(float) * MAX_BONE_INFLUENCE;
             return (stride);

@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-#include <glm/glm.hpp>
-
 int constexpr MAIN_BRANCH = 0;
 int constexpr LEFT_BRANCH = 1;
 int constexpr RIGHT_BRANCH = 2;
@@ -26,12 +24,12 @@ private:
     Floor* m_grid;
 
     bool m_random;
-    std::vector<glm::ivec3> m_branches[3];
-    glm::ivec3 m_corner_cnt;
-    glm::ivec3 m_prev_floor;
+    std::vector<FT::ivec3> m_branches[3];
+    FT::ivec3 m_corner_cnt;
+    FT::ivec3 m_prev_floor;
     bool m_active_branches;
     bool m_intersection;
-    glm::ivec3 m_init_pos;
+    FT::ivec3 m_init_pos;
     int m_init_dir;
 public:
     Grid(const Grid& grid)
@@ -67,7 +65,7 @@ public:
             return (false);
         return (true);
     }
-    bool Exists(glm::ivec3 v)
+    bool Exists(FT::ivec3 v)
     {
         return (Exists(v.x, v.y, v.z));
     }
@@ -88,9 +86,9 @@ public:
             if (z < 0) z = 0;
             if (z > m_z_size) z = m_z_size - 1;
         }
-        if (x < 0) x = m_size - (glm::abs(x) % m_size);
-        if (y < 0) y = m_size - (glm::abs(y) % m_size);
-        if (z < 0) z = m_size - (glm::abs(z) % m_size);
+        if (x < 0) x = m_size - (FT::abs(x) % m_size);
+        if (y < 0) y = m_size - (FT::abs(y) % m_size);
+        if (z < 0) z = m_size - (FT::abs(z) % m_size);
         x %= m_x_size;
         y %= m_y_size;
         z %= m_z_size;
@@ -113,9 +111,9 @@ public:
             if (z < 0) z = 0;
             if (z > m_z_size) z = m_z_size - 1;
         }
-        if (x < 0) x = m_size - (glm::abs(x) % m_size);
-        if (y < 0) y = m_size - (glm::abs(y) % m_size);
-        if (z < 0) z = m_size - (glm::abs(z) % m_size);
+        if (x < 0) x = m_size - (FT::abs(x) % m_size);
+        if (y < 0) y = m_size - (FT::abs(y) % m_size);
+        if (z < 0) z = m_size - (FT::abs(z) % m_size);
         x %= m_x_size;
         y %= m_y_size;
         z %= m_z_size;
@@ -129,11 +127,11 @@ public:
     {
         return (At(x, y, 0));
     }
-    Floor& At(glm::ivec3 v)
+    Floor& At(FT::ivec3 v)
     {
         return (At(v.x, v.y, v.z));
     }
-    const Floor& At(glm::ivec3 v) const
+    const Floor& At(FT::ivec3 v) const
     {
         return (At(v.x, v.y, v.z));
     }
@@ -141,7 +139,7 @@ public:
     int GetYSize() const { return (m_y_size); }
     int GetZSize() const { return (m_z_size); }
 
-    void SetInitPos(glm::ivec3 pos)
+    void SetInitPos(FT::ivec3 pos)
     {
         m_init_pos = pos;
     }
@@ -161,24 +159,24 @@ public:
         return (m_random);
     }
 
-    void PushToBranch(glm::ivec3 init_random_tile, int branch)
+    void PushToBranch(FT::ivec3 init_random_tile, int branch)
     {
         m_branches[branch].push_back(init_random_tile);
     }
 
-    glm::ivec3 GetInitPos() const { return (m_init_pos); }
+    FT::ivec3 GetInitPos() const { return (m_init_pos); }
     int GetInitDir() const { return (m_init_dir); }
 
-    glm::ivec3 GetNextTile(glm::ivec3 tile, Floor::Direction dir)
+    FT::ivec3 GetNextTile(FT::ivec3 tile, Floor::Direction dir)
     {
         // pref_dir: PREFERED DIRECTION IN CASE THERE IS INTERESCTION
         Floor f = At(tile);
-        glm::ivec3 new_tile = tile;
+        FT::ivec3 new_tile = tile;
         // The last element of the branch is the one we need to check
-        glm::ivec3 front_tile = glm::ivec3(0);
-        glm::ivec3 right_tile = glm::ivec3(0);
-        glm::ivec3 left_tile = glm::ivec3(0);
-        glm::ivec3 back_tile = glm::ivec3(0);
+        FT::ivec3 front_tile = FT::ivec3(0);
+        FT::ivec3 right_tile = FT::ivec3(0);
+        FT::ivec3 left_tile = FT::ivec3(0);
+        FT::ivec3 back_tile = FT::ivec3(0);
         switch (f.type)
         {
         case Floor::RIGHT:
@@ -191,28 +189,28 @@ public:
         switch (f.dir)
         {
         case Floor::NORTH:
-            front_tile = glm::ivec3(0, 1, 0);
-            right_tile = glm::ivec3(1, 0, 0);
-            left_tile  = glm::ivec3(-1, 0, 0);
-            back_tile  = glm::ivec3(0, -1, 0);
+            front_tile = FT::ivec3(0, 1, 0);
+            right_tile = FT::ivec3(1, 0, 0);
+            left_tile  = FT::ivec3(-1, 0, 0);
+            back_tile  = FT::ivec3(0, -1, 0);
             break;
         case Floor::SOUTH:
-            front_tile = -glm::ivec3(0, 1, 0);
-            right_tile = -glm::ivec3(1, 0, 0);
-            left_tile  = -glm::ivec3(-1, 0, 0);
-            back_tile  = -glm::ivec3(0, -1, 0);
+            front_tile = -FT::ivec3(0, 1, 0);
+            right_tile = -FT::ivec3(1, 0, 0);
+            left_tile  = -FT::ivec3(-1, 0, 0);
+            back_tile  = -FT::ivec3(0, -1, 0);
             break;
         case Floor::EAST:
-            front_tile = glm::ivec3(1, 0, 0);
-            right_tile = glm::ivec3(0, -1, 0);
-            left_tile  = glm::ivec3(0, 1, 0);
-            back_tile  = glm::ivec3(-1, 0, 0);
+            front_tile = FT::ivec3(1, 0, 0);
+            right_tile = FT::ivec3(0, -1, 0);
+            left_tile  = FT::ivec3(0, 1, 0);
+            back_tile  = FT::ivec3(-1, 0, 0);
             break;
         case Floor::WEST:
-            front_tile = -glm::ivec3(1, 0, 0);
-            right_tile = -glm::ivec3(0, -1, 0);
-            left_tile  = -glm::ivec3(0, 1, 0);
-            back_tile  = -glm::ivec3(-1, 0, 0);
+            front_tile = -FT::ivec3(1, 0, 0);
+            right_tile = -FT::ivec3(0, -1, 0);
+            left_tile  = -FT::ivec3(0, 1, 0);
+            back_tile  = -FT::ivec3(-1, 0, 0);
             break;
         }
         if (dir == Floor::NORTH)
@@ -224,13 +222,13 @@ public:
         else if (dir == Floor::WEST)
             new_tile += left_tile;
         if (f.type == Floor::UP)
-            new_tile += glm::ivec3(0, 0, 1);
+            new_tile += FT::ivec3(0, 0, 1);
         else if (f.type == Floor::DOWN)
-            new_tile += glm::ivec3(0, 0, -1);
+            new_tile += FT::ivec3(0, 0, -1);
         return (new_tile);
     }
 
-    Floor::Direction GetNextDirection(glm::ivec3 tile, Floor::Direction dir)
+    Floor::Direction GetNextDirection(FT::ivec3 tile, Floor::Direction dir)
     {
         Floor f = At(tile);
         Floor::Direction back_dir;
@@ -274,23 +272,23 @@ public:
         }
     }
 
-    void PlaceFloor(glm::ivec3 at, Floor floor)
+    void PlaceFloor(FT::ivec3 at, Floor floor)
     {
         At(at) = floor;
         if (floor.type == Floor::DOWN || floor.type == Floor::UP)
         {
-            At(at + glm::ivec3(0, 0, 1)) = Floor(floor.type, floor.dir, false);
-            At(at + glm::ivec3(0, 0, -1)) = Floor(floor.type, floor.dir, false);
+            At(at + FT::ivec3(0, 0, 1)) = Floor(floor.type, floor.dir, false);
+            At(at + FT::ivec3(0, 0, -1)) = Floor(floor.type, floor.dir, false);
         }
     }
 
-    void RemoveFloor(glm::ivec3 at)
+    void RemoveFloor(FT::ivec3 at)
     {
         Floor floor = At(at);
         if (floor.type == Floor::DOWN || floor.type == Floor::UP)
         {
-            At(at + glm::ivec3(0, 0, 1)) = Floor(Floor::EMPTY, Floor::NONE);
-            At(at + glm::ivec3(0, 0, -1)) = Floor(Floor::EMPTY, Floor::NONE);
+            At(at + FT::ivec3(0, 0, 1)) = Floor(Floor::EMPTY, Floor::NONE);
+            At(at + FT::ivec3(0, 0, -1)) = Floor(Floor::EMPTY, Floor::NONE);
         }
         At(at) = Floor(Floor::EMPTY, Floor::NONE);
     }
@@ -337,7 +335,7 @@ public:
         return (final_type);
     }
 
-    void RandomizeNextTiles(glm::ivec3 player_tile, glm::ivec3 prev2_player_tile)
+    void RandomizeNextTiles(FT::ivec3 player_tile, FT::ivec3 prev2_player_tile)
     {
         if (!m_random) return;
         RemoveFloor(prev2_player_tile);
@@ -353,11 +351,11 @@ public:
                     for (int k = 0; k < MAX_BRANCH; k++)
                     {
                         if (k == i) continue;
-                        for (glm::ivec3& pos : m_branches[k])
+                        for (FT::ivec3& pos : m_branches[k])
                             RemoveFloor(pos);
                     }
                     //TODO UPDATE CORNER COUNTER ACCORDING TO
-                    m_corner_cnt = glm::ivec3(0);
+                    m_corner_cnt = FT::ivec3(0);
                     //m_corner_cnt[MAIN_BRANCH] = m_corner_cnt[i];
                     //m_corner_cnt[LEFT_BRANCH] = 0;
                     //m_corner_cnt[RIGHT_BRANCH] = 0;
@@ -365,7 +363,7 @@ public:
                     m_prev_floor[LEFT_BRANCH] = Floor::EMPTY;
                     m_prev_floor[RIGHT_BRANCH] = Floor::EMPTY;
                     m_active_branches = false;
-                    glm::ivec3 sav = m_branches[i].back();
+                    FT::ivec3 sav = m_branches[i].back();
                     ClearBranches();
                     m_branches[MAIN_BRANCH].push_back(sav);
                     break;
@@ -377,10 +375,10 @@ public:
                 {
                     if (m_branches[i].size() < 2)
                         continue;
-                    glm::ivec3 tile = m_branches[i].back();
+                    FT::ivec3 tile = m_branches[i].back();
                     Floor f = At(tile);
                     Floor::Direction new_dir = GetNextDirection(tile, Floor::NORTH);
-                    glm::ivec3 new_tile = GetNextTile(tile, Floor::NORTH);
+                    FT::ivec3 new_tile = GetNextTile(tile, Floor::NORTH);
                     Floor::Type new_type = RandomFloor(f.type, i);
                     PlaceFloor(new_tile, Floor(new_type, new_dir));
                     m_branches[i].push_back(new_tile);
@@ -389,26 +387,26 @@ public:
             if (m_active_branches && m_intersection)
             {
                 m_intersection = false;
-                glm::ivec3 tile = m_branches[MAIN_BRANCH].back();
+                FT::ivec3 tile = m_branches[MAIN_BRANCH].back();
                 Floor f = At(tile);
                 Floor::Direction new_dir = GetNextDirection(tile, Floor::NORTH);
                 if (f.type & Floor::FORWARD)
                 {
-                    glm::ivec3 new_tile = GetNextTile(tile, Floor::NORTH);
+                    FT::ivec3 new_tile = GetNextTile(tile, Floor::NORTH);
                     new_dir = GetNextDirection(tile, Floor::NORTH);
                     PlaceFloor(new_tile, Floor(Floor::FORWARD, new_dir));
                     m_branches[MAIN_BRANCH].push_back(new_tile);
                 }
                 if (f.type & Floor::LEFT)
                 {
-                    glm::ivec3 new_tile = GetNextTile(tile, Floor::WEST);
+                    FT::ivec3 new_tile = GetNextTile(tile, Floor::WEST);
                     new_dir = GetNextDirection(tile, Floor::WEST);
                     PlaceFloor(new_tile, Floor(Floor::FORWARD, new_dir));
                     m_branches[LEFT_BRANCH].push_back(new_tile);
                 }
                 if (f.type & Floor::RIGHT)
                 {
-                    glm::ivec3 new_tile = GetNextTile(tile, Floor::EAST);
+                    FT::ivec3 new_tile = GetNextTile(tile, Floor::EAST);
                     new_dir = GetNextDirection(tile, Floor::EAST);
                     PlaceFloor(new_tile, Floor(Floor::FORWARD, new_dir));
                     m_branches[RIGHT_BRANCH].push_back(new_tile);
@@ -418,7 +416,7 @@ public:
         if (!m_active_branches)
         {
             // WE FIRST GET THE BACK TILE OF THE MAIN BRANCH
-            glm::ivec3 tile = m_branches[MAIN_BRANCH].back();
+            FT::ivec3 tile = m_branches[MAIN_BRANCH].back();
             Floor f = At(tile);
             // A RANDOM FLOOR IS GENERATED
             Floor::Type new_type = RandomFloor(f.type, MAIN_BRANCH);

@@ -28,7 +28,7 @@ namespace FT {
             m_data.tr.pop();
         while (!m_data.ly.empty())
             m_data.ly.pop();
-        m_data.tr.push(glm::mat4(1.0));
+        m_data.tr.push(FT::mat4(1.0));
         std::shared_ptr<Layer> layer = std::make_shared<Layer>();
         layer->SetCamera(m_data.default_camera);
         layer->SetShader(m_data.default_shader);
@@ -166,32 +166,32 @@ namespace FT {
     }
 
     /* TRANSFORMATION STACK */
-    void Feldespato::Translate(glm::vec3 v)
+    void Feldespato::Translate(FT::vec3 v)
     {
-        glm::mat4 tr = glm::translate(glm::mat4(1.0), v);
+        FT::mat4 tr = FT::translate(v);
         m_data.tr.top() *= tr;
     }
-    void Feldespato::Scale(glm::vec3 v)
+    void Feldespato::Scale(FT::vec3 v)
     {
-        glm::mat4 sc = glm::scale(glm::mat4(1.0), v);
+        FT::mat4 sc = FT::scale(v);
         m_data.tr.top() *= sc;
     }
     void Feldespato::RotateX(float a)
     {
-        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, glm::vec3(1.0, 0.0, 0.0));
+        FT::mat4 rt = FT::rotateX(a);
         m_data.tr.top() *= rt;
     }
     void Feldespato::RotateY(float a)
     {
-        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, glm::vec3(0.0, 1.0, 0.0));
+        FT::mat4 rt = FT::rotateY(a);
         m_data.tr.top() *= rt;
     }
     void Feldespato::RotateZ(float a)
     {
-        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, glm::vec3(0.0, 0.0, 1.0));
+        FT::mat4 rt = FT::rotateZ(a);
         m_data.tr.top() *= rt;
     }
-    glm::mat4 Feldespato::GetTransform() const
+    FT::mat4 Feldespato::GetTransform() const
     {
         return (m_data.tr.top());
     }
@@ -237,11 +237,11 @@ namespace FT {
     {
         return (m_window->GetKey(key));
     }
-    glm::vec2 Feldespato::GetMousePosPrev()
+    FT::vec2 Feldespato::GetMousePosPrev()
     {
         return (m_window->GetMousePosPrev());
     }
-    glm::vec2 Feldespato::GetMousePos()
+    FT::vec2 Feldespato::GetMousePos()
     {
         return (m_window->GetMousePos());
     }

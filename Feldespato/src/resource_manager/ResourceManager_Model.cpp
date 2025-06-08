@@ -43,24 +43,24 @@ namespace FT {
 			/* DIFFUSE */
 		c = aiColor3D(0.0f, 0.0f, 0.0f);
 		mat->Get(AI_MATKEY_COLOR_DIFFUSE, c);
-		material.SetColor(glm::vec3(c.r, c.g, c.b));
-		material.SetColor(glm::vec3(c.r, c.g, c.b), Material::DIFFUSE);
+		material.SetColor(FT::vec3(c.r, c.g, c.b));
+		material.SetColor(FT::vec3(c.r, c.g, c.b), Material::DIFFUSE);
 			/* SPECULAR */
 		c = aiColor3D(0.0f, 0.0f, 0.0f);
 		mat->Get(AI_MATKEY_COLOR_SPECULAR, c);
-		material.SetColor(glm::vec3(c.r, c.g, c.b), Material::SPECULAR);
+		material.SetColor(FT::vec3(c.r, c.g, c.b), Material::SPECULAR);
 			/* AMBIENT */
 		c = aiColor3D(0.0f, 0.0f, 0.0f);
 		mat->Get(AI_MATKEY_COLOR_AMBIENT, c);
-		material.SetColor(glm::vec3(c.r, c.g, c.b), Material::AMBIENT);
+		material.SetColor(FT::vec3(c.r, c.g, c.b), Material::AMBIENT);
 			/* EMISSIVE */
 		c = aiColor3D(0.0f, 0.0f, 0.0f);
 		mat->Get(AI_MATKEY_COLOR_EMISSIVE, c);
-		material.SetColor(glm::vec3(c.r, c.g, c.b), Material::EMISSIVE);
+		material.SetColor(FT::vec3(c.r, c.g, c.b), Material::EMISSIVE);
 			/* TRANSPARENT */
 		c = aiColor3D(0.0f, 0.0f, 0.0f);
 		mat->Get(AI_MATKEY_COLOR_TRANSPARENT, c);
-		material.SetColor(glm::vec3(c.r, c.g, c.b), Material::TRANSPARENT);
+		material.SetColor(FT::vec3(c.r, c.g, c.b), Material::TRANSPARENT);
 			/* OPACITY */
 		value = 0.0;
 		mat->Get(AI_MATKEY_OPACITY, value);
@@ -96,24 +96,24 @@ namespace FT {
 			Vertex vertex;
 			// POSITION
 			aiVector3D ai_pos = mesh->mVertices[v];
-			vertex.pos = glm::vec3(ai_pos.x, ai_pos.y, ai_pos.z);
+			vertex.pos = FT::vec3(ai_pos.x, ai_pos.y, ai_pos.z);
 			// COLOR
 			if (mesh->HasVertexColors(0))
 			{
 				aiColor4D ai_col = mesh->mColors[0][v];
-				vertex.color = glm::vec4(ai_col.r, ai_col.g, ai_col.b, ai_col.a);
+				vertex.color = FT::vec4(ai_col.r, ai_col.g, ai_col.b, ai_col.a);
 			}
 			// NORMAL
 			if (mesh->HasNormals())
 			{
 				aiVector3D ai_norm = mesh->mNormals[v];
-				vertex.normal = glm::vec3(ai_norm.x, ai_norm.y, ai_norm.z);
+				vertex.normal = FT::vec3(ai_norm.x, ai_norm.y, ai_norm.z);
 			}
 			// TEX COORDS
 			if (mesh->HasTextureCoords(0))
 			{
 				aiVector3D ai_tex = mesh->mTextureCoords[0][v];
-				vertex.tex_coords = glm::vec3(ai_tex.x, ai_tex.y, ai_tex.z);
+				vertex.tex_coords = FT::vec3(ai_tex.x, ai_tex.y, ai_tex.z);
 			}
 			vertices.push_back(vertex);
 		}
@@ -136,7 +136,11 @@ namespace FT {
 		{
 			aiBone* bone = mesh->mBones[i];
 			std::string bone_name = bone->mName.C_Str();
-			bone_id_current = model.CreateBone(bone_name, node_name, glm::transpose(glm::make_mat4((float*)&bone->mOffsetMatrix)));
+
+			FT::mat4 tr;
+			std::memcpy(tr.data, (float*)&bone->mOffsetMatrix, sizeof(tr.data));
+
+			bone_id_current = model.CreateBone(bone_name, node_name, FT::transpose(tr));
 			for (size_t w = 0; w < mesh->mBones[i]->mNumWeights; w++)
 			{
 				aiVertexWeight* weight = mesh->mBones[i]->mWeights;
@@ -153,57 +157,20 @@ namespace FT {
 
 	void ResourceManager::process_node(const aiScene* scene, aiNode* node, aiNode* node_parent, Model & model)
 	{
-		glm::mat4 node_tr = glm::transpose(glm::make_mat4((float*)&node->mTransformation));
+		FT::mat4 tr;
+		std::memcpy(tr.data, (float*)&node->mTransformation, sizeof(tr.data));
+
 		std::string node_name = node->mName.C_Str();
 		std::string parent_node_name;
 		if (node != node_parent)
 			parent_node_name = node_parent->mName.C_Str();
 		else
 			parent_node_name = "";
-		model.AddNode(node_name, node_tr, parent_node_name);
+		model.AddNode(node_name, FT::transpose(tr), parent_node_name);
 		for (unsigned int i = 0; i < node->mNumMeshes; i++)
 			process_mesh(scene, scene->mMeshes[node->mMeshes[i]], model, node_name);
 		for (unsigned int i = 0; i < node->mNumChildren; i++)
 			process_node(scene, node->mChildren[i], node, model);
-	}
-
-	void process_animations(const aiScene * scene, Model & model)
-	{
-		if (!scene->HasAnimations()) return;
-		for (int a = 0; a < 1; a++)
-		{
-			aiAnimation* ai_anim = scene->mAnimations[a];
-			Animation anim;
-			anim.SetDuration(static_cast<float>(ai_anim->mDuration));
-			anim.SetTicksPerSecond(static_cast<float>(ai_anim->mTicksPerSecond));
-			anim.SetName(ai_anim->mName.C_Str());
-			for (unsigned int c = 0; c < ai_anim->mNumChannels; c++)
-			{
-				aiNodeAnim* channel = ai_anim->mChannels[c];
-				// Key Positions
-				for (unsigned int k = 0; k < channel->mNumPositionKeys; k++)
-				{
-					aiVector3D value = channel->mPositionKeys[k].mValue;
-					glm::vec3 pos = glm::vec3(value.x, value.y, value.z);
-					anim.AddPositionKeyFrame(pos, static_cast<float>(channel->mPositionKeys[k].mTime), channel->mNodeName.data);
-				}
-				// Key Scales
-				for (unsigned int k = 0; k < channel->mNumScalingKeys; k++)
-				{
-					aiVector3D value = channel->mScalingKeys[k].mValue;
-					glm::vec3 scale = glm::vec3(value.x, value.y, value.z);
-					anim.AddScaleKeyFrame(scale, static_cast<float>(channel->mScalingKeys[k].mTime), channel->mNodeName.data);
-				}
-				// Key Rotations
-				for (unsigned int k = 0; k < channel->mNumRotationKeys; k++)
-				{
-					aiQuaternion value = channel->mRotationKeys[k].mValue;
-					glm::quat quat = glm::quat(value.w, value.x, value.y, value.z);
-					anim.AddRotationKeyFrame(quat, static_cast<float>(channel->mRotationKeys[k].mTime), channel->mNodeName.data);
-				}
-			}
-			model.AddAnimation(anim);
-		}
 	}
 
 	Model ResourceManager::LoadModel(const std::string & path)
@@ -218,9 +185,12 @@ namespace FT {
 		if (!scene)
 			return (Model(load_cube()));
 		model.SetPath(path);
-		model.SetGlobalInverse(glm::transpose(glm::make_mat4((float*)&scene->mRootNode->mTransformation)));
+
+		FT::mat4 tr;
+		std::memcpy(tr.data, (float*)&scene->mRootNode->mTransformation, sizeof(tr.data));
+
+		model.SetGlobalInverse(FT::transpose(tr));
 		process_node(scene, scene->mRootNode, scene->mRootNode, model);
-		process_animations(scene, model);
 		aiReleaseImport(scene);
 		return (model);
 	}

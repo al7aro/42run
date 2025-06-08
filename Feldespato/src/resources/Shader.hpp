@@ -1,11 +1,11 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
 
 #include <string>
 #include <iostream>
+
+#include "../math/Math.hpp"
 
 namespace FT {
 	class Shader
@@ -27,11 +27,11 @@ namespace FT {
 
 		void SetInt(const std::string & name, int value) const;
 		void SetFloat(const std::string & name, float value) const;
-		void SetVec2(const std::string & name, glm::vec2 value) const;
-		void SetVec3(const std::string & name, glm::vec3 value) const;
-		void SetVec4(const std::string & name, glm::vec4 value) const;
-		void SetMat4(const std::string & name, glm::mat4 value) const;
-		void SetMat3(const std::string & name, glm::mat3 value) const;
+		void SetVec2(const std::string & name, FT::vec2 value) const;
+		void SetVec3(const std::string & name, FT::vec3 value) const;
+		void SetVec4(const std::string & name, FT::vec4 value) const;
+		void SetMat4(const std::string & name, FT::mat4 value) const;
+		void SetMat3(const std::string & name, FT::mat3 value) const;
 
 		unsigned int GetId();
 	};

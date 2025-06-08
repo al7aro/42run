@@ -9,7 +9,14 @@
 /* ****************************** */
 
 namespace FT {
+    constexpr float TWO_PI = 2.0*3.1415926;
     constexpr float PI = 3.1415926;
+    constexpr float HALF_PI = 3.1415926/2.0;
+
+    struct vec2;
+    struct vec2;
+    struct ivec3;
+    struct vec4;
 
 /* ------------------- VEC2 ------------------- */
     struct vec2
@@ -29,9 +36,10 @@ namespace FT {
         vec2(float v);
         float& operator[](int index);
         const float& operator[](int index) const;
+        bool operator!=(const vec2 & o);
+        bool operator==(const vec2 & o);
         vec2 operator+(const vec2& o) const;
         vec2& operator+=(const vec2& o);
-        vec2 operator-(const vec2& o) const;
         vec2& operator-=(const vec2& o);
         vec2 operator*(const vec2& v) const;
         vec2& operator*=(const vec2& v);
@@ -44,8 +52,8 @@ namespace FT {
         float len() const;
         float len2() const;
     };
-    vec2 operator+(const vec2& v1, const vec2& v2);
     vec2 operator-(const vec2& v1, const vec2& v2);
+    vec2 operator-(const vec2& v);
     vec2 operator*(const float& scalar, const vec2& v);
     vec2 dot(const vec2& v1, const vec2& v2);
     vec2 normalize(const vec2& v1);
@@ -67,12 +75,14 @@ namespace FT {
 
         vec3();
         vec3(float p_x, float p_y, float p_z);
+        vec3(ivec3 v);
         vec3(float v);
         float& operator[](int index);
         const float& operator[](int index) const;
+        bool operator!=(const vec3 & o);
+        bool operator==(const vec3 & o);
         vec3 operator+(const vec3& o) const;
         vec3& operator+=(const vec3& o);
-        vec3 operator-(const vec3& o) const;
         vec3& operator-=(const vec3& o);
         vec3 operator*(const vec3& v) const;
         vec3& operator*=(const vec3& v);
@@ -85,8 +95,8 @@ namespace FT {
         float len() const;
         float len2() const;
     };
-    vec3 operator+(const vec3& v1, const vec3& v2);
     vec3 operator-(const vec3& v1, const vec3& v2);
+    vec3 operator-(const vec3& v);
     vec3 operator*(const float& scalar, const vec3& v);
     vec3 dot(const vec3& v1, const vec3& v2);
     vec3 cross(const vec3& v1, const vec3& v2);
@@ -113,6 +123,8 @@ namespace FT {
         vec4(float v);
         float& operator[](int index);
         const float& operator[](int index) const;
+        bool operator!=(const vec4 & o);
+        bool operator==(const vec4 & o);
         vec4 operator+(const vec4& o) const;
         vec4& operator+=(const vec4& o);
         vec4 operator-(const vec4& o) const;
@@ -129,8 +141,8 @@ namespace FT {
         float len2() const;
     };
     vec4 operator*(const float& scalar, const vec4& v);
-    vec4 operator+(const vec4& v1, const vec4& v2);
     vec4 operator-(const vec4& v1, const vec4& v2);
+    vec4 operator-(const vec4& v);
     vec4 dot(const vec4& v1, const vec4& v2);
     vec4 normalize(const vec4& v1);
 /* -------------------------------------------- */
@@ -150,13 +162,15 @@ namespace FT {
         };
 
         ivec3();
+        ivec3(const vec3 & v);
         ivec3(int p_x, int p_y, int p_z);
         ivec3(int v);
         int& operator[](int index);
         const int& operator[](int index) const;
+        bool operator!=(const ivec3 & o);
+        bool operator==(const ivec3 & o);
         ivec3 operator+(const ivec3& o) const;
         ivec3& operator+=(const ivec3& o);
-        ivec3 operator-(const ivec3& o) const;
         ivec3& operator-=(const ivec3& o);
         ivec3 operator*(const ivec3& v) const;
         ivec3& operator*=(const ivec3& v);
@@ -169,11 +183,53 @@ namespace FT {
         float len() const;
         float len2() const;
     };
-    ivec3 operator+(const ivec3& v1, const ivec3& v2);
     ivec3 operator-(const ivec3& v1, const ivec3& v2);
+    ivec3 operator-(const ivec3& v);
     ivec3 operator*(const float& scalar, const ivec3& v);
     ivec3 dot(const ivec3& v1, const ivec3& v2);
     ivec3 cross(const ivec3& v1, const ivec3& v2);
+/* -------------------------------------------- */
+
+/* ------------------- iVEC4 ------------------- */
+    struct ivec4
+    {
+        union
+        {
+            struct
+            {
+                int x;
+                int y;
+                int z;
+                int w;
+            };
+            int data[3];
+        };
+
+        ivec4();
+        ivec4(int p_x, int p_y, int p_z, int p_w);
+        ivec4(int v);
+        int& operator[](int index);
+        const int& operator[](int index) const;
+        bool operator!=(const ivec4& o);
+        bool operator==(const ivec4& o);
+        ivec4 operator+(const ivec4& o) const;
+        ivec4& operator+=(const ivec4& o);
+        ivec4& operator-=(const ivec4& o);
+        ivec4 operator*(const ivec4& v) const;
+        ivec4& operator*=(const ivec4& v);
+        ivec4 operator/(const ivec4& v) const;
+        ivec4& operator/=(const ivec4& v);
+        ivec4 operator*(const float& scalar) const;
+        ivec4& operator*=(const float& scalar);
+        ivec4 operator/(const float& scalar) const;
+        ivec4& operator/=(const float& scalar);
+        float len() const;
+        float len2() const;
+    };
+    ivec4 operator-(const ivec4& v1, const ivec4& v2);
+    ivec4 operator-(const ivec4& v);
+    ivec4 operator*(const float& scalar, const ivec4& v);
+    ivec4 dot(const ivec4& v1, const ivec4& v2);
 /* -------------------------------------------- */
 
     /* OPENGL USES COLUMN MAJOR ORDER */
@@ -249,7 +305,7 @@ namespace FT {
 /* -------------------------------------------- */
 
 /* ------------- USEFUL MATRICES -------------- */
-    mat4 ortho(float left, float right, float bottom, float top, float near, float far);
+    mat4 ortho(float left, float right, float bottom, float top);
     mat4 perspective(float fov, float aspect, float near, float far);
     mat4 translate(FT::vec3 v);
     mat4 scale(FT::vec3 v);
@@ -259,4 +315,16 @@ namespace FT {
     mat4 rotateY(float angle);
     mat4 rotateZ(float angle);
 /* -------------------------------------------- */
+
+/* ------------------- UTILS ------------------ */
+    float clamp(float value, float min, float max);
+    float abs(float value);
+    int abs(int value);
+    float round(float value);
+    vec3 round(const vec3& value);
+    int sign(float v);
+    float mod(float value, float base);
+    float radians(float deg);
+    float sin(float rad);
+    float cos(float rad);
 }

@@ -61,7 +61,7 @@ public:
             return;
         has_obstacles = true;
         // If it has obscatles fill them randomly
-        int slot = glm::round(2.0 * (double(std::rand()) / double(RAND_MAX)));
+        int slot = FT::round(2.0 * (double(std::rand()) / double(RAND_MAX)));
         // It will always have at least one obstacle
         obstacles[slot] = 1;
 

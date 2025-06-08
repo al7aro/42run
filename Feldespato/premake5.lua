@@ -17,7 +17,6 @@ project "Feldespato"
         "vendor/imgui/imgui",
         "vendor/glfw/glfw/include",
         "vendor/glad/glad4.6/include",
-        "vendor/glm/glm",
         "vendor/stb/stb/include",
         "vendor/assimp/assimp/include",
         "vendor/assimp/_config_headers/",

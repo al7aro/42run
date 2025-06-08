@@ -76,25 +76,25 @@ namespace FT {
 	{
 		glProgramUniform1f(m_id, glGetUniformLocation(m_id, name.c_str()), value);
 	}
-	void Shader::SetVec2(const std::string & name, glm::vec2 value) const
+	void Shader::SetVec2(const std::string & name, FT::vec2 value) const
 	{
-		glProgramUniform2fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, glm::value_ptr(value));
+		glProgramUniform2fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, &value[0]);
 	}
-	void Shader::SetVec3(const std::string & name, glm::vec3 value) const
+	void Shader::SetVec3(const std::string & name, FT::vec3 value) const
 	{
-		glProgramUniform3fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, glm::value_ptr(value));
+		glProgramUniform3fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, &value[0]);
 	}
-	void Shader::SetVec4(const std::string & name, glm::vec4 value) const
+	void Shader::SetVec4(const std::string & name, FT::vec4 value) const
 	{
-		glProgramUniform4fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, glm::value_ptr(value));
+		glProgramUniform4fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, &value[0]);
 	}
-	void Shader::SetMat4(const std::string & name, glm::mat4 value) const
+	void Shader::SetMat4(const std::string & name, FT::mat4 value) const
 	{
-		glProgramUniformMatrix4fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, false, glm::value_ptr(value));
+		glProgramUniformMatrix4fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, false, &value[0]);
 	}
-	void Shader::SetMat3(const std::string & name, glm::mat3 value) const
+	void Shader::SetMat3(const std::string & name, FT::mat3 value) const
 	{
-		glProgramUniformMatrix3fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, false, glm::value_ptr(value));
+		glProgramUniformMatrix3fv(m_id, glGetUniformLocation(m_id, name.c_str()), 1, false, &value[0]);
 	}
 	
 	unsigned int Shader::GetId()

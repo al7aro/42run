@@ -1,18 +1,17 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "math/Math.hpp"
 
 namespace FT {
     struct Transform
     {
-        glm::vec3 pos;
-        glm::vec3 size;
+        FT::vec3 pos;
+        FT::vec3 size;
         float rotX;
         float rotY;
         float rotZ;
 
-        glm::mat4 parent;
+        FT::mat4 parent;
 
 		Transform()
             : pos(0.0), size(1.0), parent(1.0),
@@ -23,68 +22,69 @@ namespace FT {
         Transform(float s)
             : Transform()
         {
-            size = glm::vec3(s);
+            size = FT::vec3(s);
         }
 
-        Transform(glm::vec3 p)
+        Transform(FT::vec3 p)
             : pos(p), size(1.0), parent(1.0),
             rotX(0.0), rotY(0.0), rotZ(0.0)
         {
         }
-        Transform(glm::vec3 p, glm::vec3 s)
+        Transform(FT::vec3 p, FT::vec3 s)
             : pos(p), size(s), parent(1.0),
             rotX(0.0), rotY(0.0), rotZ(0.0)
         {
         }
 
-        glm::mat4 GetTranslate() const
+        FT::mat4 GetTranslate() const
         {
-            glm::mat4 translate = glm::translate(glm::mat4(1.0), pos);
+            FT::mat4 translate = FT::translate(pos);
             return (translate);
         }
 
-        glm::mat4 GetScale() const
+        FT::mat4 GetScale() const
         {
-            glm::mat4 scale = glm::translate(glm::mat4(1.0), pos);
+            FT::mat4 scale = FT::translate(pos);
             return (scale);
         }
 
-        glm::mat4 GetRotation() const
+        FT::mat4 GetRotation() const
         {
-            glm::mat4 rotation = glm::rotate(glm::mat4(1.0), rotX, glm::vec3(1.0, 0.0, 0.0));
-            rotation *= glm::rotate(glm::mat4(1.0), rotY, glm::vec3(0.0, 1.0, 0.0));
-            rotation *= glm::rotate(glm::mat4(1.0), rotZ, glm::vec3(0.0, 0.0, 1.0));
+            FT::mat4 rotation = FT::rotateX(rotX);
+            rotation *= FT::rotateY(rotY);
+            rotation *= FT::rotateZ(rotZ);
             return (rotation);
         }
 
-        glm::mat4 GetTransform() const
+        FT::mat4 GetTransform() const
         {
-            glm::mat4 translate = glm::translate(glm::mat4(1.0), pos);
-            glm::mat4 scale = glm::scale(glm::mat4(1.0), size);
-            glm::mat4 rotation = glm::rotate(glm::mat4(1.0), rotX, glm::vec3(1.0, 0.0, 0.0));
-            rotation *= glm::rotate(glm::mat4(1.0), rotY, glm::vec3(0.0, 1.0, 0.0));
-            rotation *= glm::rotate(glm::mat4(1.0), rotZ, glm::vec3(0.0, 0.0, 1.0));
+            FT::mat4 total_tr = parent;
+            total_tr *= FT::translate(pos);
+            total_tr *= FT::scale(size);
+            total_tr *= FT::rotateX(rotX);
+            total_tr *= FT::rotateY(rotY);
+            total_tr *= FT::rotateZ(rotZ);
 
-            return (parent * translate * scale * rotation);
+            return (total_tr);
         }
 
-        void Scale(const glm::vec3& offset)
+        void Scale(const FT::vec3& offset)
         {
             this->size *= offset;
         }
         void Pitch(const float& angle)
         {
-            glm::vec3 right = glm::vec3(1.0, 0.0, 0.0);
+            FT::vec3 right = FT::vec3(1.0, 0.0, 0.0);
             rotX += angle;
         }
         void Roll(const float& angle)
         {
-            glm::vec3 front = glm::vec3(0.0, 0.0, 1.0);
+            FT::vec3 front = FT::vec3(0.0, 0.0, 1.0);
             rotZ += angle;
         }
         void Yaw(const float& angle)
         {
-            glm::vec3 up = glm::vec3(0.0, 1.0, 0.0);
+            FT::vec3 up = FT::vec3(0.0, 1.0, 0.0);
             rotY += angle;
         }
     };

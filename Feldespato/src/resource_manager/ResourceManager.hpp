@@ -21,7 +21,6 @@
 #include "../resources/Geometry.hpp"
 #include "../resources/Mesh.hpp"
 #include "../resources/Model.hpp"
-#include "../resources/Animation.hpp"
 #include "../Vertex.hpp"
 
 namespace FT {

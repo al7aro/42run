@@ -46,7 +46,6 @@ texture = fdp.EndRenderPass();
 
 - <a href="https://github.com/assimp/assimp"><img src="https://camo.githubusercontent.com/42e0ad409257f3532d48a9ba1c251fe486854891850f8d5b6b82e3cbf16c1336/687474703a2f2f692e696d6775722e636f6d2f757765686f64722e706e67" align="center" width=25/> **ASSIMP**</a> (model loading)
 - <a href="https://www.glfw.org/"><img src="https://www.glfw.org/img/favicon/favicon-196x196.png" width=30 align="center"/> **GLFW**</a> (windows and inputs)
-- <a href="https://github.com/g-truc/glm"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/GLM_logo.png" align="center" width=50/> **GLM**</a> (maths)
 - <a href="https://github.com/nothings/stb">**STB**</a> (image loading)
 - <a href="https://glad.dav1d.de/"> **GLAD**</a> (manage <a href="https://www.opengl.org"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Opengl-logo.svg" align="center" width=50/></h1></a> extensions)
 

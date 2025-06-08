@@ -1,10 +1,11 @@
 #pragma once
 
-#include <glm/glm.hpp>
 #include <memory>
 
 #include "Texture2D.hpp"
 #include "Shader.hpp"
+
+#include "../math/Math.hpp"
 
 namespace FT {
     //TODO: change this to a struct??
@@ -42,12 +43,12 @@ namespace FT {
         std::shared_ptr<Texture2D> m_normal_map;
         bool m_normal_enabled;
         
-        glm::vec3 m_col;
-        glm::vec3 m_diffuse;
-        glm::vec3 m_specular;
-        glm::vec3 m_ambient;
-        glm::vec3 m_emissive;
-        glm::vec3 m_transparent;
+        FT::vec3 m_col;
+        FT::vec3 m_diffuse;
+        FT::vec3 m_specular;
+        FT::vec3 m_ambient;
+        FT::vec3 m_emissive;
+        FT::vec3 m_transparent;
         float m_opacity;
         float m_shininess;
         float m_shininess_strength;
@@ -57,12 +58,12 @@ namespace FT {
         Material();
         Material(const Material & o);
         Material & operator=(const Material & o);
-        Material(glm::vec3 col);
+        Material(FT::vec3 col);
         Material(const std::shared_ptr<Texture2D> & texture);
         ~Material();
 
-        void                        SetColor(const glm::vec3 & col, MaterialProperty type = COLOR);
-        glm::vec3                   GetColor(MaterialProperty type = COLOR);
+        void                        SetColor(const FT::vec3 & col, MaterialProperty type = COLOR);
+        FT::vec3                    GetColor(MaterialProperty type = COLOR);
         void                        SetValue(float value, MaterialProperty type);
         float                       GetValue(MaterialProperty type);
 

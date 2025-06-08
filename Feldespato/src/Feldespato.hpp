@@ -25,7 +25,7 @@ namespace FT {
         std::shared_ptr<Shader>             default_shader;
         Camera                              default_camera;
         std::stack<std::shared_ptr<Layer> > ly;
-		std::stack<glm::mat4>               tr;
+		std::stack<FT::mat4>               tr;
 	};
 
     class Feldespato
@@ -66,14 +66,14 @@ namespace FT {
         void                        Draw(Model & model, Transform transform);
 
         /* TRANSFORMATION STACK */
-        void                        Translate(glm::vec3 v);
-        void                        Scale(glm::vec3 v);
+        void                        Translate(FT::vec3 v);
+        void                        Scale(FT::vec3 v);
         void                        RotateX(float a);
         void                        RotateY(float a);
         void                        RotateZ(float a);
         void                        PushMatrix();
         void                        PopMatrix();
-        glm::mat4                   GetTransform() const;
+        FT::mat4                   GetTransform() const;
 
         /* RESOURCE LOADING */
         Model                       LoadModel(const std::string& path);
@@ -85,8 +85,8 @@ namespace FT {
         
         /* INPUT */
         int                         GetKey(int key);
-        glm::vec2                   GetMousePosPrev();
-        glm::vec2                   GetMousePos();
+        FT::vec2                   GetMousePosPrev();
+        FT::vec2                   GetMousePos();
         int                         GetMouseButton(int button);
 
         /* MISCELLANEOUS */
