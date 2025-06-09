@@ -22,7 +22,6 @@ project "42run"
         "imgui",
         "glfw",
         "glad",
-        "assimp",
         "stb",
     }
 
@@ -32,7 +31,4 @@ project "42run"
         "%{wks.location}/Feldespato/vendor/glfw/glfw/include",
         "%{wks.location}/Feldespato/vendor/glad/glad4.6/include",
         "%{wks.location}/Feldespato/vendor/stb/stb/include",
-        "%{wks.location}/Feldespato/vendor/assimp/assimp/include",
-        "%{wks.location}/Feldespato/vendor/assimp/_config_headers/",
-		"%{wks.location}/Feldespato/vendor/assimp/_config_headers/assimp/",
     }

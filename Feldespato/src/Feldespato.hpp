@@ -77,7 +77,6 @@ namespace FT {
 
         /* RESOURCE LOADING */
         Model                       LoadModel(const std::string& path);
-        std::vector<Mesh>           LoadMeshCustom(const std::string& path);
         Mesh                        LoadMeshRect();
         Mesh                        LoadMeshCube();
         std::shared_ptr<Shader>     LoadShader(const std::string& path);

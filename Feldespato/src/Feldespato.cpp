@@ -218,10 +218,6 @@ namespace FT {
     {
         return (m_rm->LoadModel(path));
     }
-    std::vector<Mesh> Feldespato::LoadMeshCustom(const std::string& path)
-    {
-        return (m_rm->LoadMesh(path));
-    }
     Mesh Feldespato::LoadMeshRect()
     {
         return (m_rm->LoadMesh(Mesh::MeshType::RECT));

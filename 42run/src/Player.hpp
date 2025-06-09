@@ -31,7 +31,7 @@ private:
 
 	// TODO: ADD CROUCHING ANIMATION
 public:
-	Player(FT::Feldespato & fdp, const std::string & model_path = SANDBOX_ASSETS_DIRECTORY"/marvin/Marvin.dae")
+	Player(FT::Feldespato & fdp, const std::string & model_path = SANDBOX_ASSETS_DIRECTORY"/marvin/Marvin.obj")
 		: m_pos(0.0), m_side(MIDDLE), m_jumping(false), m_jump_speed(0.05), m_jump_offset(0.0)
 	{
 		m_model = fdp.LoadModel(model_path);

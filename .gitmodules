@@ -5,6 +5,3 @@
 [submodule "EngineName/vendor/imgui/imgui"]
 	path = Feldespato/vendor/imgui/imgui
 	url = https://github.com/ocornut/imgui.git
-[submodule "EngineName/vendor/assimp/assimp"]
-	path = Feldespato/vendor/assimp/assimp
-	url = https://github.com/assimp/assimp.git

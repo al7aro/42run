@@ -8,7 +8,8 @@ namespace FT {
 		{
 			COMMENT = 0,
 			NEWMTL,
-			NS, KA, KD, KS, KE, NI, D, ILLUM
+			NS, KA, KD, KS, KE, NI, D, ILLUM,
+			MAP_KD
 		};
 
 		std::map<std::string, Material> materials;
@@ -25,7 +26,8 @@ namespace FT {
 			{"newmtl", LineType::NEWMTL},
 			{"Ns", LineType::NS}, {"Ka", LineType::KA}, {"Kd", LineType::KD},
 			{"Ks", LineType::KS}, {"Ke", LineType::KE}, {"Ni", LineType::NI},
-			{"d", LineType::D}, {"illum", LineType::ILLUM}
+			{"d", LineType::D}, {"illum", LineType::ILLUM},
+			{"map_Kd", LineType::MAP_KD},
 		};
 
 		while (std::getline(f, line))
@@ -34,6 +36,7 @@ namespace FT {
 			sstream >> word; // GET THE TYPE OF LINE WE ARE IN
 			float x, y, z;
 			float value;
+			std::shared_ptr<Texture2D> tex;
 			switch (line_type[word])
 			{
 			case LineType::NEWMTL: // Read the material file and create a material from it
@@ -87,6 +90,12 @@ namespace FT {
 				if (current_mat)
 					current_mat->SetValue(value, Material::OPACITY);
 				break;
+			case LineType::MAP_KD:
+				sstream >> word;
+				tex = this->LoadImage(std::filesystem::path(path).parent_path().string() + "/" + word);
+				if (tex)
+					current_mat->SetTexture(tex, Material::DIFFUSE_MAP);
+				break;
 			//case LineType::ILLUM:
 			//	sstream >> word; value = std::stof(word);
 			//	current_mat->SetValue(value, Material::ILLUMINATION);
@@ -109,22 +118,22 @@ namespace FT {
 		std::getline(ssv1, v1, '/');
 		if (!v1.empty())
 		{
-			i = std::stoi(v1);
-			vertex.pos = pos[std::stoi(v1) - 1];
-		}
-		// NORMALS
-		std::getline(ssv1, v1, '/');
-		if (!v1.empty())
-		{
-			i = std::stoi(v1);
-			vertex.normal = norm[std::stoi(v1) - 1];
+			i = std::stoi(v1) - 1;
+			vertex.pos = pos[i];
 		}
 		// TEX COORDS
 		std::getline(ssv1, v1, '/');
 		if (!v1.empty())
 		{
-			i = std::stoi(v1);
-			vertex.tex_coords = tex[std::stoi(v1) - 1];
+			i = std::stoi(v1) - 1;
+			vertex.tex_coords = tex[i];
+		}
+		// NORMALS
+		std::getline(ssv1, v1, '/');
+		if (!v1.empty())
+		{
+			i = std::stoi(v1) - 1;
+			vertex.normal = norm[i];
 		}
 		return (vertex);
 	}
@@ -208,19 +217,16 @@ namespace FT {
 				index_cnt = 0;
 				break;
 			case LineType::OBJ: // At this point everythign is reset and a new object is about to be read
-				std::cout << "NEW OBJ\n";
 				break;
 			//case LineType::SHADING: // Ignore
-			//	std::cout << "SHADING LINE\n";
 			//	break;
 			case LineType::FACE: // Info needed (always after usemtl) to create the new mesh
-				sstream >> v1; sstream >> v2; sstream >> v3;
+				sstream >> v1;
+				sstream >> v2;
+				sstream >> v3;
+				// WARNING: DOES NOT WORK WITH CONCAVE FACES
 				while (!sstream.fail())
 				{
-					std::cout << "v1: " << v1 << "\n";
-					std::cout << "vertices: " << vertices.size() << "\n";
-					std::cout << "map: " << index_map.size() << "\n";
-					std::cout << "indices: " << indices.size() << "\n";
 					// Vertex 1
 					Vertex vertex = extract_vertex(v1, pos, norm, tex);
 					if (index_map.find(v1) == index_map.end())
@@ -229,7 +235,6 @@ namespace FT {
 						indices.push_back(index_cnt);
 						vertices.push_back(vertex);
 						index_cnt++;
-						std::cout << vertex.pos.x << ", " << vertex.pos.y << ", " << vertex.pos.z << "\n";
 					}
 					else
 						indices.push_back(index_map[v1]);
@@ -255,10 +260,8 @@ namespace FT {
 					}
 					else
 						indices.push_back(index_map[v3]);
-					v2 = v1;
-					v1 = v3;
-					v3 = v2;
-					sstream >> v2;
+					v2 = v3;
+					sstream >> v3;
 				}
 				break;
 			case LineType::V_POS:
@@ -276,7 +279,7 @@ namespace FT {
 			case LineType::V_TEX:
 				sstream >> word; x = std::stof(word);
 				sstream >> word; y = std::stof(word);
-				tex.push_back(FT::vec3(x, y, 0.0));
+				tex.push_back(FT::vec3(x, y, 1.0));
 				break;
 			default:
 				break;

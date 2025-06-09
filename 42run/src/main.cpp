@@ -57,15 +57,13 @@ int main(void)
 	cam.tr.pos = FT::vec3(0.0, 5.0, -5.0);
 	cam.tr.Yaw(FT::PI);
 	cam.tr.Pitch(FT::PI / 8.0);
-	/* MODELS */
-	Model marvin = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/Marvin.dae");
 	/* TRANSFORMS */
 	Transform marvin_tr(FT::vec3(0.0, -5.0, -5));
 	/* Player */
 	Player player(fdp);
 	int score = 0;
 	/* MODEL LOADING TEST */
-	Model meshes(fdp.LoadMeshCustom(SANDBOX_ASSETS_DIRECTORY"/cube/cube2.obj"));
+	Model meshes = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/cube/cube2.obj");
 
 /* ---------------------- GAME SCREEN ---------------------- */
 	std::shared_ptr<Texture2D> intro_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/intro_test.png");

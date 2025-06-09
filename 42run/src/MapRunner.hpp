@@ -52,15 +52,15 @@ public:
         m_climbing(0), m_climbed_tile(false), m_climb_perc(0.5),
         m_score(0), m_collision(false), m_col_passed(false)
     {
-        m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.dae");
-        m_floor_types[Floor::RIGHT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right.dae");
-        m_floor_types[Floor::LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left.dae");
-        m_floor_types[Floor::RIGHT_LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left.dae");
-        m_floor_types[Floor::RIGHT_LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left_front.dae");
-        m_floor_types[Floor::RIGHT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_front.dae");
-        m_floor_types[Floor::LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left_front.dae");
-        m_floor_types[Floor::UP] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_up.dae");
-        m_floor_types[Floor::DOWN] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_down.dae");
+        m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.obj");
+        m_floor_types[Floor::RIGHT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right.obj");
+        m_floor_types[Floor::LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left.obj");
+        m_floor_types[Floor::RIGHT_LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left.obj");
+        m_floor_types[Floor::RIGHT_LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left_front.obj");
+        m_floor_types[Floor::RIGHT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_front.obj");
+        m_floor_types[Floor::LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left_front.obj");
+        m_floor_types[Floor::UP] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_up.obj");
+        m_floor_types[Floor::DOWN] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_down.obj");
     }
 
     void Init(std::shared_ptr<Grid> map)
