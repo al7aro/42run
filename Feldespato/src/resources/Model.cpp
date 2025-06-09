@@ -17,6 +17,13 @@ namespace FT {
 		return (*this);
 	}
 
+	Model::Model(const std::vector<Mesh>& meshes)
+		: m_bone_cnt(0)
+	{
+		for (const auto& m : meshes)
+			AddMesh(m);
+	}
+
 	Model::Model(const Mesh & mesh)
 		: m_bone_cnt(0)
 	{

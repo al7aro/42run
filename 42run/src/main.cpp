@@ -64,6 +64,8 @@ int main(void)
 	/* Player */
 	Player player(fdp);
 	int score = 0;
+	/* MODEL LOADING TEST */
+	Model meshes(fdp.LoadMeshCustom(SANDBOX_ASSETS_DIRECTORY"/cube/cube2.obj"));
 
 /* ---------------------- GAME SCREEN ---------------------- */
 	std::shared_ptr<Texture2D> intro_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/intro_test.png");

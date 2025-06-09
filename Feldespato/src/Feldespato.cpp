@@ -144,6 +144,13 @@ namespace FT {
         Transform transform;
         Cube(transform, mat);
     }
+    void Feldespato::Draw(Mesh& mesh)
+    {
+        Transform transform;
+        transform.parent *= m_data.tr.top();
+        std::shared_ptr<Renderable> renderable = std::make_shared<Renderable>(mesh, transform);
+        m_data.ly.top()->Add(renderable);
+    }
     void Feldespato::Draw(Mesh & mesh, Transform transform, Material mat)
     {
         mesh.SetMaterial(mat);
@@ -211,7 +218,7 @@ namespace FT {
     {
         return (m_rm->LoadModel(path));
     }
-    Mesh Feldespato::LoadMeshCustom(const std::string& path)
+    std::vector<Mesh> Feldespato::LoadMeshCustom(const std::string& path)
     {
         return (m_rm->LoadMesh(path));
     }

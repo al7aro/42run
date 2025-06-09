@@ -2,11 +2,9 @@
 
 namespace FT {
 
-	// Loads first mesh found in the model
-    Mesh ResourceManager::LoadMesh(const std::string & path)
+    std::vector<Mesh> ResourceManager::LoadMesh(const std::string & path)
 	{
-        Model model = LoadModel(path);
-        return (*(model.GetMeshes().begin()));
+        return (mesh_obj_reader(path));
 	}
 
     Mesh ResourceManager::LoadMesh(Mesh::MeshType type)

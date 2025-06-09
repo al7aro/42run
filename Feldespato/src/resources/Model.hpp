@@ -50,6 +50,7 @@ namespace FT {
 		Model();
 		Model(const Model & o);
 		Model & operator=(const Model & o);
+		Model(const std::vector<Mesh>& meshes);
 		Model(const Mesh & mesh);
 		~Model();
 

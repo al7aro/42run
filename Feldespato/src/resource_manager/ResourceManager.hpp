@@ -49,7 +49,7 @@ namespace FT {
         std::shared_ptr<Shader>     LoadShader(const std::string & path);
         std::shared_ptr<Texture2D>  LoadImage(const std::string & path);
         Model                       LoadModel(const std::string& path);
-        Mesh                        LoadMesh(const std::string & path);
+        std::vector<Mesh>           LoadMesh(const std::string & path);
         Mesh                        LoadMesh(Mesh::MeshType type);
 
         std::shared_ptr<Shader>     GetDefaultShader() const { return this->m_DEFAULT_SHADER; }
@@ -59,6 +59,8 @@ namespace FT {
         void Clean();
 
     private:
+        std::vector<Mesh>                           mesh_obj_reader(const std::string& path);
+        std::map<std::string, Material>             mesh_mtl_reader(const std::string& path);
 	    std::shared_ptr<Texture2D>                  read_image(const std::string & path, int desired_channels = 0);
         std::shared_ptr<Shader>                     read_shader(const std::string & path);
         std::shared_ptr<Shader>                     read_shader(const std::string & v_path, const std::string & f_path);
