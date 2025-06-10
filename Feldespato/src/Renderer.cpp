@@ -16,19 +16,19 @@ namespace FT {
         {
             std::shared_ptr<Renderable> renderable = this->_render_queue.front();
             Model multi_mesh = renderable->GetMeshes();
-            glm::mat4 model_mat = renderable->GetModelMatrix();
+            FT::mat4 model_mat = renderable->GetModelMatrix();
 
             /* BONES */
             for (auto& pair : multi_mesh.GetBones())
             {
-                glm::mat4 b_tr = pair.second.final_transform;
+                FT::mat4 b_tr = pair.second.final_transform;
                 shader->SetMat4("bone_matrix["+std::to_string(pair.second.id)+"]", b_tr);
             }
             /*********/
 
             for (auto & mesh : multi_mesh.GetMeshes())
             {
-                glm::mat4 tr = multi_mesh.GetNodeTransform(mesh.GetNodeName());
+                FT::mat4 tr = multi_mesh.GetNodeTransform(mesh.GetNodeName());
                 std::shared_ptr<VertexArray> vao = Renderable::GetVAO(mesh);
                 vao->Bind();
                 /* SET SHADER UNIFORMS */

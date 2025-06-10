@@ -18,10 +18,6 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLFW_CMAKE_DIR ${VENDOR_DIR}/glfw)
 add_subdirectory(${GLFW_CMAKE_DIR})
 
-# GLM
-set(GLM_CMAKE_DIR ${VENDOR_DIR}/glm)
-add_subdirectory(${GLM_CMAKE_DIR})
-
 # IMGUI
 set(IMGUI_CMAKE_DIR ${VENDOR_DIR}/imgui)
 add_subdirectory(${IMGUI_CMAKE_DIR})
@@ -29,10 +25,6 @@ add_subdirectory(${IMGUI_CMAKE_DIR})
 # STB
 set(STB_CMAKE_DIR ${VENDOR_DIR}/stb)
 add_subdirectory(${STB_CMAKE_DIR})
-
-# STB
-set(ASSIMP_CMAKE_DIR ${VENDOR_DIR}/assimp)
-add_subdirectory(${ASSIMP_CMAKE_DIR})
 
 # OpenGL
 find_package(OpenGL REQUIRED)
@@ -72,17 +64,13 @@ set_target_properties(${ENGINE_NAME} PROPERTIES
 # Libraries
 target_link_libraries(${ENGINE_NAME} glfw)
 target_link_libraries(${ENGINE_NAME} glad)
-target_link_libraries(${ENGINE_NAME} glm)
 target_link_libraries(${ENGINE_NAME} imgui)
 target_link_libraries(${ENGINE_NAME} stb)
-target_link_libraries(${ENGINE_NAME} assimp)
 target_link_libraries(${ENGINE_NAME} OpenGL::GL)
 
 # Headers
 target_include_directories(${ENGINE_NAME} PUBLIC "${PROJECT_DIR}/src")
 target_include_directories(${ENGINE_NAME} PUBLIC "${IMGUI_CMAKE_DIR}/imgui")
-target_include_directories(${ENGINE_NAME} PUBLIC "${GLM_CMAKE_DIR}/glm")
 target_include_directories(${ENGINE_NAME} PUBLIC "${GLFW_CMAKE_DIR}/glfw/include")
 target_include_directories(${ENGINE_NAME} PUBLIC "${GLAD_CMAKE_DIR}/glad"${GLAD_VERSION}"/include")
 target_include_directories(${ENGINE_NAME} PUBLIC "${STB_CMAKE_DIR}/stb/include")
-target_include_directories(${ENGINE_NAME} PUBLIC "${ASSIMP_CMAKE_DIR}/assimp/include")

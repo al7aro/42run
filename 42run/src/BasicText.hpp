@@ -30,10 +30,10 @@ public:
 		float width = font_size * m_aspect;
 		float height = font_size;
 		float text_width = text.size() * width;
-		FT::Transform tr(glm::vec3(0.0), glm::vec3(width, height, 1.0));
+		FT::Transform tr(FT::vec3(0.0), FT::vec3(width, height, 1.0));
 		fdp.PushMatrix();
-		fdp.Translate(glm::vec3(-width * (text.size() - 1) / 2.0, 0.0, 0.0)); // CENTER ALIGN
-		fdp.Translate(glm::vec3(align*text_width/2.0, 0.0, 0.0)); // RIGHT ALIGN
+		fdp.Translate(FT::vec3(-width * (text.size() - 1) / 2.0, 0.0, 0.0)); // CENTER ALIGN
+		fdp.Translate(FT::vec3(align*text_width/2.0, 0.0, 0.0)); // RIGHT ALIGN
 		for (int i = 0; i < text.size(); i++)
 		{
 			char c = text[i] - 48;

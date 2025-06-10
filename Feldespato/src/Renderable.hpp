@@ -3,8 +3,6 @@
 #include <memory>
 #include <map>
 
-#include <glm/glm.hpp>
-
 #include "resources/Model.hpp"
 #include "resources/Shader.hpp"
 #include "buffers/VertexArray.hpp"
@@ -34,7 +32,7 @@ namespace FT {
         virtual ~Renderable()
         {
         }
-        virtual glm::mat4 GetModelMatrix()
+        virtual FT::mat4 GetModelMatrix()
         {
             return (m_transform.GetTransform());
         }

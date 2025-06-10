@@ -28,7 +28,7 @@ namespace FT {
             m_data.tr.pop();
         while (!m_data.ly.empty())
             m_data.ly.pop();
-        m_data.tr.push(glm::mat4(1.0));
+        m_data.tr.push(FT::mat4(1.0));
         std::shared_ptr<Layer> layer = std::make_shared<Layer>();
         layer->SetCamera(m_data.default_camera);
         layer->SetShader(m_data.default_shader);
@@ -144,6 +144,13 @@ namespace FT {
         Transform transform;
         Cube(transform, mat);
     }
+    void Feldespato::Draw(Mesh& mesh)
+    {
+        Transform transform;
+        transform.parent *= m_data.tr.top();
+        std::shared_ptr<Renderable> renderable = std::make_shared<Renderable>(mesh, transform);
+        m_data.ly.top()->Add(renderable);
+    }
     void Feldespato::Draw(Mesh & mesh, Transform transform, Material mat)
     {
         mesh.SetMaterial(mat);
@@ -166,27 +173,32 @@ namespace FT {
     }
 
     /* TRANSFORMATION STACK */
-    void Feldespato::Translate(glm::vec3 v)
+    void Feldespato::Translate(FT::vec3 v)
     {
-        glm::mat4 tr = glm::translate(glm::mat4(1.0), v);
+        FT::mat4 tr = FT::translate(v);
         m_data.tr.top() *= tr;
     }
-    void Feldespato::Scale(glm::vec3 v)
+    void Feldespato::Scale(FT::vec3 v)
     {
-        glm::mat4 sc = glm::scale(glm::mat4(1.0), v);
+        FT::mat4 sc = FT::scale(v);
         m_data.tr.top() *= sc;
     }
-    void Feldespato::Rotate(float a) // 2D Rotation
+    void Feldespato::RotateX(float a)
     {
-        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, glm::vec3(0.0, 0.0, 1.0));
+        FT::mat4 rt = FT::rotateX(a);
         m_data.tr.top() *= rt;
     }
-    void Feldespato::Rotate(float a, glm::vec3 axis)
+    void Feldespato::RotateY(float a)
     {
-        glm::mat4 rt = glm::rotate(glm::mat4(1.0), a, axis);
+        FT::mat4 rt = FT::rotateY(a);
         m_data.tr.top() *= rt;
     }
-    glm::mat4 Feldespato::GetTransform() const
+    void Feldespato::RotateZ(float a)
+    {
+        FT::mat4 rt = FT::rotateZ(a);
+        m_data.tr.top() *= rt;
+    }
+    FT::mat4 Feldespato::GetTransform() const
     {
         return (m_data.tr.top());
     }
@@ -205,10 +217,6 @@ namespace FT {
     Model Feldespato::LoadModel(const std::string& path)
     {
         return (m_rm->LoadModel(path));
-    }
-    Mesh Feldespato::LoadMeshCustom(const std::string& path)
-    {
-        return (m_rm->LoadMesh(path));
     }
     Mesh Feldespato::LoadMeshRect()
     {
@@ -232,64 +240,16 @@ namespace FT {
     {
         return (m_window->GetKey(key));
     }
-    glm::vec2 Feldespato::GetMousePosPrev()
+    FT::vec2 Feldespato::GetMousePosPrev()
     {
         return (m_window->GetMousePosPrev());
     }
-    glm::vec2 Feldespato::GetMousePos()
+    FT::vec2 Feldespato::GetMousePos()
     {
         return (m_window->GetMousePos());
     }
     int Feldespato::GetMouseButton(int button)
     {
         return (m_window->GetMouseButton(button));
-    }
-
-    /* MISCELLANEOUS */
-    void Feldespato::DefaultCameraMovement(Camera & cam, float delta_time)
-    {
-        float rot_speed = 0.3f * delta_time;
-        float mov_speed = 5.0f * delta_time;
-        if (m_window->GetKey('S') || m_window->GetKey('S'))
-            cam.tr.MoveLocal(glm::vec3(0.0, 0.0, mov_speed));
-        if (m_window->GetKey('W') || m_window->GetKey('W'))
-            cam.tr.MoveLocal(glm::vec3(0.0, 0.0, -mov_speed));
-        if (m_window->GetKey('A') || m_window->GetKey('A'))
-            cam.tr.MoveLocal(glm::vec3(-mov_speed, 0.0, 0.0));
-        if (m_window->GetKey('D') || m_window->GetKey('D'))
-            cam.tr.MoveLocal(glm::vec3(mov_speed, 0.0, 0.0));
-        if (m_window->GetKey('Q') || m_window->GetKey('Q'))
-            cam.tr.MoveLocal(glm::vec3(0.0, mov_speed, 0.0));
-        if (m_window->GetKey('E') || m_window->GetKey('E'))
-            cam.tr.MoveLocal(glm::vec3(0.0, -mov_speed, 0.0));
-
-        glm::vec2 mouse_prev = m_window->GetMousePosPrev();
-        glm::vec2 mouse_dir = m_window->GetMousePos() - mouse_prev;
-
-        if (m_window->GetMouseButton(GLFW_MOUSE_BUTTON_1) != GLFW_RELEASE)
-        {
-            if (glm::length(mouse_dir) > 0)
-            {
-                cam.tr.Pitch(-rot_speed * mouse_dir.y);
-                cam.tr.RotateWorld(-rot_speed * mouse_dir.x, glm::vec3(0.0, 1.0, 0.0));
-            }
-            m_window->SetInputMode(GLFW_CURSOR_DISABLED);
-        }
-        else
-        {
-            m_window->SetInputMode(GLFW_CURSOR_NORMAL);
-        }
-
-        // CAMERA ZOOM
-        //if (m_window->GetKey(GLFW_KEY_UP) != GLFW_RELEASE)
-            //cam->zoom += 0.01;
-        //if (m_window->GetKey(GLFW_KEY_DOWN) != GLFW_RELEASE)
-            //cam->zoom -= 0.01;
-        //if (cam->zoom <= 0.01)
-            //cam->zoom = 0.1;
-        //if (cam->zoom > 2.5 / cam->fov)
-            //cam->zoom = 2.5 / cam->fov;
-        //if (m_window->GetKey(GLFW_KEY_R) != GLFW_RELEASE)
-        //	cam->zoom = 1.0;
     }
 }

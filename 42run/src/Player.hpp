@@ -1,8 +1,7 @@
 #pragma once
 
 #include "FT.hpp"
-
-#include <glm/glm.hpp>
+#include "Floor.hpp"
 
 enum PlayerPosition
 {
@@ -23,7 +22,7 @@ public:
 private:
 	FT::Model m_model;
 
-	glm::vec3 m_pos;
+	FT::vec3 m_pos;
 	PlayerPosition m_side;
 
 	bool m_jumping;
@@ -32,7 +31,7 @@ private:
 
 	// TODO: ADD CROUCHING ANIMATION
 public:
-	Player(FT::Feldespato & fdp, const std::string & model_path = SANDBOX_ASSETS_DIRECTORY"/marvin/Marvin.dae")
+	Player(FT::Feldespato & fdp, const std::string & model_path = SANDBOX_ASSETS_DIRECTORY"/marvin/Marvin.obj")
 		: m_pos(0.0), m_side(MIDDLE), m_jumping(false), m_jump_speed(0.05), m_jump_offset(0.0)
 	{
 		m_model = fdp.LoadModel(model_path);
@@ -53,9 +52,9 @@ public:
 		/* JUMP MOVEMENT */
 		if (m_jumping)
 		{
-			m_jump_offset = glm::clamp(m_jump_offset + m_jump_speed, 0.0f, glm::pi<float>());
-			m_pos.y = 1.35 * glm::sin(m_jump_offset);
-			if (m_jump_offset >= glm::pi<float>())
+			m_jump_offset = FT::clamp(m_jump_offset + m_jump_speed, 0.0f, FT::PI);
+			m_pos.y = 1.35 * FT::sin(m_jump_offset);
+			if (m_jump_offset >= FT::PI)
 			{
 				m_jump_offset = 0.0;
 				m_jumping = false;
@@ -63,7 +62,7 @@ public:
 		}
 
 		/* HORIZONTAL MOVEMENT */
-		m_pos.x += 0.15 * glm::clamp((m_side - m_pos.x), -FLOOR_WIDTH / 2.0f, FLOOR_WIDTH / 2.0f);
+		m_pos.x += 0.15 * FT::clamp((m_side - m_pos.x), -FLOOR_WIDTH / 2.0f, FLOOR_WIDTH / 2.0f);
 	}
 	/*
 		Pedro Miras participó en este proyecto.
@@ -76,12 +75,12 @@ public:
 		fdp.PopMatrix();
 	}
 
-	void SetPos(const glm::vec3 & pos)
+	void SetPos(const FT::vec3 & pos)
 	{
 		m_pos = pos;
 	}
 
-	glm::vec3 GetPos() const
+	FT::vec3 GetPos() const
 	{
 		return (m_pos);
 	}
@@ -103,7 +102,7 @@ public:
 
 	void Reset()
 	{
-		m_pos = glm::vec3(0.0);
+		m_pos = FT::vec3(0.0);
 		m_side = MIDDLE;
 		m_jumping = false;
 		m_jump_speed = 0.05;

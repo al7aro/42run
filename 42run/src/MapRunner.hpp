@@ -6,8 +6,6 @@
 #include <ctime>
 #include <algorithm>
 #include <sstream>
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/rotate_vector.hpp>
 
 #include "FT.hpp"
 #include "Floor.hpp"
@@ -26,10 +24,10 @@ public:
     bool m_col_passed;
 
     /* MAP MOVEMENT */
-    glm::vec3 m_pos;
-    glm::ivec3 m_current_tile;
-    glm::ivec3 m_prev_tile;
-    glm::ivec3 m_prev2_tile;
+    FT::vec3 m_pos;
+    FT::ivec3 m_current_tile;
+    FT::ivec3 m_prev_tile;
+    FT::ivec3 m_prev2_tile;
     float m_tile_perc;
     float m_mov_speed;
     Floor::Direction m_dir;
@@ -54,15 +52,15 @@ public:
         m_climbing(0), m_climbed_tile(false), m_climb_perc(0.5),
         m_score(0), m_collision(false), m_col_passed(false)
     {
-        m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.dae");
-        m_floor_types[Floor::RIGHT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right.dae");
-        m_floor_types[Floor::LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left.dae");
-        m_floor_types[Floor::RIGHT_LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left.dae");
-        m_floor_types[Floor::RIGHT_LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left_front.dae");
-        m_floor_types[Floor::RIGHT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_front.dae");
-        m_floor_types[Floor::LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left_front.dae");
-        m_floor_types[Floor::UP] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_up.dae");
-        m_floor_types[Floor::DOWN] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_down.dae");
+        m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.obj");
+        m_floor_types[Floor::RIGHT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right.obj");
+        m_floor_types[Floor::LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left.obj");
+        m_floor_types[Floor::RIGHT_LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left.obj");
+        m_floor_types[Floor::RIGHT_LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left_front.obj");
+        m_floor_types[Floor::RIGHT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_front.obj");
+        m_floor_types[Floor::LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left_front.obj");
+        m_floor_types[Floor::UP] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_up.obj");
+        m_floor_types[Floor::DOWN] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_down.obj");
     }
 
     void Init(std::shared_ptr<Grid> map)
@@ -73,7 +71,7 @@ public:
 
     void Reset()
     {
-        m_pos = m_current_map->GetInitPos();
+        m_pos = FT::vec3(m_current_map->GetInitPos());
         m_dir = Floor::Direction(m_current_map->GetInitDir());
         m_current_tile = m_pos;
         m_prev_tile = m_pos;
@@ -92,16 +90,14 @@ public:
     void Update(FT::Feldespato & fdp, Player & player)
     {
         if (!m_current_map) return;
-        //if (fdp.GetKey(GLFW_KEY_V) == GLFW_PRESS)
-        //    m_climbing = 1;
 
         /* Moves the map constantly */
         if (!m_rotating)
         {
-            m_pos += m_mov_speed * glm::vec3((m_dir == Floor::EAST) - (m_dir == Floor::WEST),
+            m_pos += m_mov_speed * FT::vec3((m_dir == Floor::EAST) - (m_dir == Floor::WEST),
                                              (m_dir == Floor::NORTH) - (m_dir == Floor::SOUTH), 0.0);
             m_tile_perc += m_mov_speed;
-            if (glm::ivec3(glm::round(m_pos)) != m_current_tile && m_tile_perc >= 0.9)
+            if (FT::ivec3(FT::round(m_pos)) != m_current_tile && m_tile_perc >= 0.9)
             {
                 m_tile_perc = 0.0;
                 m_rotated_tile = false;
@@ -109,11 +105,11 @@ public:
                 m_col_passed = false;
                 m_prev2_tile = m_prev_tile;
                 m_prev_tile = m_current_tile;
-                m_current_map->RandomizeNextTiles(glm::ivec3(glm::round(m_pos.x), glm::round(m_pos.y), glm::round(m_pos.z)), m_prev2_tile);
+                m_current_map->RandomizeNextTiles(FT::ivec3(FT::round(m_pos.x), FT::round(m_pos.y), FT::round(m_pos.z)), m_prev2_tile);
             }
-            m_current_tile.x = glm::round(m_pos.x);
-            m_current_tile.y = glm::round(m_pos.y);
-            m_current_tile.z = glm::round(m_pos.z);
+            m_current_tile.x = FT::round(m_pos.x);
+            m_current_tile.y = FT::round(m_pos.y);
+            m_current_tile.z = FT::round(m_pos.z);
         }
 
         /* Checks if the map needs to be climbed */
@@ -147,20 +143,20 @@ public:
             m_rotating = 0;
         if (m_rotating)
         {
-            m_rot_offset = glm::clamp(m_rot_offset + glm::sign(m_rotating) * m_rot_speed, -glm::half_pi<float>(), glm::half_pi<float>());
-            if (glm::abs(m_rot_offset) >= glm::half_pi<float>())
+            m_rot_offset = FT::clamp(m_rot_offset + FT::sign(m_rotating) * m_rot_speed, -FT::HALF_PI, FT::HALF_PI);
+            if (FT::abs(m_rot_offset) >= FT::HALF_PI)
             {
-                m_total_rotation = glm::mod(m_total_rotation + glm::sign(m_rotating) * glm::half_pi<float>(), glm::two_pi<float>());
-                double diff_aux = double(m_dir) + double(m_rotating);
+                m_total_rotation = FT::mod(m_total_rotation + FT::sign(m_rotating) * FT::HALF_PI, FT::TWO_PI);
+                int diff_aux = m_dir + m_rotating;
                 if (diff_aux < 0)
-                    diff_aux = 4.0 + diff_aux;
-                m_dir = Floor::Direction(glm::mod(diff_aux, 4.0));
+                    diff_aux = 4 + diff_aux;
+                m_dir = Floor::Direction(FT::mod(diff_aux, 4));
                 m_rotated_tile = true;
                 m_rot_offset = 0.0;
                 m_rotating = 0.0;
 
-                m_pos.x = glm::round(m_pos.x);
-                m_pos.y = glm::round(m_pos.y);
+                m_pos.x = FT::round(m_pos.x);
+                m_pos.y = FT::round(m_pos.y);
             }
         }
 
@@ -169,11 +165,11 @@ public:
         /* Climbs de map */
         if (m_climbing)
         {
-            m_climb_offset += glm::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
-            m_pos.z = m_pos.z + glm::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
-            if (glm::abs(m_climb_offset) >= 1.0)
+            m_climb_offset += FT::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
+            m_pos.z = m_pos.z + FT::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
+            if (FT::abs(m_climb_offset) >= 1.0)
             {
-                m_pos.z = glm::round(m_pos.z);
+                m_pos.z = FT::round(m_pos.z);
                 m_climb_offset = 0.0;
                 m_climbing = 0.0;
                 m_climbed_tile = true;
@@ -244,22 +240,22 @@ public:
     {
         if (!m_current_map) return;
         fdp.PushMatrix();
-        fdp.Rotate(m_total_rotation + m_rot_offset, glm::vec3(0.0, 1.0, 0.0));
-        fdp.Translate(-FLOOR_WIDTH * glm::vec3(-m_pos.x, 0.0, m_pos.y)); // TODO: CHECK WHY X-AXIS IS INVERTED
-        fdp.Translate(-FLOOR_HEIGHT * glm::vec3(0.0, m_pos.z, 0.0)); // TODO: CHECK WHY X-AXIS IS INVERTED
-        DrawMapPortion(m_current_map, fdp, m_current_tile, glm::ivec3(5));
+        fdp.RotateY(-m_total_rotation - m_rot_offset);
+        fdp.Translate(-FLOOR_WIDTH * FT::vec3(-m_pos.x, 0.0, m_pos.y)); // TODO: CHECK WHY X-AXIS IS INVERTED
+        fdp.Translate(-FLOOR_HEIGHT * FT::vec3(0.0, m_pos.z, 0.0)); // TODO: CHECK WHY X-AXIS IS INVERTED
+        DrawMapPortion(m_current_map, fdp, m_current_tile, FT::ivec3(5));
         fdp.PopMatrix();
     }
 
     /* Draws a portion of map with size=DEPTH using draw_pos as center point */
-    void DrawMapPortion(std::shared_ptr<Grid> map, FT::Feldespato& fdp, glm::ivec3 draw_pos, glm::ivec3 depth = glm::ivec3(0))
+    void DrawMapPortion(std::shared_ptr<Grid> map, FT::Feldespato& fdp, FT::ivec3 draw_pos, FT::ivec3 depth = FT::ivec3(0))
     {
-        glm::ivec3 depth_from(draw_pos - depth);
-        glm::ivec3 depth_to(draw_pos + depth);
-        if (depth == glm::ivec3(0))
+        FT::ivec3 depth_from(draw_pos - depth);
+        FT::ivec3 depth_to(draw_pos + depth);
+        if (depth == FT::ivec3(0))
         {
-            depth_from = glm::ivec3(0);
-            depth_to = glm::ivec3(map->GetXSize(), map->GetYSize(), map->GetZSize());
+            depth_from = FT::ivec3(0);
+            depth_to = FT::ivec3(map->GetXSize(), map->GetYSize(), map->GetZSize());
         }
         for (int z_it = depth_from[2]; z_it < depth_to[2]; z_it++)
         {
@@ -273,15 +269,15 @@ public:
                     if (!floor.visible) continue;
 
                     fdp.PushMatrix();
-                    fdp.Translate(FLOOR_WIDTH * glm::vec3(-x_it, 0, y_it) + FLOOR_HEIGHT * glm::vec3(0, z_it, 0)); // TODO: CHECK WHY X-AXIS IS INVERTED
-                    fdp.Rotate(glm::half_pi<float>() * map->At(x_it, y_it, z_it).dir, -glm::vec3(0.0, 1.0, 0.0));
+                    fdp.Translate(FLOOR_WIDTH * FT::vec3(-x_it, 0, y_it) + FLOOR_HEIGHT * FT::vec3(0, z_it, 0)); // TODO: CHECK WHY X-AXIS IS INVERTED
+                    fdp.RotateY(FT::HALF_PI * map->At(x_it, y_it, z_it).dir);
                     fdp.Draw(m_floor_types[floor.type]);
                     for (int slot = -1; slot <= 1; slot++)
                     {
                         if (floor.obstacles[slot + 1])
                         {
                             fdp.PushMatrix();
-                            fdp.Translate(glm::vec3(double(slot) * FLOOR_WIDTH / 3.0, 0.0, 0.0));
+                            fdp.Translate(FT::vec3(double(slot) * FLOOR_WIDTH / 3.0, 0.0, 0.0));
                             fdp.Cube(FT::Transform{ 0.5 });
                             fdp.PopMatrix();
                         }
@@ -308,7 +304,7 @@ public:
         bool visible = 1;
         Floor::Direction dir = Floor::Direction::NORTH;
         Floor::Type type = Floor::Type::FORWARD;
-        glm::ivec3 pos;
+        FT::ivec3 pos;
         // READ MAP SIZE
         int x_size, y_size, z_size;
         int x_loop, y_loop, z_loop;
@@ -357,7 +353,7 @@ public:
                         Floor floor(type, dir, visible);
                         map->At(x_it, y_it, z_it) = floor;
                         if (map->IsRandom())
-                            map->PushToBranch(glm::ivec3(x_it, y_it, z_it), MAIN_BRANCH);
+                            map->PushToBranch(FT::ivec3(x_it, y_it, z_it), MAIN_BRANCH);
                     }
                     x_it++;
                 }

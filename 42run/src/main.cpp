@@ -7,13 +7,9 @@
 #include <ctime>
 
 using namespace FT;
-std::shared_ptr<Grid> CreateMap_TEST_1();
-std::shared_ptr<Grid> CreateMap_TEST_2();
-std::shared_ptr<Grid> CreateMap_TEST_3();
 
 enum Screen
 {
-	INTRO = 0,
 	MENU,
 	GAME
 };
@@ -50,24 +46,24 @@ int main(void)
 /* ---------------------- MENU SCREEN ---------------------- */
 	Camera map_selector_cam(Camera::PERSPECTIVE);
 	std::shared_ptr<Texture2D> map_selector_window;
-	map_selector_cam.tr.pos = glm::vec3(0.0, 10.0, 0.0);
-	//map_selector_cam.tr.Yaw(3.0*glm::pi<float>()/4.0);
-	map_selector_cam.tr.Pitch(-glm::half_pi<float>());
+	map_selector_cam.tr.pos = FT::vec3(0.0, 10.0, 0.0);
+	//map_selector_cam.tr.Yaw(3.0*FT::PI/4.0);
+	map_selector_cam.tr.Pitch(-FT::HALF_PI);
 	float xsize, ysize, target_size = 3.0, scale_factor;
 
 /* ---------------------- GAME SCREEN ---------------------- */
 	/* CAMERA */
 	Camera cam(Camera::PERSPECTIVE);
-	cam.tr.pos = glm::vec3(0.0, 5.0, -5);
-	cam.tr.Yaw(glm::pi<float>());
-	cam.tr.Pitch(-glm::half_pi<float>() / 3.0);
-	/* MODELS */
-	Model marvin = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/Marvin.dae");
+	cam.tr.pos = FT::vec3(0.0, 5.0, -5.0);
+	cam.tr.Yaw(FT::PI);
+	cam.tr.Pitch(FT::PI / 8.0);
 	/* TRANSFORMS */
-	Transform marvin_tr(glm::vec3(0.0, -5.0, -5));
+	Transform marvin_tr(FT::vec3(0.0, -5.0, -5));
 	/* Player */
 	Player player(fdp);
 	int score = 0;
+	/* MODEL LOADING TEST */
+	Model meshes = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/cube/cube2.obj");
 
 /* ---------------------- GAME SCREEN ---------------------- */
 	std::shared_ptr<Texture2D> intro_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/intro_test.png");
@@ -76,24 +72,11 @@ int main(void)
 
 	while (!fdp.WindowShouldClose())
 	{
-		/* ----------- GLOBAL GAME STATE ------------*/
+/* ----------- GLOBAL GAME STATE ------------*/
 		delta_timer.Start();
-		/* -------------------------------*/
+/* -------------------------------*/
 		switch (current_screen)
 		{
-/* ---------------------- INTRO SCREEN ---------------------- */
-		case Screen::INTRO:
-			/* ----------- UPDATE -------------*/
-			/* -------------------------------*/
-			/* ----------- RENDER ------------*/
-			fdp.BeginRenderPass();
-				fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
-				fdp.BeginLayer(sh, false);
-					fdp.Rect(Material(intro_tex));
-				fdp.EndLayer();
-			fdp.EndRenderPass();
-			/* -------------------------------*/
-			break;
 /* ---------------------- MENU SCREEN ---------------------- */
 		case Screen::MENU:
 			/* ----------- UPDATE -------------*/
@@ -128,19 +111,19 @@ int main(void)
 					xsize = FLOOR_WIDTH * (maps[selected_map_id]->GetXSize() - 1.0) / 2.0;
 					ysize = FLOOR_WIDTH * (maps[selected_map_id]->GetYSize() - 1.0) / 2.0;
 					scale_factor = target_size / xsize;
-					fdp.Scale(glm::vec3(scale_factor));
-					fdp.Rotate(glm::pi<float>()/4.0, glm::vec3(1.0, 0.0, 0.0));
-					fdp.Rotate(program_time, glm::vec3(0.0, 1.0, 0.0));
-					fdp.Translate(glm::vec3(xsize, 0.0, -ysize));
-					runner.DrawMapPortion(maps[selected_map_id], fdp, glm::ivec3(0));
+					fdp.Scale(FT::vec3(scale_factor));
+					fdp.RotateX(FT::PI/4.0);
+					fdp.RotateY(program_time);
+					fdp.Translate(FT::vec3(xsize, 0.0, -ysize));
+					runner.DrawMapPortion(maps[selected_map_id], fdp, FT::ivec3(0));
 				map_selector_window = fdp.EndLayer();
 				fdp.PopMatrix();
 				// DRAW MENU
 				fdp.BeginLayer(sh, false);
 					fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
-					fdp.Scale(glm::vec3(2.0));
+					fdp.Scale(FT::vec3(2.0));
 					fdp.Rect(Material(menu_tex));
-					fdp.Scale(glm::vec3(0.25));
+					fdp.Scale(FT::vec3(0.25));
 					fdp.Rect(Material(map_selector_window));
 				fdp.EndLayer();
 			fdp.EndRenderPass();
@@ -183,7 +166,7 @@ int main(void)
 				fdp.EndLayer();
 				fdp.BeginLayer(sh, false); // TEXT LAYER
 					fdp.PushMatrix();
-					fdp.Translate(glm::vec3(1.0, 0.75, 0.0));
+					fdp.Translate(FT::vec3(1.0, 0.75, 0.0));
 					txt.Draw(fdp, std::to_string(score), 0.5);
 					fdp.PopMatrix();
 				fdp.EndLayer();

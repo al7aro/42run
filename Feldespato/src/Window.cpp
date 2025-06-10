@@ -43,7 +43,7 @@ namespace FT {
 
 		double x, y;
 		glfwGetCursorPos(m_window, &x, &y);
-		m_mouse_pos = glm::vec2(x, y);
+		m_mouse_pos = FT::vec2(x, y);
 
 		// int pixel_density = 2;
 		// glViewport(0, 0, width * pixel_density, height * pixel_density);
@@ -64,17 +64,17 @@ namespace FT {
 		return (glfwGetMouseButton(m_window, button));
 	}
 
-	glm::vec2 Window::GetMousePosPrev()
+	FT::vec2 Window::GetMousePosPrev()
 	{
 		return (m_mouse_pos);
 	}
 
-	glm::vec2 Window::GetMousePos()
+	FT::vec2 Window::GetMousePos()
 	{
 		double x, y;
 		glfwGetCursorPos(m_window, &x, &y);
-		m_mouse_pos = glm::vec2(x, y);
-		return (glm::vec2(x, y));
+		m_mouse_pos = FT::vec2(x, y);
+		return (FT::vec2(x, y));
 	}
 
 	void Window::SetInputMode(int mode)

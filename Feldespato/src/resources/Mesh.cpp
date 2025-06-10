@@ -47,7 +47,7 @@ namespace FT {
         return m_material;
     }
 
-    void Mesh::SetColor(const glm::vec4 & col)
+    void Mesh::SetColor(const FT::vec3 & col)
     {
         m_material.SetColor(col);
     }

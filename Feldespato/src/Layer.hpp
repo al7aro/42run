@@ -2,8 +2,6 @@
 
 #include <stack>
 
-#include <glm/glm.hpp>
-
 #include "Renderer.hpp"
 #include "resources/Shader.hpp"
 #include "Camera.hpp"

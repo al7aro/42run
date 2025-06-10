@@ -2,12 +2,6 @@
 	path = Feldespato/vendor/glfw/glfw
 	url = https://github.com/glfw/glfw.git
 	branch = 3.3-stable
-[submodule "EngineName/vendor/glm/glm"]
-	path = Feldespato/vendor/glm/glm
-	url = https://github.com/g-truc/glm.git
 [submodule "EngineName/vendor/imgui/imgui"]
 	path = Feldespato/vendor/imgui/imgui
 	url = https://github.com/ocornut/imgui.git
-[submodule "EngineName/vendor/assimp/assimp"]
-	path = Feldespato/vendor/assimp/assimp
-	url = https://github.com/assimp/assimp.git

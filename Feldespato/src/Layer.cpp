@@ -39,6 +39,7 @@ namespace FT {
         {
             std::shared_ptr<Shader> sh = m_sh;
             if (!sh) return;
+
             sh->SetMat4("view_mat", m_cam.GetViewMatrix());
             sh->SetMat4("proj_mat", m_cam.GetProjectionMatrix());
 
