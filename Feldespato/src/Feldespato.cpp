@@ -1,13 +1,14 @@
 #include "Feldespato.hpp"
 
 namespace FT {
-    Feldespato::Feldespato()
+    Feldespato::Feldespato(int w, int h)
     {
-        m_window = std::make_shared<Window>("Feldespato Renderer", WINDOW_WIDTH, WINDOW_HEIGHT);
+        m_window = std::make_shared<Window>("Feldespato Renderer", w, h);
         m_rm = std::make_shared<ResourceManager>(DEFAULT_ASSETS_DIRECTORY"/shaders/410/basic.glsl", DEFAULT_ASSETS_DIRECTORY"/textures/error.png");
         m_data.default_shader = m_rm->GetDefaultShader();
         m_data.default_camera = Camera(Camera::ORTHOGRAPHIC);
-        m_data.framebuffer = std::make_shared<FrameBuffer>(WINDOW_WIDTH, WINDOW_HEIGHT);
+        //m_data.framebuffer = std::make_shared<FrameBuffer>(m_window->GetWidth(), m_window->GetHeight());
+        m_data.framebuffer.push(0);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_STENCIL_TEST);
     }
@@ -55,43 +56,96 @@ namespace FT {
         m_window->PollEvents();
         m_window->SwapBuffers();
     }
-    void Feldespato::BeginLayer(const Camera & cam, std::shared_ptr<Shader> sh, bool tex_mode)
+    void Feldespato::BeginLayer(const Camera & cam, std::shared_ptr<Shader> sh, FT::ivec2 size)
     {
+        std::shared_ptr<FrameBuffer> fb = 0;
         // TODO: FIX THIS VIEWPORT THING
-        if (tex_mode)
+        if (size.x != 0 && size.y != 0)
         {
-            glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-            m_data.framebuffer->Enable();
+            fb = std::make_shared<FrameBuffer>(size.x, size.y);
+            fb->Enable();
         }
         else
-            glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        {
+            size = FT::ivec2(m_window->GetWidth(), m_window->GetHeight());
+            fb = m_data.framebuffer.top();
+            if (fb)
+            {
+                size.x = fb->GetWidth();
+                size.y = fb->GetHeight();
+            }
+        }
 
+        glViewport(0, 0, size.x, size.y);
         std::shared_ptr<Layer> layer = std::make_shared<Layer>();
         layer->SetCamera(cam);
         layer->SetShader(sh);
+        m_data.framebuffer.push(fb);
         m_data.ly.push(layer);
+    }
+    void Feldespato::BeginLayer(const Camera& cam, std::shared_ptr<Shader> sh, bool tex_mode)
+    {
+        FT::ivec2 size(0);
+        std::shared_ptr<FrameBuffer> fb = m_data.framebuffer.top();
+        if (tex_mode)
+        {
+            size.x = m_window->GetWidth();
+            size.y = m_window->GetHeight();
+            if (fb)
+            {
+                size.x = fb->GetWidth();
+                size.y = fb->GetHeight();
+            }
+        }
+        BeginLayer(cam, sh, size);
+    }
+    void Feldespato::BeginLayer(FT::ivec2 size)
+    {
+        BeginLayer(m_data.ly.top()->GetCamera(), m_data.ly.top()->GetShader(), size);
     }
     void Feldespato::BeginLayer(bool tex_mode)
     {
         BeginLayer(m_data.ly.top()->GetCamera(), m_data.ly.top()->GetShader(), tex_mode);
     }
+    void Feldespato::BeginLayer(std::shared_ptr<Shader> shader, FT::ivec2 size)
+    {
+        BeginLayer(m_data.ly.top()->GetCamera(), shader, size);
+    }
     void Feldespato::BeginLayer(std::shared_ptr<Shader> shader, bool tex_mode)
     {
         BeginLayer(m_data.ly.top()->GetCamera(), shader, tex_mode);
     }
-    void Feldespato::BeginLayer(const Camera & camera, bool tex_mode)
+    void Feldespato::BeginLayer(const Camera & camera, FT::ivec2 size)
+    {
+        BeginLayer(camera, m_data.ly.top()->GetShader(), size);
+    }
+    void Feldespato::BeginLayer(const Camera& camera, bool tex_mode)
     {
         BeginLayer(camera, m_data.ly.top()->GetShader(), tex_mode);
     }
     std::shared_ptr<Texture2D> Feldespato::EndLayer()
     {
+        std::shared_ptr<Texture2D> tex;
         if (m_data.ly.size() >= 1)
         {
             m_data.ly.top()->Render();
             m_data.ly.pop();
         }
-        m_data.framebuffer->Disable();
-        return (m_data.framebuffer->GetFrameColor());
+        if (m_data.framebuffer.size() >= 1)
+        {
+            std::shared_ptr<FrameBuffer> fb = m_data.framebuffer.top();
+            if (fb)
+            {
+                fb->Disable();
+                tex = fb->GetFrameColor();
+            }
+            m_data.framebuffer.pop();
+            fb = m_data.framebuffer.top();
+            if (fb)
+                fb->Enable();
+        }
+        // ENABLE NEXT FB IN STACK
+        return (tex);
     }
 
     /* DRAW FUNCTIONS */

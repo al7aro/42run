@@ -408,6 +408,126 @@ namespace FT {
     }
 /* -------------------------------------------- */
 
+/* ------------------- iVEC2 ------------------- */
+    ivec2::ivec2()
+        : ivec2(0)
+    {
+    }
+    ivec2::ivec2(const vec2& v)
+    {
+        x = v.x;
+        y = v.y;
+    }
+    ivec2::ivec2(int p_x, int p_y)
+    {
+        x = p_x;
+        y = p_y;
+    }
+    ivec2::ivec2(int v)
+        : ivec2(v, v)
+    {
+    }
+    int& ivec2::operator[](int index)
+    {
+        return data[index];
+    }
+    const int& ivec2::operator[](int index) const
+    {
+        return data[index];
+    }
+    bool ivec2::operator==(const ivec2& o)
+    {
+        return (x == o.x && y == o.y);
+    }
+    bool ivec2::operator!=(const ivec2& o)
+    {
+        return (x != o.x || y != o.y);
+    }
+    ivec2 ivec2::operator+(const ivec2& o) const
+    {
+        return (ivec2{ this->x + o.x, this->y + o.y });
+    }
+    ivec2& ivec2::operator+=(const ivec2& o)
+    {
+        this->x += o.x;
+        this->y += o.y;
+        return (*this);
+    }
+    ivec2& ivec2::operator-=(const ivec2& o)
+    {
+        this->x -= o.x;
+        this->y -= o.y;
+        return (*this);
+    }
+    ivec2 ivec2::operator*(const ivec2& v) const
+    {
+        return (ivec2{ this->x * v.x, this->y * v.y });
+    }
+    ivec2& ivec2::operator*=(const ivec2& v)
+    {
+        this->x *= v.x;
+        this->y *= v.y;
+        return (*this);
+    }
+    ivec2 ivec2::operator/(const ivec2& v) const
+    {
+        return (ivec2{ this->x / v.x, this->y / v.y });
+    }
+    ivec2& ivec2::operator/=(const ivec2& v)
+    {
+        this->x /= v.x;
+        this->y /= v.y;
+        return (*this);
+    }
+    ivec2 ivec2::operator*(const float& v) const
+    {
+        return (ivec2{ int(this->x * v), int(this->y * v) });
+    }
+    ivec2& ivec2::operator*=(const float& v)
+    {
+        this->x *= x;
+        this->y *= y;
+        return (*this);
+    }
+    ivec2 ivec2::operator/(const float& v) const
+    {
+        return (ivec2{ int(this->x / v), int(this->y / v) });
+    }
+    ivec2& ivec2::operator/=(const float& v)
+    {
+        this->x /= x;
+        this->y /= y;
+        return (*this);
+    }
+    ivec2 operator+(const ivec2& v1, const ivec2& v2)
+    {
+        return (ivec2(v1.x + v2.x, v1.y + v2.y));
+    }
+    ivec2 operator-(const ivec2& v1, const ivec2& v2)
+    {
+        return (ivec2(v1.x - v2.x, v1.y - v2.y));
+    }
+    ivec2 operator-(const ivec2& v)
+    {
+        return (ivec2(-v.x, -v.y));
+    }
+    ivec2 operator*(const float& scalar, const ivec2& v) {
+        return ivec2(v.x * scalar, v.y * scalar);
+    }
+    float ivec2::len() const
+    {
+        return (std::sqrt(this->x * this->x + this->y * this->y));
+    }
+    float ivec2::len2() const
+    {
+        return (this->x * this->x + this->y * this->y);
+    }
+    ivec2 dot(const ivec2& v1, const ivec2& v2)
+    {
+        return (ivec2{ v1.x * v2.x + v1.y * v2.y });
+    }
+/* -------------------------------------------- */
+
 /* ------------------- iVEC3 ------------------- */
     ivec3::ivec3()
         : ivec3(0)

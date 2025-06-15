@@ -20,7 +20,15 @@ public:
 		RIGHT = -1
 	};
 private:
-	FT::Model m_model;
+	FT::Model m_body;
+	FT::Model m_left_arm;
+	FT::Model m_right_arm;
+	FT::Model m_left_leg;
+	FT::Model m_right_leg;
+	float m_arms_height;
+	float m_legs_height;
+	float m_animation_speed;
+	float m_body_displacement;
 
 	FT::vec3 m_pos;
 	PlayerPosition m_side;
@@ -31,10 +39,19 @@ private:
 
 	// TODO: ADD CROUCHING ANIMATION
 public:
-	Player(FT::Feldespato & fdp, const std::string & model_path = SANDBOX_ASSETS_DIRECTORY"/marvin/Marvin.obj")
+	Player(FT::Feldespato & fdp)
 		: m_pos(0.0), m_side(MIDDLE), m_jumping(false), m_jump_speed(0.05), m_jump_offset(0.0)
 	{
-		m_model = fdp.LoadModel(model_path);
+		m_body = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/body.obj");
+		m_left_arm = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/left_arm.obj");
+		m_right_arm = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/right_arm.obj");
+		m_left_leg = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/left_leg.obj");
+		m_right_leg = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/right_leg.obj");
+
+		m_arms_height = 0.66;
+		m_legs_height = 0.34;
+		m_animation_speed = 10;
+		m_body_displacement = 0.04;
 	}
 
 	void Update(FT::Feldespato & fdp)
@@ -67,11 +84,48 @@ public:
 	/*
 		Pedro Miras participó en este proyecto.
 	*/
-	void Draw(FT::Feldespato& fdp)
+	void Draw(FT::Feldespato& fdp, float time)
 	{
 		fdp.PushMatrix();
 		fdp.Translate(m_pos);
-		fdp.Draw(m_model);
+
+
+		fdp.PushMatrix();
+		fdp.Translate(FT::vec3(0.0, m_body_displacement * FT::sin(m_animation_speed * time), 0.0));
+		fdp.Draw(m_body);
+		fdp.PopMatrix();
+
+		// LEFT ARM ANIMATION
+		fdp.PushMatrix();
+		fdp.Translate(FT::vec3(0.0, m_arms_height, 0.0));
+		fdp.RotateX(FT::sin(m_animation_speed * time));
+		fdp.Translate(-FT::vec3(0.0, m_arms_height, 0.0));
+		fdp.Draw(m_left_arm);
+		fdp.PopMatrix();
+
+		// RIGHT ARM ANIMATION
+		fdp.PushMatrix();
+		fdp.Translate(FT::vec3(0.0, m_arms_height, 0.0));
+		fdp.RotateX(-FT::sin(m_animation_speed * time));
+		fdp.Translate(-FT::vec3(0.0, m_arms_height, 0.0));
+		fdp.Draw(m_right_arm);
+		fdp.PopMatrix();
+
+		// LEFT LEG ANIMATION
+		fdp.PushMatrix();
+		fdp.Translate(FT::vec3(0.0, m_legs_height, 0.0));
+		fdp.RotateX(-FT::sin(m_animation_speed * time));
+		fdp.Translate(-FT::vec3(0.0, m_legs_height, 0.0));
+		fdp.Draw(m_left_leg);
+		fdp.PopMatrix();
+
+		// RIGHT LEG ANIMATION
+		fdp.PushMatrix();
+		fdp.Translate(FT::vec3(0.0, m_legs_height, 0.0));
+		fdp.RotateX(FT::sin(m_animation_speed * time));
+		fdp.Translate(-FT::vec3(0.0, m_legs_height, 0.0));
+		fdp.Draw(m_right_leg);
+		fdp.PopMatrix();
 		fdp.PopMatrix();
 	}
 

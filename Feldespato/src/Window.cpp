@@ -89,4 +89,13 @@ namespace FT {
 		glfwDestroyWindow(m_window);
 		glfwTerminate();
 	}
+
+	int Window::GetWidth() const
+	{
+		return (m_width);
+	}
+	int Window::GetHeight() const
+	{
+		return (m_height);
+	}
 } // namespace FT

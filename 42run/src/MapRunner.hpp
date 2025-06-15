@@ -85,6 +85,7 @@ public:
         m_climb_offset = 0.0;
         m_total_rotation = 0.0;
         m_rotated_tile = 0.0;
+        m_current_map->RandomiceObstacles();
     }
 
     void Update(FT::Feldespato & fdp, Player & player)
@@ -288,7 +289,7 @@ public:
         }
     }
 
-    std::shared_ptr<Grid> ReadMap(const std::string& path)
+    static std::shared_ptr<Grid> ReadMap(const std::string& path)
     {
         std::fstream file(path);
         std::istringstream ss;
@@ -362,5 +363,19 @@ public:
             x_it = 0;
         }
         return map;
+    }
+
+    static std::shared_ptr<Grid> RandomMap()
+    {
+        std::shared_ptr<Grid> grid = std::make_shared<Grid>(11, 11, 11, true, true, true);
+        grid->SetRandomMap();
+        grid->SetInitDir(Floor::NORTH);
+        grid->SetInitPos(FT::ivec3(5, 5, 5));
+        for (int i = 0; i < 6; i++)
+        {
+            grid->At(5, 5 + i, 5) = Floor(Floor::FORWARD, Floor::NORTH, true);
+            grid->PushToBranch(FT::ivec3(5, 5 + i, 5), MAIN_BRANCH);
+        }
+        return (grid);
     }
 };

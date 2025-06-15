@@ -147,6 +147,47 @@ namespace FT {
     vec4 normalize(const vec4& v1);
 /* -------------------------------------------- */
 
+/* ------------------- iVEC2 ------------------- */
+    struct ivec2
+    {
+        union
+        {
+            struct
+            {
+                int x;
+                int y;
+            };
+            int data[2];
+        };
+
+        ivec2();
+        ivec2(const vec2& v);
+        ivec2(int p_x, int p_y);
+        ivec2(int v);
+        int& operator[](int index);
+        const int& operator[](int index) const;
+        bool operator!=(const ivec2& o);
+        bool operator==(const ivec2& o);
+        ivec2 operator+(const ivec2& o) const;
+        ivec2& operator+=(const ivec2& o);
+        ivec2& operator-=(const ivec2& o);
+        ivec2 operator*(const ivec2& v) const;
+        ivec2& operator*=(const ivec2& v);
+        ivec2 operator/(const ivec2& v) const;
+        ivec2& operator/=(const ivec2& v);
+        ivec2 operator*(const float& scalar) const;
+        ivec2& operator*=(const float& scalar);
+        ivec2 operator/(const float& scalar) const;
+        ivec2& operator/=(const float& scalar);
+        float len() const;
+        float len2() const;
+    };
+    ivec2 operator-(const ivec2& v1, const ivec2& v2);
+    ivec2 operator-(const ivec2& v);
+    ivec2 operator*(const float& scalar, const ivec2& v);
+    ivec2 dot(const ivec2& v1, const ivec2& v2);
+/* -------------------------------------------- */
+
 /* ------------------- iVEC3 ------------------- */
     struct ivec3
     {

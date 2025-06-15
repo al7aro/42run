@@ -21,11 +21,12 @@ constexpr auto WINDOW_HEIGHT = 800;
 namespace FT {
 	struct RenderData
 	{
-        std::shared_ptr<FrameBuffer>        framebuffer;
-        std::shared_ptr<Shader>             default_shader;
-        Camera                              default_camera;
-        std::stack<std::shared_ptr<Layer> > ly;
-		std::stack<FT::mat4>               tr;
+        // TODO: CREATE FRAMEBUFFER STACK
+        std::shared_ptr<Shader>                         default_shader;
+        Camera                                          default_camera;
+        std::stack<std::shared_ptr<FrameBuffer>>        framebuffer;
+        std::stack<std::shared_ptr<Layer> >             ly;
+		std::stack<FT::mat4>                            tr;
 	};
 
     class Feldespato
@@ -36,7 +37,7 @@ namespace FT {
 		RenderData                          m_data;
 
     public:
-        Feldespato();
+        Feldespato(int w = WINDOW_WIDTH, int h = WINDOW_HEIGHT);
         ~Feldespato();
         bool                        WindowShouldClose();
         void                        SetWindowSuffix(const std::string& suffix);
@@ -44,10 +45,14 @@ namespace FT {
         /* RENDER MODE */
         void                        BeginRenderPass();
         void                        EndRenderPass();
-        void                        BeginLayer(bool tex_mode = false);
-        void                        BeginLayer(std::shared_ptr<Shader> sh, bool tex_mode = false);
-        void                        BeginLayer(const Camera & cam, bool tex_mode = false);
-        void                        BeginLayer(const Camera & cam, std::shared_ptr<Shader> sh, bool tex_mode = false);
+        void                        BeginLayer(FT::ivec2 size = FT::ivec2(0));
+        void                        BeginLayer(bool tex_mode);
+        void                        BeginLayer(std::shared_ptr<Shader> sh, FT::ivec2 size = FT::ivec2(0));
+        void                        BeginLayer(std::shared_ptr<Shader> sh, bool tex_mode);
+        void                        BeginLayer(const Camera& cam, FT::ivec2 size = FT::ivec2(0));
+        void                        BeginLayer(const Camera & cam, bool tex_mode);
+        void                        BeginLayer(const Camera& cam, std::shared_ptr<Shader> sh, FT::ivec2 size = FT::ivec2(0));
+        void                        BeginLayer(const Camera & cam, std::shared_ptr<Shader> sh, bool tex_mode);
         std::shared_ptr<Texture2D>  EndLayer();
 
         /* DRAW FUNCTIONS */

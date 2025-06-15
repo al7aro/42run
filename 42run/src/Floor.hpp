@@ -49,6 +49,11 @@ public:
     Floor(Type p_type, Direction p_dir, bool p_visible = true)
         : type(p_type), dir(p_dir), visible(p_visible)
     {
+        RandomiceObstacles();
+    }
+
+    void RandomiceObstacles()
+    {
         for (int i = 0; i < OBSTACLES_SLOTS; i++)
             obstacles[i] = 0;
         if (type & RIGHT || type & LEFT || type == UP || type == DOWN)
