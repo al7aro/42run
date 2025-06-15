@@ -199,32 +199,32 @@ public:
         }
         if (m_tile_perc >= 0.5 && !m_col_passed)
         {
-            if (player.IsJumping())
-                m_col_passed = true;
-            else
+            switch (player.GetSide())
             {
-                switch (player.GetSide())
-                {
-                case Player::LEFT:
-                    if (floor.obstacles[left_obstacle] != 0)
-                        m_collision = true;
-                    break;
-                case Player::RIGHT:
-                    if (floor.obstacles[right_obstacle] != 0)
-                        m_collision = true;
-                    break;
-                case Player::MIDDLE:
-                    if (floor.obstacles[middle_obstacle] != 0)
-                        m_collision = true;
-                    break;
-                }
-                m_col_passed = true;
+            case Player::LEFT:
+                if (floor.obstacles[left_obstacle] == Floor::Obstacle::WALL ||
+                    (floor.obstacles[left_obstacle] == Floor::Obstacle::FENCE && !player.IsJumping()))
+                    m_collision = true;
+                else
+                    m_col_passed = true;
+                break;
+            case Player::RIGHT:
+                if (floor.obstacles[right_obstacle] == Floor::Obstacle::WALL ||
+                    (floor.obstacles[right_obstacle] == Floor::Obstacle::FENCE && !player.IsJumping()))
+                    m_collision = true;
+                else
+                    m_col_passed = true;
+                break;
+            case Player::MIDDLE:
+                if (floor.obstacles[middle_obstacle] == Floor::Obstacle::WALL ||
+                    (floor.obstacles[middle_obstacle] == Floor::Obstacle::FENCE && !player.IsJumping()))
+                    m_collision = true;
+                else
+                    m_col_passed = true;
+                break;
             }
+            m_col_passed = true;
         }
-        //if (m_tile_perc == 0.0)
-        //    std::cout << "Score: " << m_score << std::endl;
-        //if (m_collision)
-        //    Reset();
     }
 
     unsigned int GetScore() const
@@ -280,6 +280,11 @@ public:
                             fdp.PushMatrix();
                             fdp.Translate(FT::vec3(double(slot) * FLOOR_WIDTH / 3.0, 0.0, 0.0));
                             fdp.Cube(FT::Transform{ 0.5 });
+                            if (floor.obstacles[slot + 1] == Floor::Obstacle::WALL)
+                            {
+                                fdp.Translate(FT::vec3(0.0, 1.0, 0.0));
+                                fdp.Cube(FT::Transform{ 0.5 });
+                            }
                             fdp.PopMatrix();
                         }
                     }

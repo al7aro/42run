@@ -31,12 +31,17 @@ public:
         RIGHT_LEFT = 2 | 4,
         RIGHT_LEFT_FORWARD = 1 | 2 | 4
     };
-
+    enum Obstacle
+    {
+        FREE = 0,
+        FENCE,  // JUMPABLE
+        WALL    // NON JUMPABLE
+    };
 public:
     Type type;
     Direction dir;
     bool visible;
-    int obstacles[OBSTACLES_SLOTS]; // TODO: 1 top obstacle | -1 bottom obstacle
+    Obstacle obstacles[OBSTACLES_SLOTS]; // TODO: 1 top obstacle | -1 bottom obstacle
     bool has_obstacles;
 public:
     Floor() :type(EMPTY), dir(NONE), visible(true), has_obstacles(false) {}
@@ -55,7 +60,7 @@ public:
     void RandomiceObstacles()
     {
         for (int i = 0; i < OBSTACLES_SLOTS; i++)
-            obstacles[i] = 0;
+            obstacles[i] = Obstacle::FREE;
         if (type & RIGHT || type & LEFT || type == UP || type == DOWN)
             return;
         double r = double(std::rand()) / double(RAND_MAX);
@@ -68,14 +73,20 @@ public:
         // If it has obscatles fill them randomly
         int slot = FT::round(2.0 * (double(std::rand()) / double(RAND_MAX)));
         // It will always have at least one obstacle
-        obstacles[slot] = 1;
+        obstacles[slot] = Obstacle::WALL;
+        if ((double(std::rand()) / double(RAND_MAX)) <= 0.5)
+            obstacles[slot] = Obstacle::FENCE;
 
         for (int i = 0; i < 3; i++)
         {
             if (i == slot) continue;
             // The rest 2 are filled randomly
             if ((double(std::rand()) / double(RAND_MAX)) <= 0.33)
-                obstacles[i] = 1;
+            {
+                obstacles[slot] = Obstacle::WALL;
+                if ((double(std::rand()) / double(RAND_MAX)) <= 0.75)
+                    obstacles[slot] = Obstacle::FENCE;
+            }
         }
     }
 };
