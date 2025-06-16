@@ -37,10 +37,13 @@ private:
 	float m_jump_speed;
 	float m_jump_offset;
 
+	float m_side_speed;
+	float m_anim_rot;
+
 	// TODO: ADD CROUCHING ANIMATION
 public:
 	Player(FT::Feldespato & fdp)
-		: m_pos(0.0), m_side(MIDDLE), m_jumping(false), m_jump_speed(0.05), m_jump_offset(0.0)
+		: m_pos(0.0), m_side(MIDDLE), m_jumping(false), m_jump_offset(0.0)
 	{
 		m_body = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/body.obj");
 		m_left_arm = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/marvin/left_arm.obj");
@@ -50,12 +53,19 @@ public:
 
 		m_arms_height = 0.66;
 		m_legs_height = 0.34;
-		m_animation_speed = 10;
 		m_body_displacement = 0.04;
+
+		m_animation_speed = 15.0;
+		m_side_speed = 20.0;
+		m_jump_speed = 8.0;
+		m_anim_rot = 0.0;
 	}
 
-	void Update(FT::Feldespato & fdp)
+	void Update(FT::Feldespato & fdp, float delta_time)
 	{
+		float final_jump_speed = m_jump_speed * delta_time;
+		float final_side_speed = m_side_speed * delta_time;
+
 		/* INPUT HANDLER */
 		if (fdp.GetKey(GLFW_KEY_SPACE) == GLFW_PRESS && !m_jumping)
 			m_jumping = true;
@@ -69,7 +79,7 @@ public:
 		/* JUMP MOVEMENT */
 		if (m_jumping)
 		{
-			m_jump_offset = FT::clamp(m_jump_offset + m_jump_speed, 0.0f, FT::PI);
+			m_jump_offset += final_jump_speed;
 			m_pos.y = 1.35 * FT::sin(m_jump_offset);
 			if (m_jump_offset >= FT::PI)
 			{
@@ -79,26 +89,28 @@ public:
 		}
 
 		/* HORIZONTAL MOVEMENT */
-		m_pos.x += 0.15 * FT::clamp((m_side - m_pos.x), -FLOOR_WIDTH / 2.0f, FLOOR_WIDTH / 2.0f);
+		m_pos.x += final_side_speed * FT::clamp((m_side - m_pos.x), -FLOOR_WIDTH / 2.0f, FLOOR_WIDTH / 2.0f);
 	}
 	/*
 		Pedro Miras participó en este proyecto.
 	*/
-	void Draw(FT::Feldespato& fdp, float time)
+	void Draw(FT::Feldespato& fdp, float delta_time)
 	{
+		m_anim_rot += m_animation_speed * delta_time;
+
 		fdp.PushMatrix();
 		fdp.Translate(m_pos);
 
 
 		fdp.PushMatrix();
-		fdp.Translate(FT::vec3(0.0, m_body_displacement * FT::sin(m_animation_speed * time), 0.0));
+		fdp.Translate(FT::vec3(0.0, m_body_displacement * FT::sin(m_anim_rot), 0.0));
 		fdp.Draw(m_body);
 		fdp.PopMatrix();
 
 		// LEFT ARM ANIMATION
 		fdp.PushMatrix();
 		fdp.Translate(FT::vec3(0.0, m_arms_height, 0.0));
-		fdp.RotateX(FT::sin(m_animation_speed * time));
+		fdp.RotateX(FT::sin(m_anim_rot));
 		fdp.Translate(-FT::vec3(0.0, m_arms_height, 0.0));
 		fdp.Draw(m_left_arm);
 		fdp.PopMatrix();
@@ -106,7 +118,7 @@ public:
 		// RIGHT ARM ANIMATION
 		fdp.PushMatrix();
 		fdp.Translate(FT::vec3(0.0, m_arms_height, 0.0));
-		fdp.RotateX(-FT::sin(m_animation_speed * time));
+		fdp.RotateX(-FT::sin(m_anim_rot));
 		fdp.Translate(-FT::vec3(0.0, m_arms_height, 0.0));
 		fdp.Draw(m_right_arm);
 		fdp.PopMatrix();
@@ -114,7 +126,7 @@ public:
 		// LEFT LEG ANIMATION
 		fdp.PushMatrix();
 		fdp.Translate(FT::vec3(0.0, m_legs_height, 0.0));
-		fdp.RotateX(-FT::sin(m_animation_speed * time));
+		fdp.RotateX(-FT::sin(m_anim_rot));
 		fdp.Translate(-FT::vec3(0.0, m_legs_height, 0.0));
 		fdp.Draw(m_left_leg);
 		fdp.PopMatrix();
@@ -122,7 +134,7 @@ public:
 		// RIGHT LEG ANIMATION
 		fdp.PushMatrix();
 		fdp.Translate(FT::vec3(0.0, m_legs_height, 0.0));
-		fdp.RotateX(FT::sin(m_animation_speed * time));
+		fdp.RotateX(FT::sin(m_anim_rot));
 		fdp.Translate(-FT::vec3(0.0, m_legs_height, 0.0));
 		fdp.Draw(m_right_leg);
 		fdp.PopMatrix();
@@ -159,7 +171,6 @@ public:
 		m_pos = FT::vec3(0.0);
 		m_side = MIDDLE;
 		m_jumping = false;
-		m_jump_speed = 0.05;
 		m_jump_offset = 0.0;
 	}
 };

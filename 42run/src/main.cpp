@@ -11,7 +11,8 @@ using namespace FT;
 enum Screen
 {
 	MENU,
-	GAME
+	GAME,
+	LOST
 };
 
 int main(void)
@@ -56,6 +57,8 @@ int main(void)
 	//map_selector_cam.tr.Yaw(3.0*FT::PI/4.0);
 	map_selector_cam.tr.Pitch(-FT::HALF_PI);
 	float xsize, ysize, target_size = 3.0, scale_factor;
+	float rot_speed = 2.0;
+	float rot_offset = 0.0;
 	Model q_mark = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/q_mark/q_mark.obj");
 
 /* ---------------------- GAME SCREEN ---------------------- */
@@ -70,10 +73,15 @@ int main(void)
 	Player player(fdp);
 	int score = 0;
 
+/* ---------------------- LOST SCREEN ---------------------- */
+	float lost_timer = 0;
+	float lost_screen_time = 3;
+
 /* ---------------------- GAME SCREEN ---------------------- */
 	std::shared_ptr<Texture2D> intro_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/intro_test.png");
 	std::shared_ptr<Texture2D> menu_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/menu_test.png");
 	std::shared_ptr<Texture2D> pause_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/pause_test.png");
+	std::shared_ptr<Texture2D> explosion_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/explosion.png");
 
 	std::shared_ptr<Texture2D> post_pro;
 
@@ -111,6 +119,7 @@ int main(void)
 			}
 			if (fdp.GetKey(GLFW_KEY_LEFT) == GLFW_RELEASE && fdp.GetKey(GLFW_KEY_RIGHT) == GLFW_RELEASE)
 				key_flag = true;
+			rot_offset += last_frame_time * rot_speed;
 
 			/* -------------------------------*/
 			/* ----------- RENDER ------------*/
@@ -125,7 +134,7 @@ int main(void)
 					if (selected_map_id != 0)
 					{
 						fdp.RotateX(FT::PI / 4.0);
-						fdp.RotateY(program_time);
+						fdp.RotateY(rot_offset);
 						xsize = FLOOR_WIDTH * (maps[selected_map_id]->GetXSize() - 1.0) / 2.0;
 						ysize = FLOOR_WIDTH * (maps[selected_map_id]->GetYSize() - 1.0) / 2.0;
 						scale_factor = target_size / xsize;
@@ -136,8 +145,8 @@ int main(void)
 					else
 					{
 						fdp.RotateX(FT::HALF_PI);
-						fdp.RotateY(1.5*program_time);
-						fdp.Draw(q_mark, Transform(FT::vec3(0.0, FT::sin(2.0*program_time), 0.0), FT::vec3(2.0)));
+						fdp.RotateY(1.5 * rot_offset);
+						fdp.Draw(q_mark, Transform(FT::vec3(0.0, FT::sin(2.0 * rot_offset), 0.0), FT::vec3(2.0)));
 					}
 				map_selector_window = fdp.EndLayer();
 				fdp.PopMatrix();
@@ -165,26 +174,40 @@ int main(void)
 		case Screen::GAME:
 			/* ----------- UPDATE -------------*/
 			//fdp.DefaultCameraMovement(cam, last_frame_time);
-			if (fdp.GetKey(GLFW_KEY_BACKSPACE) == GLFW_PRESS && key_flag && pause)
+			if (fdp.GetKey(GLFW_KEY_BACKSPACE) == GLFW_PRESS && key_flag && pause && !runner.GetCollision())
 			{
 				current_screen = Screen::MENU;
 				selected_map_id = 0;
 			}
-			if (fdp.GetKey(GLFW_KEY_ESCAPE) == GLFW_PRESS && key_flag)
+			if (fdp.GetKey(GLFW_KEY_ESCAPE) == GLFW_PRESS && key_flag && !runner.GetCollision())
 			{
 				pause = !pause;
 				key_flag = false;
 			}
-			if (fdp.GetKey(GLFW_KEY_ESCAPE) == GLFW_RELEASE)
+			if (fdp.GetKey(GLFW_KEY_ESCAPE) == GLFW_RELEASE && !runner.GetCollision())
 				key_flag = true;
 			if (!pause)
 			{
-				player.Update(fdp);
-				runner.Update(fdp, player);
 				if (runner.GetCollision())
 				{
-					selected_map_id = 0;
-					current_screen = MENU;
+					if (lost_timer == 0)
+						lost_timer = program_time;
+					if ((program_time - lost_timer) >= lost_screen_time)
+					{
+						selected_map_id = 0;
+						lost_timer = 0;
+						current_screen = MENU;
+					}
+					else if ((program_time - lost_timer) < 0.05)
+					{
+						player.Update(fdp, last_frame_time);
+						runner.Update(fdp, player, last_frame_time);
+					}
+				}
+				else
+				{
+					player.Update(fdp, last_frame_time);
+					runner.Update(fdp, player, last_frame_time);
 				}
 				if (runner.GetScore() != score)
 					score = runner.GetScore();
@@ -197,7 +220,7 @@ int main(void)
 
 				fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
 				fdp.BeginLayer(cam, sh, false);
-					player.Draw(fdp, program_time);
+					player.Draw(fdp, !runner.GetCollision() * last_frame_time);
 				fdp.EndLayer();
 				fdp.BeginLayer(cam, sh, false);
 					runner.Draw(fdp);
@@ -212,6 +235,12 @@ int main(void)
 				{
 					fdp.BeginLayer(sh, false);
 						fdp.Rect(pause_tex);
+					fdp.EndLayer();
+				}
+				if (runner.GetCollision())
+				{
+					fdp.BeginLayer(sh, false);
+					fdp.Rect(explosion_tex);
 					fdp.EndLayer();
 				}
 			post_pro = fdp.EndLayer();

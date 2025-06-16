@@ -22,6 +22,7 @@ public:
     unsigned int m_score;
     bool m_collision;
     bool m_col_passed;
+    float m_obstacle_width;
 
     /* MAP MOVEMENT */
     FT::vec3 m_pos;
@@ -47,10 +48,11 @@ public:
 
 public:
     MapRunner(FT::Feldespato & fdp)
-        : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_mov_speed(0.01), m_dir(Floor::NONE),
-        m_rotating(0), m_rotated_tile(false), m_rot_speed(0.2), m_rot_offset(0.0), m_total_rotation(0.0),
+        : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_dir(Floor::NONE),
+        m_rotating(0), m_rotated_tile(false), m_rot_offset(0.0), m_total_rotation(0.0),
         m_climbing(0), m_climbed_tile(false), m_climb_perc(0.5),
-        m_score(0), m_collision(false), m_col_passed(false)
+        m_score(0), m_collision(false), m_col_passed(false), m_obstacle_width(0.1),
+        m_mov_speed(2.0), m_rot_speed(30.0)
     {
         m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.obj");
         m_floor_types[Floor::RIGHT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right.obj");
@@ -88,16 +90,19 @@ public:
         m_current_map->RandomiceObstacles();
     }
 
-    void Update(FT::Feldespato & fdp, Player & player)
+    void Update(FT::Feldespato & fdp, Player & player, float delta_time)
     {
+        float final_mov_speed = m_mov_speed * delta_time;
+        float final_rot_speed = m_rot_speed * delta_time;
+
         if (!m_current_map) return;
 
         /* Moves the map constantly */
         if (!m_rotating)
         {
-            m_pos += m_mov_speed * FT::vec3((m_dir == Floor::EAST) - (m_dir == Floor::WEST),
+            m_pos += final_mov_speed * FT::vec3((m_dir == Floor::EAST) - (m_dir == Floor::WEST),
                                              (m_dir == Floor::NORTH) - (m_dir == Floor::SOUTH), 0.0);
-            m_tile_perc += m_mov_speed;
+            m_tile_perc += final_mov_speed;
             if (FT::ivec3(FT::round(m_pos)) != m_current_tile && m_tile_perc >= 0.9)
             {
                 m_tile_perc = 0.0;
@@ -144,7 +149,7 @@ public:
             m_rotating = 0;
         if (m_rotating)
         {
-            m_rot_offset = FT::clamp(m_rot_offset + FT::sign(m_rotating) * m_rot_speed, -FT::HALF_PI, FT::HALF_PI);
+            m_rot_offset = FT::clamp(m_rot_offset + FT::sign(m_rotating) * final_rot_speed, -FT::HALF_PI, FT::HALF_PI);
             if (FT::abs(m_rot_offset) >= FT::HALF_PI)
             {
                 m_total_rotation = FT::mod(m_total_rotation + FT::sign(m_rotating) * FT::HALF_PI, FT::TWO_PI);
@@ -166,8 +171,8 @@ public:
         /* Climbs de map */
         if (m_climbing)
         {
-            m_climb_offset += FT::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
-            m_pos.z = m_pos.z + FT::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
+            m_climb_offset += FT::sign(m_climbing) * (final_mov_speed / (m_climb_perc));
+            m_pos.z = m_pos.z + FT::sign(m_climbing) * (final_mov_speed / (m_climb_perc));
             if (FT::abs(m_climb_offset) >= 1.0)
             {
                 m_pos.z = FT::round(m_pos.z);
@@ -205,25 +210,20 @@ public:
                 if (floor.obstacles[left_obstacle] == Floor::Obstacle::WALL ||
                     (floor.obstacles[left_obstacle] == Floor::Obstacle::FENCE && !player.IsJumping()))
                     m_collision = true;
-                else
-                    m_col_passed = true;
                 break;
             case Player::RIGHT:
                 if (floor.obstacles[right_obstacle] == Floor::Obstacle::WALL ||
                     (floor.obstacles[right_obstacle] == Floor::Obstacle::FENCE && !player.IsJumping()))
                     m_collision = true;
-                else
-                    m_col_passed = true;
                 break;
             case Player::MIDDLE:
                 if (floor.obstacles[middle_obstacle] == Floor::Obstacle::WALL ||
                     (floor.obstacles[middle_obstacle] == Floor::Obstacle::FENCE && !player.IsJumping()))
                     m_collision = true;
-                else
-                    m_col_passed = true;
                 break;
             }
-            m_col_passed = true;
+            if (m_tile_perc >= 0.5 + m_obstacle_width)
+                m_col_passed = true;
         }
     }
 
