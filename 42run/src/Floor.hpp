@@ -9,7 +9,6 @@ constexpr int OBSTACLES_SLOTS = 3;
 
 struct Floor
 {
-public:
     enum Direction
     {
         NORTH = 0,
@@ -37,28 +36,29 @@ public:
         FENCE,  // JUMPABLE
         WALL    // NON JUMPABLE
     };
-public:
     Type type;
     Direction dir;
     bool visible;
     Obstacle obstacles[OBSTACLES_SLOTS]; // TODO: 1 top obstacle | -1 bottom obstacle
     bool has_obstacles;
-public:
+    bool enabled_obstacles;
     Floor() :type(EMPTY), dir(NONE), visible(true), has_obstacles(false) {}
     Floor(const Floor& o)
-        : type(o.type), dir(o.dir), visible(o.visible), has_obstacles(o.has_obstacles)
+        : type(o.type), dir(o.dir), visible(o.visible), has_obstacles(o.has_obstacles), enabled_obstacles(o.enabled_obstacles)
     {
         for (int i = 0; i < OBSTACLES_SLOTS; i++)
             obstacles[i] = o.obstacles[i];
     }
-    Floor(Type p_type, Direction p_dir, bool p_visible = true)
-        : type(p_type), dir(p_dir), visible(p_visible)
+    Floor(Type p_type, Direction p_dir, bool enabled_obstacles = true, bool p_visible = true)
+        : type(p_type), dir(p_dir), visible(p_visible), enabled_obstacles(enabled_obstacles)
     {
         RandomiceObstacles();
     }
 
     void RandomiceObstacles()
     {
+        if (!enabled_obstacles)
+            return;
         for (int i = 0; i < OBSTACLES_SLOTS; i++)
             obstacles[i] = Obstacle::FREE;
         if (type & RIGHT || type & LEFT || type == UP || type == DOWN)
@@ -88,5 +88,10 @@ public:
                     obstacles[slot] = Obstacle::FENCE;
             }
         }
+    }
+
+    void EnableObstacles(bool enable = true)
+    {
+        enabled_obstacles = enable;
     }
 };

@@ -82,6 +82,7 @@ int main(void)
 	std::shared_ptr<Texture2D> menu_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/menu_test.png");
 	std::shared_ptr<Texture2D> pause_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/pause_test.png");
 	std::shared_ptr<Texture2D> explosion_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/explosion.png");
+	std::shared_ptr<Texture2D> lost_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/lost.png");
 
 	std::shared_ptr<Texture2D> post_pro;
 
@@ -240,7 +241,8 @@ int main(void)
 				if (runner.GetCollision())
 				{
 					fdp.BeginLayer(sh, false);
-					fdp.Rect(explosion_tex);
+					fdp.Rect(Transform(FT::vec3(0.0, 0.25, 0.0), FT::vec3(1.0, 0.25, 1.0)), lost_tex);
+					fdp.Rect(Transform(FT::vec3(0.0, -0.5, 0.0)), explosion_tex);
 					fdp.EndLayer();
 				}
 			post_pro = fdp.EndLayer();

@@ -45,8 +45,8 @@ namespace FT {
 		glfwGetCursorPos(m_window, &x, &y);
 		m_mouse_pos = FT::vec2(x, y);
 
-		// int pixel_density = 2;
-		// glViewport(0, 0, width * pixel_density, height * pixel_density);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	void Window::SetWindowSuffix(const std::string& suffix)

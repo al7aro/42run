@@ -293,8 +293,8 @@ public:
         At(at) = floor;
         if (floor.type == Floor::DOWN || floor.type == Floor::UP)
         {
-            At(at + FT::ivec3(0, 0, 1)) = Floor(floor.type, floor.dir, false);
-            At(at + FT::ivec3(0, 0, -1)) = Floor(floor.type, floor.dir, false);
+            At(at + FT::ivec3(0, 0, 1)) = Floor(floor.type, floor.dir, true, false);
+            At(at + FT::ivec3(0, 0, -1)) = Floor(floor.type, floor.dir, true, false);
         }
     }
 

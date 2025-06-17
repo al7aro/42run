@@ -273,19 +273,22 @@ public:
                     fdp.Translate(FLOOR_WIDTH * FT::vec3(-x_it, 0, y_it) + FLOOR_HEIGHT * FT::vec3(0, z_it, 0)); // TODO: CHECK WHY X-AXIS IS INVERTED
                     fdp.RotateY(FT::HALF_PI * map->At(x_it, y_it, z_it).dir);
                     fdp.Draw(m_floor_types[floor.type]);
-                    for (int slot = -1; slot <= 1; slot++)
+                    if (floor.enabled_obstacles)
                     {
-                        if (floor.obstacles[slot + 1])
+                        for (int slot = -1; slot <= 1; slot++)
                         {
-                            fdp.PushMatrix();
-                            fdp.Translate(FT::vec3(double(slot) * FLOOR_WIDTH / 3.0, 0.0, 0.0));
-                            fdp.Cube(FT::Transform{ 0.5 });
-                            if (floor.obstacles[slot + 1] == Floor::Obstacle::WALL)
+                            if (floor.obstacles[slot + 1])
                             {
-                                fdp.Translate(FT::vec3(0.0, 1.0, 0.0));
+                                fdp.PushMatrix();
+                                fdp.Translate(FT::vec3(double(slot) * FLOOR_WIDTH / 3.0, 0.0, 0.0));
                                 fdp.Cube(FT::Transform{ 0.5 });
+                                if (floor.obstacles[slot + 1] == Floor::Obstacle::WALL)
+                                {
+                                    fdp.Translate(FT::vec3(0.0, 1.0, 0.0));
+                                    fdp.Cube(FT::Transform{ 0.5 });
+                                }
+                                fdp.PopMatrix();
                             }
-                            fdp.PopMatrix();
                         }
                     }
                     fdp.PopMatrix();
@@ -356,7 +359,9 @@ public:
                         dir = aux_dirs[word[0]];
                         visible = (word[1] == 'T');
                         type = Floor::Type(std::atoi(&word[2]));
-                        Floor floor(type, dir, visible);
+                        Floor floor(type, dir, true, visible);
+                        if (x_it == pos.x && y_it == pos.y && z_it == pos.z)
+                            floor.EnableObstacles(false);
                         map->At(x_it, y_it, z_it) = floor;
                         if (map->IsRandom())
                             map->PushToBranch(FT::ivec3(x_it, y_it, z_it), MAIN_BRANCH);
@@ -378,7 +383,7 @@ public:
         grid->SetInitPos(FT::ivec3(5, 5, 5));
         for (int i = 0; i < 6; i++)
         {
-            grid->At(5, 5 + i, 5) = Floor(Floor::FORWARD, Floor::NORTH, true);
+            grid->At(5, 5 + i, 5) = Floor(Floor::FORWARD, Floor::NORTH, false, true);
             grid->PushToBranch(FT::ivec3(5, 5 + i, 5), MAIN_BRANCH);
         }
         return (grid);
