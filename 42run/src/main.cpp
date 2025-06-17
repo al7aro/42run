@@ -71,6 +71,7 @@ int main(void)
 	Transform marvin_tr(FT::vec3(0.0, -5.0, -5));
 	/* Player */
 	Player player(fdp);
+	int distance = 0;
 	int score = 0;
 
 /* ---------------------- LOST SCREEN ---------------------- */
@@ -210,6 +211,8 @@ int main(void)
 					player.Update(fdp, last_frame_time);
 					runner.Update(fdp, player, last_frame_time);
 				}
+				if (runner.GetDistance() != distance)
+					distance = runner.GetDistance();
 				if (runner.GetScore() != score)
 					score = runner.GetScore();
 			}
@@ -229,7 +232,9 @@ int main(void)
 				fdp.BeginLayer(sh, false); // TEXT LAYER
 					fdp.PushMatrix();
 					fdp.Translate(FT::vec3(1.0, 0.75, 0.0));
-					txt.Draw(fdp, std::to_string(score), 0.5);
+					txt.Draw(fdp, std::to_string(distance), 0.5);
+					fdp.Translate(FT::vec3(0.0, -0.35, 0.0));
+					txt.Draw(fdp, std::to_string(score), 0.25);
 					fdp.PopMatrix();
 				fdp.EndLayer();
 				if (pause)

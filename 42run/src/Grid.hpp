@@ -167,7 +167,7 @@ public:
     FT::ivec3 GetInitPos() const { return (m_init_pos); }
     int GetInitDir() const { return (m_init_dir); }
 
-    void RandomiceObstacles()
+    void Reset()
     {
         for (int z = 0; z < GetZSize(); z++)
         {
@@ -177,7 +177,7 @@ public:
                 {
                     Floor & f = At(x, y, z);
                     if (At(x, y, z).type != Floor::EMPTY)
-                        f.RandomiceObstacles();
+                        f.Reset();
                 }
             }
         }
