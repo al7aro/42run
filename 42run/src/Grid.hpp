@@ -167,6 +167,22 @@ public:
     FT::ivec3 GetInitPos() const { return (m_init_pos); }
     int GetInitDir() const { return (m_init_dir); }
 
+    void Reset()
+    {
+        for (int z = 0; z < GetZSize(); z++)
+        {
+            for (int y = 0; y < GetYSize(); y++)
+            {
+                for (int x = 0; x < GetXSize(); x++)
+                {
+                    Floor & f = At(x, y, z);
+                    if (At(x, y, z).type != Floor::EMPTY)
+                        f.Reset();
+                }
+            }
+        }
+    }
+
     FT::ivec3 GetNextTile(FT::ivec3 tile, Floor::Direction dir)
     {
         // pref_dir: PREFERED DIRECTION IN CASE THERE IS INTERESCTION
@@ -277,8 +293,8 @@ public:
         At(at) = floor;
         if (floor.type == Floor::DOWN || floor.type == Floor::UP)
         {
-            At(at + FT::ivec3(0, 0, 1)) = Floor(floor.type, floor.dir, false);
-            At(at + FT::ivec3(0, 0, -1)) = Floor(floor.type, floor.dir, false);
+            At(at + FT::ivec3(0, 0, 1)) = Floor(floor.type, floor.dir, true, false);
+            At(at + FT::ivec3(0, 0, -1)) = Floor(floor.type, floor.dir, true, false);
         }
     }
 

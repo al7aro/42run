@@ -37,5 +37,8 @@ namespace FT {
 		int GetMouseButton(int button);
 
 		void SetInputMode(int mode);
+
+		int GetWidth() const;
+		int GetHeight() const;
 	};
 } // namespace FT

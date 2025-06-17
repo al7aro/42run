@@ -19,9 +19,11 @@ public:
     std::shared_ptr<Grid> m_current_map;
 
     /* Player Score */
+    unsigned int m_distance;
     unsigned int m_score;
     bool m_collision;
     bool m_col_passed;
+    float m_obstacle_width;
 
     /* MAP MOVEMENT */
     FT::vec3 m_pos;
@@ -45,12 +47,17 @@ public:
     float m_climb_perc;
     float m_climb_offset;
 
+    /* Obstacles / Collectables */
+    FT::Model m_obstacle;
+    FT::Model m_collectable;
+
 public:
     MapRunner(FT::Feldespato & fdp)
-        : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_mov_speed(0.01), m_dir(Floor::NONE),
-        m_rotating(0), m_rotated_tile(false), m_rot_speed(0.2), m_rot_offset(0.0), m_total_rotation(0.0),
+        : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_dir(Floor::NONE),
+        m_rotating(0), m_rotated_tile(false), m_rot_offset(0.0), m_total_rotation(0.0),
         m_climbing(0), m_climbed_tile(false), m_climb_perc(0.5),
-        m_score(0), m_collision(false), m_col_passed(false)
+        m_distance(0), m_collision(false), m_col_passed(false), m_obstacle_width(0.1),
+        m_mov_speed(2.0), m_rot_speed(30.0)
     {
         m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.obj");
         m_floor_types[Floor::RIGHT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right.obj");
@@ -61,6 +68,9 @@ public:
         m_floor_types[Floor::LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left_front.obj");
         m_floor_types[Floor::UP] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_up.obj");
         m_floor_types[Floor::DOWN] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_down.obj");
+
+        m_obstacle = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/bomb/bomb.obj");
+        m_collectable = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/coin/coin.obj");
     }
 
     void Init(std::shared_ptr<Grid> map)
@@ -77,6 +87,7 @@ public:
         m_prev_tile = m_pos;
         m_prev2_tile = m_prev_tile;
         m_collision = false;
+        m_distance = 0;
         m_score = 0;
         m_climbing = false;
         m_rotating = false;
@@ -85,18 +96,22 @@ public:
         m_climb_offset = 0.0;
         m_total_rotation = 0.0;
         m_rotated_tile = 0.0;
+        m_current_map->Reset();
     }
 
-    void Update(FT::Feldespato & fdp, Player & player)
+    void Update(FT::Feldespato & fdp, Player & player, float delta_time)
     {
+        float final_mov_speed = m_mov_speed * delta_time;
+        float final_rot_speed = m_rot_speed * delta_time;
+
         if (!m_current_map) return;
 
         /* Moves the map constantly */
         if (!m_rotating)
         {
-            m_pos += m_mov_speed * FT::vec3((m_dir == Floor::EAST) - (m_dir == Floor::WEST),
+            m_pos += final_mov_speed * FT::vec3((m_dir == Floor::EAST) - (m_dir == Floor::WEST),
                                              (m_dir == Floor::NORTH) - (m_dir == Floor::SOUTH), 0.0);
-            m_tile_perc += m_mov_speed;
+            m_tile_perc += final_mov_speed;
             if (FT::ivec3(FT::round(m_pos)) != m_current_tile && m_tile_perc >= 0.9)
             {
                 m_tile_perc = 0.0;
@@ -143,7 +158,7 @@ public:
             m_rotating = 0;
         if (m_rotating)
         {
-            m_rot_offset = FT::clamp(m_rot_offset + FT::sign(m_rotating) * m_rot_speed, -FT::HALF_PI, FT::HALF_PI);
+            m_rot_offset = FT::clamp(m_rot_offset + FT::sign(m_rotating) * final_rot_speed, -FT::HALF_PI, FT::HALF_PI);
             if (FT::abs(m_rot_offset) >= FT::HALF_PI)
             {
                 m_total_rotation = FT::mod(m_total_rotation + FT::sign(m_rotating) * FT::HALF_PI, FT::TWO_PI);
@@ -165,8 +180,8 @@ public:
         /* Climbs de map */
         if (m_climbing)
         {
-            m_climb_offset += FT::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
-            m_pos.z = m_pos.z + FT::sign(m_climbing) * (m_mov_speed / (m_climb_perc));
+            m_climb_offset += FT::sign(m_climbing) * (final_mov_speed / (m_climb_perc));
+            m_pos.z = m_pos.z + FT::sign(m_climbing) * (final_mov_speed / (m_climb_perc));
             if (FT::abs(m_climb_offset) >= 1.0)
             {
                 m_pos.z = FT::round(m_pos.z);
@@ -182,48 +197,62 @@ public:
             if (!m_current_map->Exists(m_current_tile) || m_current_map->At(m_current_tile).type == Floor::Type::EMPTY)
                 m_collision = true;
             else if (!m_collision)
-                m_score++;
+                m_distance++;
         }
 
-        // TODO: ADD HIGH OBSTACLES AND THE PLAYER CAN CROUCH
         /* Checks player collision */
-        Floor floor = m_current_map->At(m_current_tile);
-        int left_obstacle = 0;
-        int right_obstacle = 2;
-        int middle_obstacle = 1;
+        Floor& floor = m_current_map->At(m_current_tile);
+        int left = 0;
+        int right = 2;
+        int middle = 1;
         if (floor.dir == m_dir)
         {
-            left_obstacle = 2;
-            right_obstacle = 0;
+            left = 2;
+            right = 0;
         }
         if (m_tile_perc >= 0.5 && !m_col_passed)
         {
-            if (player.IsJumping())
-                m_col_passed = true;
-            else
+            switch (player.GetSide())
             {
-                switch (player.GetSide())
+            case Player::LEFT:
+                if (floor.obstacles[left] == Floor::Obstacle::WALL ||
+                    (floor.obstacles[left] == Floor::Obstacle::FENCE && !player.IsJumping()))
+                    m_collision = true;
+                if (floor.collectables[left] && !player.IsJumping())
                 {
-                case Player::LEFT:
-                    if (floor.obstacles[left_obstacle] != 0)
-                        m_collision = true;
-                    break;
-                case Player::RIGHT:
-                    if (floor.obstacles[right_obstacle] != 0)
-                        m_collision = true;
-                    break;
-                case Player::MIDDLE:
-                    if (floor.obstacles[middle_obstacle] != 0)
-                        m_collision = true;
-                    break;
+                    m_score++;
+                    floor.collectables[left] = false;
                 }
-                m_col_passed = true;
+                break;
+            case Player::RIGHT:
+                if (floor.obstacles[right] == Floor::Obstacle::WALL ||
+                    (floor.obstacles[right] == Floor::Obstacle::FENCE && !player.IsJumping()))
+                    m_collision = true;
+                if (floor.collectables[right] && !player.IsJumping())
+                {
+                    m_score++;
+                    floor.collectables[right] = false;
+                }
+                break;
+            case Player::MIDDLE:
+                if (floor.obstacles[middle] == Floor::Obstacle::WALL ||
+                    (floor.obstacles[middle] == Floor::Obstacle::FENCE && !player.IsJumping()))
+                    m_collision = true;
+                if (floor.collectables[middle] && !player.IsJumping())
+                {
+                    m_score++;
+                    floor.collectables[middle] = false;
+                }
+                break;
             }
+            if (m_tile_perc >= 0.5 + m_obstacle_width)
+                m_col_passed = true;
         }
-        //if (m_tile_perc == 0.0)
-        //    std::cout << "Score: " << m_score << std::endl;
-        //if (m_collision)
-        //    Reset();
+    }
+
+    unsigned int GetDistance() const
+    {
+        return (m_distance);
     }
 
     unsigned int GetScore() const
@@ -278,7 +307,19 @@ public:
                         {
                             fdp.PushMatrix();
                             fdp.Translate(FT::vec3(double(slot) * FLOOR_WIDTH / 3.0, 0.0, 0.0));
-                            fdp.Cube(FT::Transform{ 0.5 });
+                            fdp.Draw(m_obstacle, FT::Transform(0.25));
+                            if (floor.obstacles[slot + 1] == Floor::Obstacle::WALL)
+                            {
+                                fdp.Translate(FT::vec3(0.0, 1.0, 0.0));
+                                fdp.Draw(m_obstacle, FT::Transform(0.25));
+                            }
+                            fdp.PopMatrix();
+                        }
+                        if (floor.collectables[slot + 1])
+                        {
+                            fdp.PushMatrix();
+                            fdp.Translate(FT::vec3(double(slot) * FLOOR_WIDTH / 3.0, 0.0, 0.0));
+                            fdp.Draw(m_collectable, FT::Transform(0.25));
                             fdp.PopMatrix();
                         }
                     }
@@ -288,7 +329,7 @@ public:
         }
     }
 
-    std::shared_ptr<Grid> ReadMap(const std::string& path)
+    static std::shared_ptr<Grid> ReadMap(const std::string& path)
     {
         std::fstream file(path);
         std::istringstream ss;
@@ -350,7 +391,9 @@ public:
                         dir = aux_dirs[word[0]];
                         visible = (word[1] == 'T');
                         type = Floor::Type(std::atoi(&word[2]));
-                        Floor floor(type, dir, visible);
+                        Floor floor(type, dir, true, visible);
+                        if (x_it == pos.x && y_it == pos.y && z_it == pos.z)
+                            floor.EnableObstacles(false);
                         map->At(x_it, y_it, z_it) = floor;
                         if (map->IsRandom())
                             map->PushToBranch(FT::ivec3(x_it, y_it, z_it), MAIN_BRANCH);
@@ -362,5 +405,19 @@ public:
             x_it = 0;
         }
         return map;
+    }
+
+    static std::shared_ptr<Grid> RandomMap()
+    {
+        std::shared_ptr<Grid> grid = std::make_shared<Grid>(11, 11, 11, true, true, true);
+        grid->SetRandomMap();
+        grid->SetInitDir(Floor::NORTH);
+        grid->SetInitPos(FT::ivec3(5, 5, 5));
+        for (int i = 0; i < 6; i++)
+        {
+            grid->At(5, 5 + i, 5) = Floor(Floor::FORWARD, Floor::NORTH, false, true);
+            grid->PushToBranch(FT::ivec3(5, 5 + i, 5), MAIN_BRANCH);
+        }
+        return (grid);
     }
 };

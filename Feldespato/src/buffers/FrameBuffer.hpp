@@ -33,6 +33,7 @@ namespace FT {
         }
         ~FrameBuffer()
         {
+            Disable();
             glDeleteRenderbuffers(1, &m_rbo);
             glDeleteFramebuffers(1, &m_id);
         }
@@ -55,5 +56,13 @@ namespace FT {
 		{
 			return m_enabled;
 		}
+        int GetWidth() const
+        {
+            return m_width;
+        }
+        int GetHeight() const
+        {
+            return m_height;
+        }
     };
 }
