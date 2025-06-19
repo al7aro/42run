@@ -2,12 +2,12 @@ F10 F10 F1
 N 1 5 0
 
 0   0   0   0   0   0   0   0   0   0
-0   NT2  ET1  ET1  ET1  ET1  ET1  ET1  ET2  0
-0   NT1  0   0   0   0   0   0   ST1  0
-0   NT1  0   0   0   0   0   0   ST1  0
-0   NT1  0   0   0   0   0   0   ST1  0
-0   NT1  0   0   0   0   0   0   ST1  0
-0   NT1  0   0   0   0   0   0   ST1  0
-0   NT1  0   0   0   0   0   0   ST1  0
 0   WT2  WT1  WT1  WT1  WT1  WT1  WT1  ST2  0
+0   NT1  0   0   0   0   0   0   ST1  0
+0   NT1  0   0   0   0   0   0   ST1  0
+0   NT1  0   0   0   0   0   0   ST1  0
+0   NT1  0   0   0   0   0   0   ST1  0
+0   NT1  0   0   0   0   0   0   ST1  0
+0   NT1  0   0   0   0   0   0   ST1  0
+0   NT2  ET1  ET1  ET1  ET1  ET1  ET1  ET2  0
 0   0   0   0   0   0   0   0   0   0

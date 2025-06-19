@@ -3,8 +3,10 @@
 #include "FT.hpp"
 #include <cstdlib>
 
-constexpr float FLOOR_WIDTH = 4.0f;
-constexpr float FLOOR_HEIGHT = 1.25f;
+constexpr float FLOOR_DEPTH = 12.0f;
+constexpr float FLOOR_HEIGHT = 1.25;
+constexpr float WALK_FLOOR_WIDTH = 1;
+
 constexpr int OBSTACLES_SLOTS = 3;
 constexpr int COLLECTABLE_SLOTS = 3;
 

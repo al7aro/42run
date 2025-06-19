@@ -55,8 +55,8 @@ public:
     MapRunner(FT::Feldespato & fdp)
         : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_dir(Floor::NONE),
         m_rotating(0), m_rotated_tile(false), m_rot_offset(0.0), m_total_rotation(0.0),
-        m_climbing(0), m_climbed_tile(false), m_climb_perc(0.5),
-        m_distance(0), m_collision(false), m_col_passed(false), m_obstacle_width(0.1),
+        m_climbing(0), m_climbed_tile(false), m_climb_perc(0.25),
+        m_distance(0), m_collision(false), m_col_passed(false), m_obstacle_width(0.01),
         m_mov_speed(2.0), m_rot_speed(30.0)
     {
         m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.obj");
@@ -270,7 +270,7 @@ public:
         if (!m_current_map) return;
         fdp.PushMatrix();
         fdp.RotateY(-m_total_rotation - m_rot_offset);
-        fdp.Translate(-FLOOR_WIDTH * FT::vec3(-m_pos.x, 0.0, m_pos.y)); // TODO: CHECK WHY X-AXIS IS INVERTED
+        fdp.Translate(-FLOOR_DEPTH * FT::vec3(-m_pos.x, 0.0, m_pos.y)); // TODO: CHECK WHY X-AXIS IS INVERTED
         fdp.Translate(-FLOOR_HEIGHT * FT::vec3(0.0, m_pos.z, 0.0)); // TODO: CHECK WHY X-AXIS IS INVERTED
         DrawMapPortion(m_current_map, fdp, m_current_tile, FT::ivec3(5));
         fdp.PopMatrix();
@@ -298,28 +298,30 @@ public:
                     if (!floor.visible) continue;
 
                     fdp.PushMatrix();
-                    fdp.Translate(FLOOR_WIDTH * FT::vec3(-x_it, 0, y_it) + FLOOR_HEIGHT * FT::vec3(0, z_it, 0)); // TODO: CHECK WHY X-AXIS IS INVERTED
+                    fdp.Translate(FLOOR_DEPTH * FT::vec3(-x_it, 0, y_it) + FLOOR_HEIGHT * FT::vec3(0, z_it, 0)); // TODO: CHECK WHY X-AXIS IS INVERTED
                     fdp.RotateY(FT::HALF_PI * map->At(x_it, y_it, z_it).dir);
                     fdp.Draw(m_floor_types[floor.type]);
                     for (int slot = -1; slot <= 1; slot++)
                     {
                         if (floor.obstacles[slot + 1])
                         {
+                            float scale = 0.25;
                             fdp.PushMatrix();
-                            fdp.Translate(FT::vec3(double(slot) * FLOOR_WIDTH / 3.0, 0.0, 0.0));
-                            fdp.Draw(m_obstacle, FT::Transform(0.25));
+                            fdp.Translate(FT::vec3(double(slot) * (WALK_FLOOR_WIDTH / scale) / 3.0, 0.0, 0.0));
+                            fdp.Draw(m_obstacle, FT::Transform(scale));
                             if (floor.obstacles[slot + 1] == Floor::Obstacle::WALL)
                             {
                                 fdp.Translate(FT::vec3(0.0, 1.0, 0.0));
-                                fdp.Draw(m_obstacle, FT::Transform(0.25));
+                                fdp.Draw(m_obstacle, FT::Transform(scale));
                             }
                             fdp.PopMatrix();
                         }
                         if (floor.collectables[slot + 1])
                         {
+                            float scale = 0.25;
                             fdp.PushMatrix();
-                            fdp.Translate(FT::vec3(double(slot) * FLOOR_WIDTH / 3.0, 0.0, 0.0));
-                            fdp.Draw(m_collectable, FT::Transform(0.25));
+                            fdp.Translate(FT::vec3(double(slot) * (WALK_FLOOR_WIDTH / scale) / 3.0, 0.0, 0.0));
+                            fdp.Draw(m_collectable, FT::Transform(scale));
                             fdp.PopMatrix();
                         }
                     }

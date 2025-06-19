@@ -23,7 +23,8 @@ void main()
     vs_out.col = vec4(a_col.xyz, 1.0);
     vs_out.tex_coord = vec2(a_tex_coord.x, -a_tex_coord.y);
 
-    gl_Position = proj_mat * view_mat * vs_out.pos;
+	vec4 p = proj_mat * view_mat * vs_out.pos;
+    gl_Position = p;
 }
 
 #shader fragment
