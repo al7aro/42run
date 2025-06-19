@@ -50,6 +50,7 @@ public:
     /* Obstacles / Collectables */
     FT::Model m_obstacle;
     FT::Model m_collectable;
+    float m_collectable_rot;
 
 public:
     MapRunner(FT::Feldespato & fdp)
@@ -57,7 +58,7 @@ public:
         m_rotating(0), m_rotated_tile(false), m_rot_offset(0.0), m_total_rotation(0.0),
         m_climbing(0), m_climbed_tile(false), m_climb_perc(0.25),
         m_distance(0), m_collision(false), m_col_passed(false), m_obstacle_width(0.01),
-        m_mov_speed(2.0), m_rot_speed(30.0)
+        m_mov_speed(2.0), m_rot_speed(30.0), m_collectable_rot(0.0)
     {
         m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.obj");
         m_floor_types[Floor::RIGHT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right.obj");
@@ -96,6 +97,7 @@ public:
         m_climb_offset = 0.0;
         m_total_rotation = 0.0;
         m_rotated_tile = 0.0;
+        m_collectable_rot = 0.0;
         m_current_map->Reset();
     }
 
@@ -103,6 +105,7 @@ public:
     {
         float final_mov_speed = m_mov_speed * delta_time;
         float final_rot_speed = m_rot_speed * delta_time;
+        m_collectable_rot += 5.0 * delta_time;
 
         if (!m_current_map) return;
 
@@ -321,6 +324,7 @@ public:
                             float scale = 0.25;
                             fdp.PushMatrix();
                             fdp.Translate(FT::vec3(double(slot) * (WALK_FLOOR_WIDTH / scale) / 3.0, 0.0, 0.0));
+                            fdp.RotateY(m_collectable_rot);
                             fdp.Draw(m_collectable, FT::Transform(scale));
                             fdp.PopMatrix();
                         }

@@ -144,7 +144,7 @@ int main(void)
 						scale_factor = target_size / xsize;
 						fdp.Scale(FT::vec3(scale_factor));
 						fdp.Translate(FT::vec3(xsize, 0.0, -ysize));
-						runner.DrawMapPortion(maps[selected_map_id], fdp, FT::ivec3(0));
+						runner.DrawMapPortion(maps[selected_map_id], fdp, FT::ivec3(0), last_frame_time);
 					}
 					else
 					{

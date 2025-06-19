@@ -36,7 +36,7 @@ Example of use:
 Feldespato fdp;
 
 fdp.BeginRenderPass(camera, shader, render_to_texture);
-  fdp.Draw(EpicModel, Transofmr()); // Model loading with ANIMATION support
+  fdp.Draw(EpicModel, Transform()); // Model loading with ANIMATION support
   fdp.Rect(Transform(0.0, 0.0, 0.0));
   fdp.Cube();
 texture = fdp.EndRenderPass();
@@ -57,8 +57,8 @@ The game is a VERY SIMPLE clone of epic **Temple Run** <a href="https://play.goo
 - The map is pregenerated and obstacles are placed randomly.
 
 ## TODO 🤯
-- [ ] Make it look better 🦢
-- [ ] Implement a map generation algorithm 🧮
+- [ ] Add props to FORWARD floor
+- [ ] Add new models for collectables and obstacles
 
 ---
 
