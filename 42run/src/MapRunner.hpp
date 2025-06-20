@@ -24,6 +24,7 @@ public:
     bool m_collision;
     bool m_col_passed;
     float m_obstacle_width;
+    float m_obstacle_height;
 
     /* MAP MOVEMENT */
     FT::vec3 m_pos;
@@ -48,7 +49,7 @@ public:
     float m_climb_offset;
 
     /* Obstacles / Collectables */
-    FT::Model m_obstacle;
+    std::vector<FT::Model> m_obstacles;
     FT::Model m_collectable;
     float m_collectable_rot;
 
@@ -57,21 +58,24 @@ public:
         : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_dir(Floor::NONE),
         m_rotating(0), m_rotated_tile(false), m_rot_offset(0.0), m_total_rotation(0.0),
         m_climbing(0), m_climbed_tile(false), m_climb_perc(0.25),
-        m_distance(0), m_collision(false), m_col_passed(false), m_obstacle_width(0.01),
+        m_distance(0), m_collision(false), m_col_passed(false), m_obstacle_width(0.05), m_obstacle_height(0.75),
         m_mov_speed(2.0), m_rot_speed(30.0), m_collectable_rot(0.0)
     {
         m_floor_types[Floor::FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front.obj");
         m_floor_types[Floor::RIGHT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right.obj");
-        m_floor_types[Floor::LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left.obj");
         m_floor_types[Floor::RIGHT_LEFT] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left.obj");
         m_floor_types[Floor::RIGHT_LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_left_front.obj");
-        m_floor_types[Floor::RIGHT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/right_front.obj");
-        m_floor_types[Floor::LEFT_FORWARD] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/left_front.obj");
         m_floor_types[Floor::UP] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_up.obj");
         m_floor_types[Floor::DOWN] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_down.obj");
 
-        m_obstacle = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/bomb/bomb.obj");
         m_collectable = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/coin/coin.obj");
+
+        // TODO: make this a map or something
+        m_obstacles.push_back(fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/obstacles/low/fence/fence.obj"));
+        m_obstacles.push_back(fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/obstacles/low/fence2/fence2.obj"));
+        m_obstacles.push_back(fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/obstacles/low/fence3/fence3.obj"));
+        m_obstacles.push_back(fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/obstacles/high/column/column.obj"));
+        m_obstacles.push_back(fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/obstacles/high/column2/column2.obj"));
     }
 
     void Init(std::shared_ptr<Grid> map)
@@ -219,9 +223,9 @@ public:
             {
             case Player::LEFT:
                 if (floor.obstacles[left] == Floor::Obstacle::WALL ||
-                    (floor.obstacles[left] == Floor::Obstacle::FENCE && !player.IsJumping()))
+                    (floor.obstacles[left] == Floor::Obstacle::FENCE && !(player.GetJumpPerc() >= m_obstacle_height)))
                     m_collision = true;
-                if (floor.collectables[left] && !player.IsJumping())
+                if (floor.collectables[left] && !(player.GetJumpPerc() >= m_obstacle_height))
                 {
                     m_score++;
                     floor.collectables[left] = false;
@@ -229,9 +233,9 @@ public:
                 break;
             case Player::RIGHT:
                 if (floor.obstacles[right] == Floor::Obstacle::WALL ||
-                    (floor.obstacles[right] == Floor::Obstacle::FENCE && !player.IsJumping()))
+                    (floor.obstacles[right] == Floor::Obstacle::FENCE && !(player.GetJumpPerc() >= m_obstacle_height)))
                     m_collision = true;
-                if (floor.collectables[right] && !player.IsJumping())
+                if (floor.collectables[right] && !(player.GetJumpPerc() >= m_obstacle_height))
                 {
                     m_score++;
                     floor.collectables[right] = false;
@@ -239,9 +243,9 @@ public:
                 break;
             case Player::MIDDLE:
                 if (floor.obstacles[middle] == Floor::Obstacle::WALL ||
-                    (floor.obstacles[middle] == Floor::Obstacle::FENCE && !player.IsJumping()))
+                    (floor.obstacles[middle] == Floor::Obstacle::FENCE && !(player.GetJumpPerc() >= m_obstacle_height)))
                     m_collision = true;
-                if (floor.collectables[middle] && !player.IsJumping())
+                if (floor.collectables[middle] && !(player.GetJumpPerc() >= m_obstacle_height))
                 {
                     m_score++;
                     floor.collectables[middle] = false;
@@ -303,34 +307,101 @@ public:
                     fdp.PushMatrix();
                     fdp.Translate(FLOOR_DEPTH * FT::vec3(-x_it, 0, y_it) + FLOOR_HEIGHT * FT::vec3(0, z_it, 0)); // TODO: CHECK WHY X-AXIS IS INVERTED
                     fdp.RotateY(FT::HALF_PI * map->At(x_it, y_it, z_it).dir);
-                    fdp.Draw(m_floor_types[floor.type]);
-                    for (int slot = -1; slot <= 1; slot++)
-                    {
-                        if (floor.obstacles[slot + 1])
-                        {
-                            float scale = 0.25;
-                            fdp.PushMatrix();
-                            fdp.Translate(FT::vec3(double(slot) * (WALK_FLOOR_WIDTH / scale) / 3.0, 0.0, 0.0));
-                            fdp.Draw(m_obstacle, FT::Transform(scale));
-                            if (floor.obstacles[slot + 1] == Floor::Obstacle::WALL)
-                            {
-                                fdp.Translate(FT::vec3(0.0, 1.0, 0.0));
-                                fdp.Draw(m_obstacle, FT::Transform(scale));
-                            }
-                            fdp.PopMatrix();
-                        }
-                        if (floor.collectables[slot + 1])
-                        {
-                            float scale = 0.25;
-                            fdp.PushMatrix();
-                            fdp.Translate(FT::vec3(double(slot) * (WALK_FLOOR_WIDTH / scale) / 3.0, 0.0, 0.0));
-                            fdp.RotateY(m_collectable_rot);
-                            fdp.Draw(m_collectable, FT::Transform(scale));
-                            fdp.PopMatrix();
-                        }
-                    }
+                    DrawFloor(fdp, floor);
                     fdp.PopMatrix();
                 }
+            }
+        }
+    }
+
+    void DrawFloor(FT::Feldespato& fdp, Floor floor)
+    {
+        Floor::Type type = floor.type;
+        fdp.PushMatrix();
+        switch (type)
+        {
+        case Floor::LEFT:
+            type = Floor::RIGHT;
+            fdp.Scale(FT::vec3(-1.0, 1.0, 1.0));
+            break;
+        case Floor::RIGHT_FORWARD:
+            type = Floor::RIGHT_LEFT;
+            fdp.RotateY(-FT::HALF_PI);
+            break;
+        case Floor::LEFT_FORWARD:
+            type = Floor::RIGHT_LEFT;
+            fdp.RotateY(FT::HALF_PI);
+            break;
+        };
+        fdp.Draw(m_floor_types[type]);
+        fdp.PopMatrix();
+        DrawObstacles(fdp, floor);
+        DrawCollectables(fdp, floor);
+    }
+
+    void DrawObstacles(FT::Feldespato& fdp, Floor floor)
+    {
+        Floor::Obstacle obs = floor.obstacles[0];
+        Floor::Obstacle obs1 = floor.obstacles[1];
+        Floor::Obstacle obs2 = floor.obstacles[2];
+        for (int slot = -1; slot <= 1; slot++)
+        {
+            if (obs == Floor::Obstacle::FENCE && obs == obs1 && obs == obs2)
+            { // SIZE THREE FENCE
+                fdp.Draw(m_obstacles[2]);
+                return;
+            }
+            else if (obs == Floor::Obstacle::FENCE && obs == obs1)
+            { // SIZE TWO FENCE
+                fdp.PushMatrix();
+                fdp.Translate(FT::vec3(double(slot) * WALK_FLOOR_WIDTH, 0.0, 0.0));
+                fdp.Draw(m_obstacles[1]);
+                fdp.PopMatrix();
+                obs = obs1; obs1 = obs2; obs2 = Floor::Obstacle::FREE;
+                slot += 1;
+
+            }
+            else if (obs == Floor::Obstacle::WALL && obs == obs1)
+            { // SIZE TWO WALL
+                fdp.PushMatrix();
+                fdp.Translate(FT::vec3(double(slot) * WALK_FLOOR_WIDTH, 0.0, 0.0));
+                fdp.Draw(m_obstacles[4]);
+                fdp.PopMatrix();
+                obs = obs1; obs1 = obs2; obs2 = Floor::Obstacle::FREE;
+                slot += 1;
+            }
+            else if (obs == Floor::Obstacle::FENCE)
+            { // NORMAL FENCE
+                fdp.PushMatrix();
+                fdp.Translate(FT::vec3(double(slot) * WALK_FLOOR_WIDTH, 0.0, 0.0));
+                fdp.Draw(m_obstacles[0]);
+                fdp.PopMatrix();
+            }
+            else if (obs == Floor::Obstacle::WALL)
+            { // NORMAL WALL
+                fdp.PushMatrix();
+                fdp.Translate(FT::vec3(double(slot) * WALK_FLOOR_WIDTH, 0.0, 0.0));
+                fdp.Draw(m_obstacles[3]);
+                fdp.PopMatrix();
+            }
+            obs = obs1;
+            obs1 = obs2;
+            obs2 = Floor::Obstacle::FREE;
+        }
+    }
+
+    void DrawCollectables(FT::Feldespato& fdp, Floor floor)
+    {
+        for (int slot = -1; slot <= 1; slot++)
+        {
+            if (floor.collectables[slot + 1])
+            {
+                float scale = 0.25;
+                fdp.PushMatrix();
+                fdp.Translate(FT::vec3(double(slot) * (WALK_FLOOR_WIDTH / scale) / 3.0, 0.0, 0.0));
+                fdp.RotateY(m_collectable_rot);
+                fdp.Draw(m_collectable, FT::Transform(scale));
+                fdp.PopMatrix();
             }
         }
     }

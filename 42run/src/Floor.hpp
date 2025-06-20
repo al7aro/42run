@@ -10,7 +10,7 @@ constexpr float WALK_FLOOR_WIDTH = 1;
 constexpr int OBSTACLES_SLOTS = 3;
 constexpr int COLLECTABLE_SLOTS = 3;
 
-constexpr float OBSTACLE_DENSITY = 0.2; // TODO: constexpr?
+constexpr float OBSTACLE_DENSITY = 0.4; // TODO: constexpr?
 constexpr float COLLECTABLE_DENSITY = 0.2; // TODO: constexpr?
 
 
@@ -89,9 +89,14 @@ struct Floor
         // If it has obscatles fill them randomly
         int slot = FT::round(2.0 * (double(std::rand()) / double(RAND_MAX)));
         // It will always have at least one obstacle
-        obstacles[slot] = Obstacle::WALL;
-        if ((double(std::rand()) / double(RAND_MAX)) <= 0.5)
-            obstacles[slot] = Obstacle::FENCE;
+        int wall_cnt = 0;
+        obstacles[slot] = Obstacle::FENCE;
+        if ((double(std::rand()) / double(RAND_MAX)) > 0.5)
+        {
+            obstacles[slot] = Obstacle::WALL;
+            wall_cnt++;
+        }
+
 
         for (int i = 0; i < 3; i++)
         {
@@ -99,9 +104,12 @@ struct Floor
             // The rest 2 are filled randomly
             if ((double(std::rand()) / double(RAND_MAX)) <= 0.33)
             {
-                obstacles[slot] = Obstacle::WALL;
-                if ((double(std::rand()) / double(RAND_MAX)) <= 0.75)
-                    obstacles[slot] = Obstacle::FENCE;
+                obstacles[i] = Obstacle::FENCE;
+                if ((double(std::rand()) / double(RAND_MAX)) > 0.75 && wall_cnt < 2)
+                {
+                    wall_cnt++;
+                    obstacles[i] = Obstacle::WALL;
+                }
             }
         }
     }

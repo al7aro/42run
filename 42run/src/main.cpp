@@ -64,7 +64,7 @@ int main(void)
 /* ---------------------- GAME SCREEN ---------------------- */
 	/* CAMERA */
 	Camera cam(Camera::PERSPECTIVE);
-	cam.tr.pos = FT::vec3(0.0, 2.0, -4.0);
+	cam.tr.pos = FT::vec3(0.0, 2.0, -3.75);
 	cam.tr.Yaw(FT::PI);
 	//cam.tr.Pitch(FT::PI / 8.0);
 	/* TRANSFORMS */
