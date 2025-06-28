@@ -15,7 +15,7 @@
 #include "Renderable.hpp"
 #include "resource_manager/ResourceManager.hpp"
 
-constexpr auto WINDOW_WIDTH = 800;
+constexpr auto WINDOW_DEPTH = 800;
 constexpr auto WINDOW_HEIGHT = 800;
 
 namespace FT {
@@ -37,7 +37,7 @@ namespace FT {
 		RenderData                          m_data;
 
     public:
-        Feldespato(int w = WINDOW_WIDTH, int h = WINDOW_HEIGHT);
+        Feldespato(int w = WINDOW_DEPTH, int h = WINDOW_HEIGHT);
         ~Feldespato();
         bool                        WindowShouldClose();
         void                        SetWindowSuffix(const std::string& suffix);

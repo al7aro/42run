@@ -1174,11 +1174,9 @@ namespace FT {
 /* -------------------------------------------- */
 
 /* ------------- USEFUL MATRICES -------------- */
-    mat4 ortho(float left, float right, float bottom, float top)
+    mat4 ortho(float left, float right, float bottom, float top, float near, float far)
     {
         mat4 ret;
-        float near = -1.0;
-        float far = 1.0;
         ret[0] = 2.0f / (right - left);   ret[4] = 0;                     ret[8] = 0;                     ret[12] = -(right + left) / ((right - left));
         ret[1] = 0;                     ret[5] = 2.0f / (top - bottom);   ret[9] = 0;                     ret[13] = -(top + bottom) / ((top - bottom));
         ret[2] = 0;                     ret[6] = 0;                       ret[10] = -2.0f / (far - near); ret[14] = -(far + near) / ((far - near));

@@ -67,13 +67,13 @@ public:
 		float final_side_speed = m_side_speed * delta_time;
 
 		/* INPUT HANDLER */
-		if (fdp.GetKey(GLFW_KEY_SPACE) == GLFW_PRESS && !m_jumping)
+		if ((fdp.GetKey(GLFW_KEY_SPACE) == GLFW_PRESS) || ((fdp.GetKey(GLFW_KEY_UP) == GLFW_PRESS)) && !m_jumping)
 			m_jumping = true;
-		if (fdp.GetKey(GLFW_KEY_LEFT) == GLFW_PRESS && !m_jumping)
+		if (fdp.GetKey(GLFW_KEY_LEFT) == GLFW_PRESS)
 			m_side = Player::LEFT;
-		else if (fdp.GetKey(GLFW_KEY_RIGHT) == GLFW_PRESS && !m_jumping)
+		else if (fdp.GetKey(GLFW_KEY_RIGHT) == GLFW_PRESS)
 			m_side = Player::RIGHT;
-		else if (!m_jumping)
+		else
 			m_side = Player::MIDDLE;
 
 		/* JUMP MOVEMENT */
@@ -89,7 +89,7 @@ public:
 		}
 
 		/* HORIZONTAL MOVEMENT */
-		m_pos.x += final_side_speed * FT::clamp((m_side - m_pos.x), -FLOOR_WIDTH / 2.0f, FLOOR_WIDTH / 2.0f);
+		m_pos.x += final_side_speed * FT::clamp((m_side - m_pos.x), -1.0, 1.0);
 	}
 	/*
 		Pedro Miras participó en este proyecto.
@@ -99,7 +99,8 @@ public:
 		m_anim_rot += m_animation_speed * delta_time;
 
 		fdp.PushMatrix();
-		fdp.Translate(m_pos);
+		fdp.Scale(0.75);
+		fdp.Translate(WALK_FLOOR_WIDTH * m_pos);
 
 
 		fdp.PushMatrix();
@@ -159,6 +160,11 @@ public:
 	PlayerPosition GetSide() const
 	{
 		return (m_side);
+	}
+
+	float GetJumpPerc() const
+	{
+		return (FT::sin(m_jump_offset));
 	}
 
 	bool IsJumping() const

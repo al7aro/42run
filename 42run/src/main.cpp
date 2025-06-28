@@ -24,12 +24,12 @@ int main(void)
 	//Screen next_screen = MENU;
 
 /* ---------------------- GAME STATE ---------------------- */
-	/* RENDER RESOLUTION */
-	const int rend_w = 400;
-	const int rend_h = 400;
 	/* WINDOW SIZE RESOLUTION */
-	const int win_w = 1000;
-	const int win_h = 1000;
+	const int win_w = 800;
+	const int win_h = 800;
+	/* RENDER RESOLUTION */
+	const int rend_w = win_w * 0.7;
+	const int rend_h = win_h * 0.7;
 	/* ENGINE */
 	Feldespato fdp(win_w, win_h);
 	/* FLOOR TRAIL */
@@ -44,6 +44,7 @@ int main(void)
 	bool key_flag = true;
 	/* SHADERS */
 	std::shared_ptr<Shader> sh = fdp.LoadShader(SANDBOX_ASSETS_DIRECTORY"/shaders/basic.glsl");
+	std::shared_ptr<Shader> postpro_sh = fdp.LoadShader(SANDBOX_ASSETS_DIRECTORY"/shaders/postpro.glsl");
 	std::vector<std::shared_ptr<Grid>> maps;
 	int selected_map_id = 0;
 	maps.push_back(0); // FIRST MAP IS ALWAYS THE RANDOM ONE
@@ -64,9 +65,9 @@ int main(void)
 /* ---------------------- GAME SCREEN ---------------------- */
 	/* CAMERA */
 	Camera cam(Camera::PERSPECTIVE);
-	cam.tr.pos = FT::vec3(0.0, 5.0, -5.0);
+	cam.tr.pos = FT::vec3(0.0, 2.0, -3.75);
 	cam.tr.Yaw(FT::PI);
-	cam.tr.Pitch(FT::PI / 8.0);
+	//cam.tr.Pitch(FT::PI / 8.0);
 	/* TRANSFORMS */
 	Transform marvin_tr(FT::vec3(0.0, -5.0, -5));
 	/* Player */
@@ -84,6 +85,8 @@ int main(void)
 	std::shared_ptr<Texture2D> pause_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/pause_test.png");
 	std::shared_ptr<Texture2D> explosion_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/explosion.png");
 	std::shared_ptr<Texture2D> lost_tex = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/lost.png");
+	std::shared_ptr<Texture2D> steps = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/steps.png");
+	std::shared_ptr<Texture2D> coin = fdp.LoadTexture(SANDBOX_ASSETS_DIRECTORY"/textures/coin.png");
 
 	std::shared_ptr<Texture2D> post_pro;
 
@@ -132,17 +135,17 @@ int main(void)
 				// DRAW MAP CHOOSE WINDOW
 				fdp.PushMatrix();
 				fdp.BeginLayer(map_selector_cam, sh, true);
-					fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
+					fdp.ClearBuffer(64.0f / 255.0f, 64 / 255.0f, 64 / 255.0f, 1.0f);
 					if (selected_map_id != 0)
 					{
 						fdp.RotateX(FT::PI / 4.0);
 						fdp.RotateY(rot_offset);
-						xsize = FLOOR_WIDTH * (maps[selected_map_id]->GetXSize() - 1.0) / 2.0;
-						ysize = FLOOR_WIDTH * (maps[selected_map_id]->GetYSize() - 1.0) / 2.0;
+						xsize = FLOOR_DEPTH * (maps[selected_map_id]->GetXSize() - 1.0) / 2.0;
+						ysize = FLOOR_DEPTH * (maps[selected_map_id]->GetYSize() - 1.0) / 2.0;
 						scale_factor = target_size / xsize;
 						fdp.Scale(FT::vec3(scale_factor));
 						fdp.Translate(FT::vec3(xsize, 0.0, -ysize));
-						runner.DrawMapPortion(maps[selected_map_id], fdp, FT::ivec3(0));
+						runner.DrawMapPortion(maps[selected_map_id], fdp, FT::ivec3(0), last_frame_time);
 					}
 					else
 					{
@@ -155,7 +158,7 @@ int main(void)
 				// DRAW MENU
 				fdp.PushMatrix();
 				fdp.BeginLayer(sh);
-					fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
+					fdp.ClearBuffer(64.0f / 255.0f, 64 / 255.0f, 64 / 255.0f, 1.0f);
 					fdp.Scale(FT::vec3(2.0));
 					fdp.Rect(Material(menu_tex));
 					fdp.Scale(FT::vec3(0.25));
@@ -164,9 +167,9 @@ int main(void)
 				fdp.PopMatrix();
 			post_pro = fdp.EndLayer();
 			// POST-PROCESSING LAYER
-			fdp.BeginLayer(sh);
-				fdp.ClearBuffer(0.0, 0.0, 0.0, 1.0f);
-				fdp.Rect(Transform(FT::vec3(0.0), FT::vec3(2.0, -2.0, 1.0)), Material(post_pro));
+			fdp.BeginLayer(postpro_sh);
+				fdp.ClearBuffer(64.0f / 255.0f, 64 / 255.0f, 64 / 255.0f, 1.0f);
+				fdp.Rect(Transform(FT::vec3(0.0), FT::vec3(2.0, 2.0, 1.0)), Material(post_pro));
 			fdp.EndLayer();
 			fdp.EndRenderPass();
 
@@ -222,19 +225,21 @@ int main(void)
 			// POST-PROCESSING LAYER
 			fdp.BeginLayer(FT::ivec2(rend_w, rend_h));
 
-				fdp.ClearBuffer(255.0f / 255.0f, 23.0f / 255.0f, 62.0f / 255.0f, 1.0f);
+				fdp.ClearBuffer(0.0, 0.0, 0.0, 1.0f);
 				fdp.BeginLayer(cam, sh, false);
-					player.Draw(fdp, !runner.GetCollision() * last_frame_time);
+					player.Draw(fdp, !pause * !runner.GetCollision() * last_frame_time);
 				fdp.EndLayer();
 				fdp.BeginLayer(cam, sh, false);
 					runner.Draw(fdp);
 				fdp.EndLayer();
 				fdp.BeginLayer(sh, false); // TEXT LAYER
 					fdp.PushMatrix();
-					fdp.Translate(FT::vec3(1.0, 0.75, 0.0));
+					fdp.Translate(FT::vec3(0.85, 0.75, 0.0));
+					fdp.Rect(FT::Transform(FT::vec3(0.075, 0.0, 0.0), 0.15), steps);
 					txt.Draw(fdp, std::to_string(distance), 0.5);
 					fdp.Translate(FT::vec3(0.0, -0.35, 0.0));
 					txt.Draw(fdp, std::to_string(score), 0.25);
+					fdp.Rect(FT::Transform(FT::vec3(0.075, 0.0, 0.0), 0.15), coin);
 					fdp.PopMatrix();
 				fdp.EndLayer();
 				if (pause)
@@ -246,15 +251,15 @@ int main(void)
 				if (runner.GetCollision())
 				{
 					fdp.BeginLayer(sh, false);
-					fdp.Rect(Transform(FT::vec3(0.0, 0.25, 0.0), FT::vec3(1.0, 0.25, 1.0)), lost_tex);
+					fdp.Rect(Transform(FT::vec3(0.0, 0.25, 0.0), 1.5*FT::vec3(1.0, 0.25, 1.0)), lost_tex);
 					fdp.Rect(Transform(FT::vec3(0.0, -0.5, 0.0)), explosion_tex);
 					fdp.EndLayer();
 				}
 			post_pro = fdp.EndLayer();
 			// POST-PROCESSING LAYER
-			fdp.BeginLayer(sh);
-				fdp.ClearBuffer(0.0, 0.0, 0.0, 1.0f);
-				fdp.Rect(Transform(FT::vec3(0.0), FT::vec3(2.0, -2.0, 1.0)), Material(post_pro));
+			fdp.BeginLayer(postpro_sh);
+				fdp.ClearBuffer(64.0f / 255.0f, 64.0f / 255.0f, 64.0f / 255.0f, 1.0f);
+				fdp.Rect(Transform(FT::vec3(0.0), FT::vec3(2.0, 2.0, 1.0)), Material(post_pro));
 				fdp.EndLayer();
 			fdp.EndRenderPass();
 			/* -------------------------------*/

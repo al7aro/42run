@@ -29,6 +29,11 @@ namespace FT {
             aspect = 1.0f;
             far = 1000.0f;
             near = 0.1f;
+            if (type == ORTHOGRAPHIC)
+            {
+                far = 1.0f;
+                near = -1.0f;
+            }
 			top = 1.0f;
 			bottom = -1.0f;
 			left = -1.0f;
@@ -41,8 +46,8 @@ namespace FT {
             {
 			case PERSPECTIVE:
 				return (FT::perspective(zoom * fov, aspect, near, far));
-			case ORTHOGRAPHIC: //TODO: set near and far planes
-                return (FT::ortho(left, right, bottom, top));
+			case ORTHOGRAPHIC:
+                return (FT::ortho(left, right, bottom, top, near, far));
             }
             return (1.0f);
         }

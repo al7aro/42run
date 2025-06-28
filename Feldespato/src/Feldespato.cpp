@@ -11,6 +11,11 @@ namespace FT {
         m_data.framebuffer.push(0);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_STENCIL_TEST);
+        glEnable(GL_BLEND);
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CCW);
+        glCullFace(GL_BACK);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
     Feldespato::~Feldespato()
     {
