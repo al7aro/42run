@@ -56,10 +56,6 @@ The game is a VERY SIMPLE clone of epic **Temple Run** <a href="https://play.goo
 - Player can jump and turn at intersections
 - The map is pregenerated and obstacles are placed randomly.
 
-## TODO 🤯
-- [ ] Add props to FORWARD floor
-- [ ] Add new models for collectables and obstacles
-
 ---
 
 ## Screenshot
