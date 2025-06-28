@@ -64,4 +64,4 @@ The game is a VERY SIMPLE clone of epic **Temple Run** <a href="https://play.goo
 
 ## Screenshot
 
-![42run](https://i.imgur.com/cDqZuoR.gif)
+![42run](assets/42run.gif)
