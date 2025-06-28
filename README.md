@@ -13,7 +13,6 @@
 - [The ENGINE ](#the-engine-)
   - [External Libraries](#external-libraries)
 - [The GAME](#the-game)
-- [TODO 🤯](#todo-)
 - [Screenshot](#screenshot)
 
 
