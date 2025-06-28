@@ -326,7 +326,7 @@ public:
         {
         case Floor::LEFT:
             type = Floor::RIGHT;
-            fdp.Scale(FT::vec3(-1.0, 1.0, 1.0));
+            fdp.RotateY(FT::HALF_PI);
             break;
         case Floor::RIGHT_FORWARD:
             type = Floor::RIGHT_LEFT;

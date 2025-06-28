@@ -346,7 +346,7 @@ namespace FT {
 /* -------------------------------------------- */
 
 /* ------------- USEFUL MATRICES -------------- */
-    mat4 ortho(float left, float right, float bottom, float top);
+    mat4 ortho(float left, float right, float bottom, float top, float near, float far);
     mat4 perspective(float fov, float aspect, float near, float far);
     mat4 translate(FT::vec3 v);
     mat4 scale(FT::vec3 v);

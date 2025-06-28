@@ -24,12 +24,12 @@ int main(void)
 	//Screen next_screen = MENU;
 
 /* ---------------------- GAME STATE ---------------------- */
-	/* RENDER RESOLUTION */
-	const int rend_w = 500;
-	const int rend_h = 500;
 	/* WINDOW SIZE RESOLUTION */
 	const int win_w = 800;
 	const int win_h = 800;
+	/* RENDER RESOLUTION */
+	const int rend_w = win_w * 0.7;
+	const int rend_h = win_h * 0.7;
 	/* ENGINE */
 	Feldespato fdp(win_w, win_h);
 	/* FLOOR TRAIL */
@@ -44,6 +44,7 @@ int main(void)
 	bool key_flag = true;
 	/* SHADERS */
 	std::shared_ptr<Shader> sh = fdp.LoadShader(SANDBOX_ASSETS_DIRECTORY"/shaders/basic.glsl");
+	std::shared_ptr<Shader> postpro_sh = fdp.LoadShader(SANDBOX_ASSETS_DIRECTORY"/shaders/postpro.glsl");
 	std::vector<std::shared_ptr<Grid>> maps;
 	int selected_map_id = 0;
 	maps.push_back(0); // FIRST MAP IS ALWAYS THE RANDOM ONE
@@ -166,9 +167,9 @@ int main(void)
 				fdp.PopMatrix();
 			post_pro = fdp.EndLayer();
 			// POST-PROCESSING LAYER
-			fdp.BeginLayer(sh);
+			fdp.BeginLayer(postpro_sh);
 				fdp.ClearBuffer(64.0f / 255.0f, 64 / 255.0f, 64 / 255.0f, 1.0f);
-				fdp.Rect(Transform(FT::vec3(0.0), FT::vec3(2.0, -2.0, 1.0)), Material(post_pro));
+				fdp.Rect(Transform(FT::vec3(0.0), FT::vec3(2.0, 2.0, 1.0)), Material(post_pro));
 			fdp.EndLayer();
 			fdp.EndRenderPass();
 
@@ -256,9 +257,9 @@ int main(void)
 				}
 			post_pro = fdp.EndLayer();
 			// POST-PROCESSING LAYER
-			fdp.BeginLayer(sh);
+			fdp.BeginLayer(postpro_sh);
 				fdp.ClearBuffer(64.0f / 255.0f, 64.0f / 255.0f, 64.0f / 255.0f, 1.0f);
-				fdp.Rect(Transform(FT::vec3(0.0), FT::vec3(2.0, -2.0, 1.0)), Material(post_pro));
+				fdp.Rect(Transform(FT::vec3(0.0), FT::vec3(2.0, 2.0, 1.0)), Material(post_pro));
 				fdp.EndLayer();
 			fdp.EndRenderPass();
 			/* -------------------------------*/
