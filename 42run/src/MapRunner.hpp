@@ -53,6 +53,9 @@ public:
     FT::Model m_collectable;
     float m_collectable_rot;
 
+    /* PROPS */
+    FT::Model m_cluster;
+
 public:
     MapRunner(FT::Feldespato & fdp)
         : m_pos(0.0), m_current_tile(0), m_prev_tile(0), m_prev2_tile(0), m_tile_perc(0.5), m_dir(Floor::NONE),
@@ -69,6 +72,7 @@ public:
         m_floor_types[Floor::DOWN] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_down.obj");
 
         m_collectable = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/coin/coin.obj");
+        m_cluster = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/cluster/cluster.obj");
 
         // TODO: make this a map or something
         m_obstacles.push_back(fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/obstacles/low/fence/fence.obj"));
@@ -333,6 +337,8 @@ public:
             fdp.RotateY(FT::HALF_PI);
             break;
         };
+        if (type == Floor::FORWARD)
+            fdp.Draw(m_cluster);
         fdp.Draw(m_floor_types[type]);
         fdp.PopMatrix();
         DrawObstacles(fdp, floor);
