@@ -2,6 +2,3 @@
 	path = Feldespato/vendor/glfw/glfw
 	url = https://github.com/glfw/glfw.git
 	branch = 3.3-stable
-[submodule "EngineName/vendor/imgui/imgui"]
-	path = Feldespato/vendor/imgui/imgui
-	url = https://github.com/ocornut/imgui.git
