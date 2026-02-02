@@ -8,3 +8,5 @@ git clone -b 3.3-stable https://github.com/glfw/glfw.git "$SCRIPT_DIR/../Feldesp
 mkdir -p "${SCRIPT_DIR}/../build"
 
 cmake -S "${SCRIPT_DIR}/.." -B "${SCRIPT_DIR}/../build"
+
+make -C "${SCRIPT_DIR}/../build"

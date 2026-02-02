@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Math.hpp"
 
 /* ****************************** */
@@ -1003,6 +1001,7 @@ namespace FT {
         ret[6] = (m[3] * m[7] - m[6] * m[4]) / det;
         ret[7] = -(m[0] * m[7] - m[6] * m[1]) / det;
         ret[8] = (m[0] * m[4] - m[3] * m[1]) / det;
+	return (ret);
     }
     mat3 transpose(const mat3& m)
     {

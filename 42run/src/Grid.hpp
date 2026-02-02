@@ -277,6 +277,7 @@ public:
             return (right_dir);
         else if (dir == Floor::WEST)
            return (left_dir);
+	return (Floor::Direction::NONE);
     }
 
     void ClearBranches()
