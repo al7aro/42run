@@ -1,4 +1,0 @@
-[submodule "EngineName/vendor/glfw/glfw"]
-	path = Feldespato/vendor/glfw/glfw
-	url = https://github.com/glfw/glfw.git
-	branch = 3.3-stable
