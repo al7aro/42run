@@ -3,6 +3,14 @@
 #include <iostream>
 
 namespace FT {
+    IndexBuffer::IndexBuffer(unsigned int data_count)
+        :m_count(data_count)
+    {
+        glGenBuffers(1, &(m_id));
+        Bind();
+        glBufferData(m_TARGET, sizeof(unsigned int) * data_count, nullptr, m_USAGE);
+        Unbind();
+    }
     IndexBuffer::IndexBuffer(const unsigned int * data, unsigned int data_count)
         :m_count(data_count)
     {
@@ -12,6 +20,13 @@ namespace FT {
         Unbind();
     }
 
+    void IndexBuffer::SetData(const unsigned int * data, unsigned int data_count)
+    {
+        m_count = data_count;
+        Bind();
+        glBufferData(m_TARGET, sizeof(unsigned int) * data_count, data, m_USAGE);
+        Unbind();
+    }
     IndexBuffer::~IndexBuffer()
     {
         glDeleteBuffers(1, &(m_id));

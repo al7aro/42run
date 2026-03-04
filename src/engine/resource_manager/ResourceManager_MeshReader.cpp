@@ -138,7 +138,7 @@ namespace FT {
 		return (vertex);
 	}
 
-	std::vector<Mesh> ResourceManager::mesh_obj_reader(const std::string& path)
+	std::vector<std::shared_ptr<Mesh> > ResourceManager::mesh_obj_reader(const std::string& path)
 	{
 		enum LineType
 		{
@@ -153,7 +153,7 @@ namespace FT {
 
 		std::ifstream f(path);
 		if (!f.is_open())
-			return (std::vector<Mesh>());
+			return (std::vector<std::shared_ptr<Mesh> >());
 		std::string line;
 		std::string word;
 
@@ -171,8 +171,8 @@ namespace FT {
 		// TODO: for now it will only support one .mtl per .obj
 		std::map<std::string, Material> materials;
 		std::string current_use_material;
-		std::vector<Mesh> meshes;
-		Mesh* current_mesh;
+		std::vector<std::shared_ptr<Mesh> > meshes;
+		std::shared_ptr<Mesh> current_mesh;
 		std::vector<FT::vec3> pos;
 		std::vector<FT::vec3> norm;
 		std::vector<FT::vec3> tex;
@@ -208,8 +208,8 @@ namespace FT {
 				materials = mesh_mtl_reader(std::filesystem::path(path).parent_path().string() + "/" + word); // TODO: create the material absolute path
 				break;
 			case LineType::USEMTL: // Create a new mesh using the specified material
-				meshes.push_back(Mesh());
-				current_mesh = &*meshes.rbegin();
+				meshes.push_back(std::shared_ptr<Mesh>());
+				current_mesh = *meshes.rbegin();
 				sstream >> current_use_material;
 				vertices.clear();
 				indices.clear();

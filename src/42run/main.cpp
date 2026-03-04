@@ -28,8 +28,8 @@ int main(void)
 	const int win_w = 800;
 	const int win_h = 800;
 	/* RENDER RESOLUTION */
-	const int rend_w = win_w * 0.7;
-	const int rend_h = win_h * 0.7;
+	const int rend_w = win_w * 2.0;
+	const int rend_h = win_h * 2.0;
 	/* ENGINE */
 	Feldespato fdp(win_w, win_h);
 	/* FLOOR TRAIL */
@@ -60,7 +60,8 @@ int main(void)
 	float xsize, ysize, target_size = 3.0, scale_factor;
 	float rot_speed = 2.0;
 	float rot_offset = 0.0;
-	Model q_mark = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/q_mark/q_mark.obj");
+	std::shared_ptr<Model> q_mark;
+	q_mark = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/q_mark/q_mark.obj");
 
 /* ---------------------- GAME SCREEN ---------------------- */
 	/* CAMERA */

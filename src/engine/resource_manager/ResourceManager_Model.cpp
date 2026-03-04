@@ -2,12 +2,12 @@
 
 namespace FT {
 
-    Model ResourceManager::LoadModel(const std::string& path)
+    std::shared_ptr<Model> ResourceManager::LoadModel(const std::string& path)
 	{
-        return (mesh_obj_reader(path));
+        return (std::make_shared<Model>(mesh_obj_reader(path)));
 	}
 
-    Mesh ResourceManager::LoadMesh(Mesh::MeshType type)
+    std::shared_ptr<Mesh> ResourceManager::LoadMesh(Mesh::MeshType type)
     {
         switch (type)
         {
@@ -22,7 +22,7 @@ namespace FT {
         }
     }
 
-	Mesh   ResourceManager::load_rect()
+	std::shared_ptr<Mesh> ResourceManager::load_rect()
     {
         // GEOMETRY
         std::vector<Vertex> vertices =
@@ -38,10 +38,10 @@ namespace FT {
         // MATERIAL
 		Material new_mat = Material(m_DEFAULT_TEXTURE);
         // MESH
-        Mesh new_mesh = Mesh(new_geo, new_mat);
+        std::shared_ptr<Mesh> new_mesh = std::make_shared<Mesh>(new_geo, new_mat);
         return (new_mesh);
     }
-    Mesh   ResourceManager::load_cube(bool face_normals)
+    std::shared_ptr<Mesh> ResourceManager::load_cube(bool face_normals)
     {
         std::vector<Vertex> vertices;
         if (face_normals)
@@ -131,7 +131,7 @@ namespace FT {
         };
         Geometry new_geo = Geometry(vertices, indices);
         Material new_mat = Material(m_DEFAULT_TEXTURE);
-		Mesh new_mesh = Mesh(new_geo, new_mat);
+		std::shared_ptr<Mesh> new_mesh = std::make_shared<Mesh>(new_geo, new_mat);
         return (new_mesh);
     }
 }

@@ -14,18 +14,18 @@ namespace FT {
     class Renderable
     {
     protected:
-        Model m_meshes;
+        std::shared_ptr<Model> m_meshes;
         Transform m_transform;
 
     public:
         Renderable() {}
-        Renderable(const Mesh & mesh, Transform transform)
+        Renderable(std::shared_ptr<Mesh> & mesh, Transform transform)
             : m_transform(transform)
         {
-            m_meshes = Model();
-            m_meshes.AddMesh(mesh);
+            m_meshes = std::make_shared<Model>();
+            m_meshes->AddMesh(mesh);
         }
-        Renderable(Model model, Transform transform)
+        Renderable(std::shared_ptr<Model>& model, Transform transform)
             : m_meshes(model), m_transform(transform)
         {
         }
@@ -36,17 +36,17 @@ namespace FT {
         {
             return (m_transform.GetTransform());
         }
-        Model GetMeshes()
+        const std::shared_ptr<Model>& GetMeshes()
         {
             return (m_meshes);
         }
-
-        static std::shared_ptr<VertexArray>    GetVAO(Mesh mesh)
+        void SetModel(const std::shared_ptr<Model>& model)
         {
-            std::shared_ptr<VertexArray> vao = std::make_shared<VertexArray>();
-            vao->SetVBO(std::make_shared<Buffer>(mesh.GetGeometry().GetRawVertices(), mesh.GetGeometry().GetDataCount()));
-            vao->SetIBO(std::make_shared<IndexBuffer>(mesh.GetGeometry().GetRawIndices(), mesh.GetGeometry().GetIndexCount()));
-            return (vao);
+            m_meshes = model;
+        }
+        void SetTransform(const Transform& transform)
+        {
+            m_transform = transform;
         }
     };
 }

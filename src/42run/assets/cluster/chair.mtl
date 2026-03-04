@@ -1,0 +1,578 @@
+# Blender 5.0.1 MTL File: 'None'
+# www.blender.org
+
+newmtl OffChair_Material.009
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.014
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.018
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.019
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.020
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.021
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.022
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.023
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.024
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.025
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.026
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.027
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.028
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.029
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.030
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.031
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.032
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.033
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.034
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.035
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.036
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.037
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.038
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.039
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.040
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.041
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.042
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.043
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.044
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.045
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.046
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.047
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.048
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.049
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.050
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.051
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.052
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.053
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.054
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.055
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.056
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.057
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.058
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.059
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.060
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.061
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.062
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png
+
+newmtl OffChair_Material.063
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_D.png
+map_Ns M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Roughn.png
+map_refl M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_Metallic.png
+map_Bump -bm 0.500000 M:/Blender Projects/SketchFab Models/Game Ready Office Chair/Textures/OffChair_N.png

@@ -3,6 +3,15 @@
 #include <iostream>
 
 namespace FT {
+    Buffer::Buffer(size_t data_count, FT::VertexFormat format)
+    {
+        for (int i = 0; i < VertexFormat::MAX_ATTRIBUTES; i++)
+            this->m_format.attribute_count[i] = format.attribute_count[i];
+        glGenBuffers(1, &(this->m_id));
+        this->Bind();
+        glBufferData(this->_TARGET, sizeof(float) * data_count, nullptr, this->_USAGE);
+        this->Unbind();
+    }
     Buffer::Buffer(const float * data, size_t data_count, FT::VertexFormat format)
     {
         for (int i = 0; i < VertexFormat::MAX_ATTRIBUTES; i++)
@@ -17,6 +26,14 @@ namespace FT {
     {
         glDeleteBuffers(1, &(this->m_id));
         this->m_id = 0;
+    }
+
+    void Buffer::SetData(const float * data, size_t data_count)
+    {
+        glGenBuffers(1, &(this->m_id));
+        this->Bind();
+        glBufferData(this->_TARGET, sizeof(float) * data_count, data, this->_USAGE);
+        this->Unbind();
     }
 
     int Buffer::GetStride() const

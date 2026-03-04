@@ -20,11 +20,11 @@ public:
 		RIGHT = -1
 	};
 private:
-	FT::Model m_body;
-	FT::Model m_left_arm;
-	FT::Model m_right_arm;
-	FT::Model m_left_leg;
-	FT::Model m_right_leg;
+	std::shared_ptr<FT::Model> m_body;
+	std::shared_ptr<FT::Model> m_left_arm;
+	std::shared_ptr<FT::Model> m_right_arm;
+	std::shared_ptr<FT::Model> m_left_leg;
+	std::shared_ptr<FT::Model> m_right_leg;
 	float m_arms_height;
 	float m_legs_height;
 	float m_animation_speed;

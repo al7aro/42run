@@ -156,8 +156,8 @@ namespace FT {
     /* DRAW FUNCTIONS */
     void Feldespato::Rect(Transform transform, Material mat)
     {
-        Mesh mesh = m_rm->LoadMesh(Mesh::MeshType::RECT);
-        mesh.SetMaterial(mat);
+        std::shared_ptr<Mesh> mesh = m_rm->LoadMesh(Mesh::MeshType::RECT);
+        mesh->SetMaterial(mat);
         transform.parent *= m_data.tr.top();
         std::shared_ptr<Renderable> renderable = std::make_shared<Renderable>(mesh, transform);
         m_data.ly.top()->Add(renderable);
@@ -181,8 +181,8 @@ namespace FT {
 
     void Feldespato::Cube(Transform transform, Material mat)
     {
-        Mesh mesh = m_rm->LoadMesh(Mesh::MeshType::CUBE);
-        mesh.SetMaterial(mat);
+        std::shared_ptr<Mesh> mesh = m_rm->LoadMesh(Mesh::MeshType::CUBE);
+        mesh->SetMaterial(mat);
         transform.parent *= m_data.tr.top();
         std::shared_ptr<Renderable> renderable = std::make_shared<Renderable>(mesh, transform);
         m_data.ly.top()->Add(renderable);
@@ -203,28 +203,28 @@ namespace FT {
         Transform transform;
         Cube(transform, mat);
     }
-    void Feldespato::Draw(Mesh& mesh)
+    void Feldespato::Draw(std::shared_ptr<Mesh>& mesh)
     {
         Transform transform;
         transform.parent *= m_data.tr.top();
         std::shared_ptr<Renderable> renderable = std::make_shared<Renderable>(mesh, transform);
         m_data.ly.top()->Add(renderable);
     }
-    void Feldespato::Draw(Mesh & mesh, Transform transform, Material mat)
+    void Feldespato::Draw(std::shared_ptr<Mesh> & mesh, Transform transform, Material mat)
     {
-        mesh.SetMaterial(mat);
+        mesh->SetMaterial(mat);
         transform.parent *= m_data.tr.top();
         std::shared_ptr<Renderable> renderable = std::make_shared<Renderable>(mesh, transform);
         m_data.ly.top()->Add(renderable);
     }
-    void Feldespato::Draw(Model & model)
+    void Feldespato::Draw(std::shared_ptr<Model> & model)
     {
         Transform transform;
         transform.parent *= m_data.tr.top();
         std::shared_ptr<Renderable> renderable = std::make_shared<Renderable>(model, transform);
         m_data.ly.top()->Add(renderable);
     }
-    void Feldespato::Draw(Model & model, Transform transform)
+    void Feldespato::Draw(std::shared_ptr<Model> & model, Transform transform)
     {
         transform.parent *= m_data.tr.top();
         std::shared_ptr<Renderable> renderable = std::make_shared<Renderable>(model, transform);
@@ -273,15 +273,15 @@ namespace FT {
     }
 
     /* RESOURCE LOADING */
-    Model Feldespato::LoadModel(const std::string& path)
+    std::shared_ptr<Model> Feldespato::LoadModel(const std::string& path)
     {
         return (m_rm->LoadModel(path));
     }
-    Mesh Feldespato::LoadMeshRect()
+    std::shared_ptr<Mesh> Feldespato::LoadMeshRect()
     {
         return (m_rm->LoadMesh(Mesh::MeshType::RECT));
     }
-    Mesh Feldespato::LoadMeshCube()
+    std::shared_ptr<Mesh> Feldespato::LoadMeshCube()
     {
         return (m_rm->LoadMesh(Mesh::MeshType::CUBE));
     }

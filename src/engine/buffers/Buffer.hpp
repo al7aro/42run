@@ -14,9 +14,11 @@ namespace FT {
         const unsigned int _TARGET = GL_ARRAY_BUFFER;
         const unsigned int _USAGE = GL_STATIC_DRAW;
     public:
+        Buffer(size_t data_count, VertexFormat format = VertexFormat{3, 3, 3, 4, 4, 4});
         Buffer(const float * data, size_t data_count, VertexFormat format = VertexFormat{3, 3, 3, 4, 4, 4});
         ~Buffer();
 
+        void SetData(const float * data, size_t data_count);
         int GetStride() const;
         void * GetOffset(unsigned int  id) const;
         unsigned int GetCount(unsigned int id) const;

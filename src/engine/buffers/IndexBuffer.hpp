@@ -14,9 +14,11 @@ namespace FT {
         const unsigned int m_TARGET = GL_ELEMENT_ARRAY_BUFFER;
         const unsigned int m_USAGE = GL_STATIC_DRAW;
     public:
+        IndexBuffer(unsigned int data_count);
         IndexBuffer(const unsigned int * data, unsigned int data_count);
         ~IndexBuffer();
 
+        void SetData(const unsigned int * data, unsigned int data_count);
         void Bind()  const;
         void Unbind()  const;
 
