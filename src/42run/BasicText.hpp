@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../../engine/FT.hpp"
+#include "../engine/FT.hpp"
 
 class BasicText
 {

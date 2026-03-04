@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <sstream>
 
-#include "../../engine/FT.hpp"
+#include "../engine/FT.hpp"
 #include "Floor.hpp"
 #include "Player.hpp"
 #include "Grid.hpp"
