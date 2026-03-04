@@ -101,7 +101,7 @@ int main(void)
 /* ---------------------- MENU SCREEN ---------------------- */
 		case Screen::MENU:
 			/* ----------- UPDATE -------------*/
-			if (fdp.GetKey(GLFW_KEY_ENTER) == GLFW_PRESS)
+			if (fdp.GetKey(GLFW_KEY_ENTER) == GLFW_PRESS || fdp.GetKey(GLFW_KEY_SPACE) == GLFW_PRESS)
 			{
 				current_screen = GAME;
 				pause = false;
@@ -113,17 +113,17 @@ int main(void)
 				runner.Init(map);
 				player.Reset();
 			}
-			if (fdp.GetKey(GLFW_KEY_LEFT) == GLFW_PRESS && key_flag)
+			if (fdp.GetKey(GLFW_KEY_A) == GLFW_PRESS && key_flag)
 			{
 				selected_map_id = FT::mod(selected_map_id - 1, maps.size());
 				key_flag = false;
 			}
-			if (fdp.GetKey(GLFW_KEY_RIGHT) == GLFW_PRESS && key_flag)
+			if (fdp.GetKey(GLFW_KEY_D) == GLFW_PRESS && key_flag)
 			{
 				selected_map_id = FT::mod(selected_map_id + 1, maps.size());
 				key_flag = false;
 			}
-			if (fdp.GetKey(GLFW_KEY_LEFT) == GLFW_RELEASE && fdp.GetKey(GLFW_KEY_RIGHT) == GLFW_RELEASE)
+			if (fdp.GetKey(GLFW_KEY_A) == GLFW_RELEASE && fdp.GetKey(GLFW_KEY_D) == GLFW_RELEASE)
 				key_flag = true;
 			rot_offset += last_frame_time * rot_speed;
 

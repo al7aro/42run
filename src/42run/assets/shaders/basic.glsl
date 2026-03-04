@@ -40,29 +40,15 @@ in DATA
 
 struct Material
 {
-	vec3 col;
 	vec3 diffuse;
-	vec3 specular;
-	vec3 ambient;
-	vec3 emissive;
-	vec3 transparent;
-	float opacity;
-	float shininess;
-	float shininess_strength;
-	float refracti;
 };
 
-uniform sampler2D texture_map;
 uniform sampler2D diffuse_map;
-uniform sampler2D specular_map;
 uniform sampler2D normal_map;
 uniform vec4 flat_color;
 uniform Material mat;
 
-uniform int texture_map_enabled;
 uniform int diffuse_map_enabled;
-uniform int specular_map_enabled;
-uniform int normal_map_enabled;
 
 void main()
 {

@@ -67,11 +67,11 @@ public:
 		float final_side_speed = m_side_speed * delta_time;
 
 		/* INPUT HANDLER */
-		if ((fdp.GetKey(GLFW_KEY_SPACE) == GLFW_PRESS) || ((fdp.GetKey(GLFW_KEY_UP) == GLFW_PRESS)) && !m_jumping)
+		if ((fdp.GetKey(GLFW_KEY_SPACE) == GLFW_PRESS) || ((fdp.GetKey(GLFW_KEY_W) == GLFW_PRESS)) && !m_jumping)
 			m_jumping = true;
-		if (fdp.GetKey(GLFW_KEY_LEFT) == GLFW_PRESS)
+		if (fdp.GetKey(GLFW_KEY_A) == GLFW_PRESS)
 			m_side = Player::LEFT;
-		else if (fdp.GetKey(GLFW_KEY_RIGHT) == GLFW_PRESS)
+		else if (fdp.GetKey(GLFW_KEY_D) == GLFW_PRESS)
 			m_side = Player::RIGHT;
 		else
 			m_side = Player::MIDDLE;

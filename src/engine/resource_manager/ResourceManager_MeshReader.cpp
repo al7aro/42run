@@ -172,7 +172,7 @@ namespace FT {
 		std::map<std::string, Material> materials;
 		std::string current_use_material;
 		std::vector<std::shared_ptr<Mesh> > meshes;
-		std::shared_ptr<Mesh> current_mesh;
+		std::shared_ptr<Mesh> current_mesh = std::make_shared<Mesh>();
 		std::vector<FT::vec3> pos;
 		std::vector<FT::vec3> norm;
 		std::vector<FT::vec3> tex;
@@ -208,8 +208,8 @@ namespace FT {
 				materials = mesh_mtl_reader(std::filesystem::path(path).parent_path().string() + "/" + word); // TODO: create the material absolute path
 				break;
 			case LineType::USEMTL: // Create a new mesh using the specified material
-				meshes.push_back(std::shared_ptr<Mesh>());
-				current_mesh = *meshes.rbegin();
+				meshes.push_back(std::make_shared<Mesh>());
+				current_mesh = meshes[meshes.size() - 1];
 				sstream >> current_use_material;
 				vertices.clear();
 				indices.clear();
