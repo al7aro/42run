@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../engine/FT.hpp"
+#include "../engine/FT.hpp"
 #include <cstdlib>
 
 constexpr float FLOOR_DEPTH = 12.0f;
