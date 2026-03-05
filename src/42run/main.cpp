@@ -25,11 +25,11 @@ int main(void)
 
 /* ---------------------- GAME STATE ---------------------- */
 	/* WINDOW SIZE RESOLUTION */
-	const int win_w = 800;
-	const int win_h = 800;
+	const int win_w = 900;
+	const int win_h = 900;
 	/* RENDER RESOLUTION */
-	const int rend_w = win_w * 2.0;
-	const int rend_h = win_h * 2.0;
+	const int rend_w = win_w * 0.6;
+	const int rend_h = win_h * 0.6;
 	/* ENGINE */
 	Feldespato fdp(win_w, win_h);
 	/* FLOOR TRAIL */
