@@ -210,7 +210,7 @@ public:
             if (!m_current_map->Exists(m_current_tile) || m_current_map->At(m_current_tile).type == Floor::Type::EMPTY)
                 m_collision = true;
             else if (!m_collision)
-                m_distance++;
+                m_distance = (m_distance + 1) % 100000;
         }
 
         /* Checks player collision */
@@ -233,7 +233,7 @@ public:
                     m_collision = true;
                 if (floor.collectables[left] && !(player.GetJumpPerc() >= m_obstacle_height))
                 {
-                    m_score++;
+                    m_score = (m_score + 1) % 100000;
                     floor.collectables[left] = false;
                 }
                 break;
@@ -243,7 +243,7 @@ public:
                     m_collision = true;
                 if (floor.collectables[right] && !(player.GetJumpPerc() >= m_obstacle_height))
                 {
-                    m_score++;
+                    m_score = (m_score + 1) % 100000;
                     floor.collectables[right] = false;
                 }
                 break;
@@ -253,7 +253,7 @@ public:
                     m_collision = true;
                 if (floor.collectables[middle] && !(player.GetJumpPerc() >= m_obstacle_height))
                 {
-                    m_score++;
+                    m_score = (m_score + 1) % 100000;
                     floor.collectables[middle] = false;
                 }
                 break;
