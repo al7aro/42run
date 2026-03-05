@@ -96,8 +96,8 @@ public:
         m_prev_tile = m_pos;
         m_prev2_tile = m_prev_tile;
         m_collision = false;
-        m_distance = 99995;
-        m_score = 99995;
+        m_distance = 0;
+        m_score = 0;
         m_climbing = false;
         m_rotating = false;
         m_tile_perc = 0.5;
