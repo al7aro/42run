@@ -65,10 +65,10 @@ namespace FT {
         void                        Cube(Material mat);
         void                        Cube(Transform transform);
         void                        Cube(Transform transform, Material mat);
-        void                        Draw(Mesh & mesh);
-        void                        Draw(Mesh & mesh, Transform transform, Material mat);
-        void                        Draw(Model & model);
-        void                        Draw(Model & model, Transform transform);
+        void                        Draw(std::shared_ptr<Mesh> & mesh);
+        void                        Draw(std::shared_ptr<Mesh> & mesh, Transform transform, Material mat);
+        void                        Draw(std::shared_ptr<Model> & model);
+        void                        Draw(std::shared_ptr<Model> & model, Transform transform);
 
         /* TRANSFORMATION STACK */
         void                        Translate(FT::vec3 v);
@@ -81,9 +81,9 @@ namespace FT {
         FT::mat4                   GetTransform() const;
 
         /* RESOURCE LOADING */
-        Model                       LoadModel(const std::string& path);
-        Mesh                        LoadMeshRect();
-        Mesh                        LoadMeshCube();
+        std::shared_ptr<Model>      LoadModel(const std::string& path);
+        std::shared_ptr<Mesh>       LoadMeshRect();
+        std::shared_ptr<Mesh>       LoadMeshCube();
         std::shared_ptr<Shader>     LoadShader(const std::string& path);
         std::shared_ptr<Texture2D>  LoadTexture(const std::string& path);
         

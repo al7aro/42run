@@ -43,8 +43,8 @@ namespace FT {
 
         std::shared_ptr<Shader>     LoadShader(const std::string & path);
         std::shared_ptr<Texture2D>  LoadImage(const std::string & path);
-        Model                       LoadModel(const std::string& path);
-        Mesh                        LoadMesh(Mesh::MeshType type);
+        std::shared_ptr<Model>      LoadModel(const std::string& path);
+        std::shared_ptr<Mesh>       LoadMesh(Mesh::MeshType type);
 
         std::shared_ptr<Shader>     GetDefaultShader() const { return this->m_DEFAULT_SHADER; }
         std::shared_ptr<Texture2D>  GetDefaultTexture() const { return this->m_DEFAULT_TEXTURE; }
@@ -53,12 +53,12 @@ namespace FT {
         void Clean();
 
     private:
-        std::vector<Mesh>               mesh_obj_reader(const std::string& path);
-        std::map<std::string, Material> mesh_mtl_reader(const std::string& path);
-	    std::shared_ptr<Texture2D>      read_image(const std::string & path, int desired_channels = 0);
-        std::shared_ptr<Shader>         read_shader(const std::string & path);
-        std::shared_ptr<Shader>         read_shader(const std::string & v_path, const std::string & f_path);
-        Mesh                            load_rect();
-        Mesh                            load_cube(bool face_normals = false);
+        std::vector<std::shared_ptr<Mesh> > mesh_obj_reader(const std::string& path);
+        std::map<std::string, Material>     mesh_mtl_reader(const std::string& path);
+	    std::shared_ptr<Texture2D>          read_image(const std::string & path, int desired_channels = 0);
+        std::shared_ptr<Shader>             read_shader(const std::string & path);
+        std::shared_ptr<Shader>             read_shader(const std::string & v_path, const std::string & f_path);
+        std::shared_ptr<Mesh>               load_rect();
+        std::shared_ptr<Mesh>               load_cube(bool face_normals = false);
     };
 }

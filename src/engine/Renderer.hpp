@@ -20,6 +20,9 @@ namespace FT {
     class StaticRenderer3D : public FT::Renderer
     {
     private:
+        std::shared_ptr<VertexArray> m_vao;
+        std::shared_ptr<Buffer> m_vbo;
+        std::shared_ptr<IndexBuffer> m_ibo;
         std::deque<std::shared_ptr<Renderable> > _render_queue;
 
     public:

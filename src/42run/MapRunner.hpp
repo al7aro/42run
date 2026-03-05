@@ -15,7 +15,7 @@
 class MapRunner
 {
 public:
-    std::map<Floor::Type, FT::Model> m_floor_types;
+    std::map<Floor::Type, std::shared_ptr<FT::Model> > m_floor_types;
     std::shared_ptr<Grid> m_current_map;
 
     /* Player Score */
@@ -49,12 +49,12 @@ public:
     float m_climb_offset;
 
     /* Obstacles / Collectables */
-    std::vector<FT::Model> m_obstacles;
-    FT::Model m_collectable;
+    std::vector<std::shared_ptr<FT::Model>> m_obstacles;
+    std::shared_ptr<FT::Model> m_collectable;
     float m_collectable_rot;
 
     /* PROPS */
-    FT::Model m_cluster;
+    std::shared_ptr<FT::Model> m_cluster;
 
 public:
     MapRunner(FT::Feldespato & fdp)
@@ -72,7 +72,7 @@ public:
         m_floor_types[Floor::DOWN] = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/floor/front_down.obj");
 
         m_collectable = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/coin/coin.obj");
-        m_cluster = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/cluster/cluster.obj");
+        m_cluster = fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/cluster/cluster_chair.obj");
 
         // TODO: make this a map or something
         m_obstacles.push_back(fdp.LoadModel(SANDBOX_ASSETS_DIRECTORY"/obstacles/low/fence/fence.obj"));

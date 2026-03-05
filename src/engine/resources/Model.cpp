@@ -17,14 +17,14 @@ namespace FT {
 		return (*this);
 	}
 
-	Model::Model(const std::vector<Mesh>& meshes)
+	Model::Model(const std::vector<std::shared_ptr<Mesh> >& meshes)
 		: m_bone_cnt(0)
 	{
 		for (const auto& m : meshes)
 			AddMesh(m);
 	}
 
-	Model::Model(const Mesh & mesh)
+	Model::Model(const std::shared_ptr<Mesh> & mesh)
 		: m_bone_cnt(0)
 	{
 		AddMesh(mesh);
@@ -73,7 +73,8 @@ namespace FT {
 		return (it->second.id);
 	}
 
-	void Model::AddMesh(const Mesh & mesh)
+	//TODO: MESH SHOULD BE POINTER SO THAT IT DOES NOT COPY ALL GEOMETRY EACH TIME
+	void Model::AddMesh(const std::shared_ptr<Mesh> & mesh)
 	{
 		m_mesh.push_back(mesh);
 	}
@@ -90,7 +91,7 @@ namespace FT {
 		return (tr);
 	}
 
-	std::vector<Mesh> Model::GetMeshes()
+	std::vector<std::shared_ptr<Mesh> > Model::GetMeshes()
 	{
 		return (m_mesh);
 	}
