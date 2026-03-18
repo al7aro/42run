@@ -8,19 +8,19 @@
 ---
 
 ## Table of Contents <!-- omit from toc -->
-- [Why ❓](#why-)
-- [How was it made 🧠](#how-was-it-made-)
+- [Why](#why-)
+- [How was it made](#how-was-it-made-)
 - [The ENGINE ](#the-engine-)
   - [External Libraries](#external-libraries)
 - [The GAME](#the-game)
 - [Screenshot](#screenshot)
 
 
-## Why ❓
+## Why
 
 42run is a project from <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/768px-42_Logo.svg.png" width=30/> <em>Outter Core</em> curriculm, one of the basis of the **Computer Graphics** <img src="https://www.wolframcloud.com/obj/resourcesystem/images/f2d/f2dcb501-fd59-4986-b598-2f30ac56d0ac/6009562e6fbfd7a5.png" width=30/> branch. The project introduces students to real-time rendering and game development fundamentals using GPU-based techniques.
 
-## How was it made 🧠
+## How was it made
 
 It was built from scratch with <a href="https://www.opengl.org"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Opengl-logo.svg" align="center" width=50/></h1></a> on <a href="https://en.wikipedia.org/wiki/C%2B%2B"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/ISO_C%2B%2B_Logo.svg/1200px-ISO_C%2B%2B_Logo.svg.png" align="center" width=25/></a>
 The project consist of two parts:
